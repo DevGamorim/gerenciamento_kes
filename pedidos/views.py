@@ -19,7 +19,7 @@ import pygame
 from time import sleep
 
 
-
+config = {}
 
 
 firebase = pyrebase.initialize_app(config)
