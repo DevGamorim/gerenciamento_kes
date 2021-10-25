@@ -1,0 +1,64 @@
+{% extends 'base3p.html' %}
+
+{% block title %}Estoque{% endblock %}
+
+{% block content %}
+    <center><p><b>Estoques</b></p></center>
+    <form action="/pedidos/Estoque/" method="post">
+        {% csrf_token %}
+        <div>
+            <div>
+                <input class="form-control" type="text" name="sku1" placeholder="SKUs" autocomplete="off"/>
+                <center>
+                <button class="btn btn-success" type="submit" name="Buscar" value="{{sku.n_pedido}}" nclick="return confirm('Deseja salvar as alterações deste pedido?')">Buscar</button>
+                <a class="btn btn-success" href="{% url 'pedidos:irestoqueedit' %}" name="Novo Estoque">Novo/Editar Estoque</a>
+                </center>
+                </center>
+
+            </div>
+            
+            <p>Digite um ou mais SKUs separado por ',' ou espaço!</p>
+        </div>
+
+    </form>
+    <div class="container alert-secondary" >        
+        <center>
+
+        {% for sku in lista_skus %}
+            <div class="container separador" style="padding-bottom: 20px; padding-top:30px;">
+                <div class="col-sm" style='display:flex'>
+                    <p>{{sku.EA_sku}}</p>
+                    <p class="col-sm">{{sku.EA_titulo}}</p>
+
+                </div>
+                
+                <div class="row"> 
+                    <div class="col-sm">
+                        <p>Estoque Arrigo: {{sku.EA_estoque_arrigo}}</p>
+                    </div>
+                    <div class="col-sm">
+                        <p>Estoque Koala: {{sku.EA_estoque_koala}}</p>
+                    </div>
+                    <div class="col-sm">
+                        <p>Estoque Total: {{sku.EA_estoque_total}}</p>
+                    </div>
+                    
+                    <div class="col-sm">
+                        <form action="/pedidos/EditarSKU/" method="post">
+                            {% csrf_token %}
+                            <button class="btn btn-success" type="submit" name="Baixa" value="{{sku.EA_sku}}" nclick="return confirm('Deseja editar o produto {{sku.EA_sku}}?')">- Estoque</button>
+                        </form>
+                    </div>
+                    <div class="col-sm">
+                        <form action="/pedidos/EditarSKU/" method="post">
+                            {% csrf_token %}
+                            <button class="btn btn-success" type="submit" name="Adicionar" value="{{sku.EA_sku}}" nclick="return confirm('Deseja editar o produto {{sku.EA_sku}}?')">+ Estoque</button>
+                        </form>                        
+                    </div>
+                    
+                </div>
+            </div>
+        {% endfor %}
+        </center>
+    </div>
+{% endblock %}

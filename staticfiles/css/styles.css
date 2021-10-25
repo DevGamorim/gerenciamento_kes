@@ -1,0 +1,182 @@
+body {
+  background-image: url('http://alaoq.com.br/imagem/outras/iconeGT/Background_limpo.png');
+  background-attachment: fixed;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-color: black;
+  }
+.bodyinicio {
+    background-image: url('http://alaoq.com.br/imagem/outras/iconeGT/Background.png');
+    background-attachment: fixed;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-color: black;
+    }
+.texto_branco {
+  color: white;
+}
+
+
+.texto_vermelho {
+  color: darkred;
+}
+
+.texto_verde {
+  color: green;
+}
+
+*{
+  box-sizing: border-box;
+}
+.barrafixa{
+  height: 100%;
+  width: 160px;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #343b41;
+  overflow: hidden;
+  padding-top: 20px;
+}
+
+.barrafixa a {
+  padding: 6px 8px 10px;
+  text-decoration: none;
+  font-size: 15px;
+  color: #818181;
+  display: block;
+}
+.barrafixa a:hover{
+  color: #f1f1f1;
+}
+
+.principal {
+  margin-left: 160px;
+  font-size: 15px;
+  padding: 8px 10px;
+}
+
+.texto_branco {
+        color: white;
+    }
+
+.coluna-50 {
+  width: 50%;
+}
+
+.coluna-33 {
+  width: 33%;
+}
+
+.linha{
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.caixinha{
+  text-align: center
+}
+
+.coluna{
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+pre {
+    white-space: pre-wrap;
+    background-color: #545455;
+    filter: alpha (opacity=50);
+    border:solid 1px white;
+}
+
+table {
+  background-color: #545455;
+  filter: alpha (opacity=50);
+
+}
+
+.tablesite{
+  background-color: #8f7d65;
+  filter: alpha (opacity=50);
+}
+
+.tableleroy{
+  background-color: #678061;
+  filter: alpha (opacity=50);
+}
+
+.tableshopee{
+  background-color: #8c6d5f;
+  filter: alpha (opacity=50);
+}
+
+.bt {
+border:1px solid #25692A;
+border-radius:4px;
+display:inline-block;
+cursor:pointer;
+font-family:Verdana;
+font-weight:bold;
+font-size:13px;
+padding:6px 10px;
+text-decoration:none;
+} 
+
+.bt-vd {
+border-color:#68b465;
+background:linear-gradient(to bottom, #abd5aa 5%, #68b465 100%);
+box-shadow:inset 0px 1px 0px 0px #e3f1e3;
+color:#fff;
+text-shadow:0px 1px 0px #528009;
+}
+
+.bt-lj {
+border-color:#eb9b48;
+background:linear-gradient(to bottom, #f7d6b3 5%, #eb9b48 100%);
+box-shadow:inset 0px 1px 0px 0px #fdf7f0;
+color:#333;
+text-shadow:0px 1px 0px #ffee66;
+}
+
+.bt-az {
+border-color:#46a7f5;
+background:linear-gradient(to bottom, #86c6f8 5%, #46a7f5 100%);
+box-shadow:inset 0px 1px 0px 0px #d7ecfd;
+color:#fff;
+text-shadow:0px 1px 0px #528009;  
+}
+
+.bt-vm {
+border-color:#f61f0e;
+background:linear-gradient(to bottom, #fca8a1 5%, #f61f0e 100%);
+box-shadow:inset 0px 1px 0px 0px #fff4f3;
+color:#fff;
+text-shadow:0px 1px 0px #528009; 
+}
+
+.bt-vd:hover {
+background:linear-gradient(to bottom, #68b465 5%, #abd5aa 100%);
+}
+
+.bt-lj:hover {
+background:linear-gradient(to bottom, #eb9b48 5%, #f7d6b3 100%);
+}
+
+.bt-az:hover {
+background:linear-gradient(to bottom, #46a7f5 5%, #86c6f8 100%);
+}
+
+.bt-vm:hover {
+background:linear-gradient(to bottom, #f61f0e 5%, #fca8a1 100%);
+}
+
+.bt:active {
+position:relative;
+top:2px;}
+
+.gg {
+  length: 40px;
+  /* width: 40px;} */
+
+}

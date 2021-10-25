@@ -1,0 +1,254 @@
+{% extends 'base_precos.html' %}
+
+{% block title %}Correções{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="container" style="padding-bottom: 20px;">
+            <span>criar nova correção click <a href="{% url 'catalogo:novacorrecao' %}">aqui.</a></span>
+        </div>
+        {% for prod in correcoes %}
+        <div class="container" style="border: 1px solid #d5d5d5;padding:20px 20px 20px 20px; border-radius: 1px;
+        width:95%; padding-bottom: 20px;">
+            <div class="row">
+                <span class="col-sm">SKU</a></span>
+                <span class="col-sm">Prioridade</span>
+                <span class="col-sm">Data Criação</span>
+                <span class="col-sm">Ulitma Atualização</span>
+            </div> 
+            <div class="row" style="padding-bottom: 20px;">
+                <span class="col-sm"><a href="/catalogo/correcoes/{{prod.CR_ID}}">{{prod.CR_sku}}</a></span>
+                {% if prod.CR_prioridade == 'zBaixa' %}
+                    <span class="col-sm"><a href="/catalogo/correcoes/{{prod.CR_ID}}">Baixa</span>
+                {% else %}
+                <span class="col-sm"><a href="/catalogo/correcoes/{{prod.CR_ID}}">{{prod.CR_prioridade}}</span>
+                {% endif %}                
+                <span class="col-sm"><a href="/catalogo/correcoes/{{prod.CR_ID}}">{{prod.created_at}}</a></span>
+                <span class="col-sm"><a href="/catalogo/correcoes/{{prod.CR_ID}}">{{prod.updated_at}}</a></span>
+            </div> 
+
+            <div class="row" style="padding-bottom: 20px;">
+                <div class="col-sm">
+                    {% if prod.CR_motivo_correcao != "sem link" %}
+                    <span style="padding-right: 5px;">Links:</span>
+                    <span> {{prod.CR_links}}</span>
+                    {% else %}
+                    {% endif %}
+                </div>
+                <div class="col-sm">
+                    
+                    {% if prod.CR_motivo_correcao != "sem motivo" %}
+                        <span style="padding-right: 5px;">Motivo:</span>
+                        <span> {{prod.CR_motivo_correcao}}</span>
+                    {% else %}
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="row">
+                {% if prod.CR_portal_ML_alaok == False %}
+                    <span class="col-sm btn-danger" style="border: 1px solid black;padding:20px 20px 20px 20px; border-radius: 1px;
+                    width:95%;">ML ALK</span>
+                {% else %}
+                    <span class="col-sm btn-success" style="border: 1px solid black;padding:20px 20px 20px 20px; border-radius: 1px;
+                    width:95%;">ML ALK</span>
+                {% endif %}
+                {% if prod.CR_portal_ML_gea == False %}
+                    <span class="col-sm btn-danger" style="border: 1px solid black;padding:20px 20px 20px 20px; border-radius: 1px;
+                    width:95%;">ML GEA</span>
+                {% else %}
+                    <span class="col-sm btn-success" style="border: 1px solid black;padding:20px 20px 20px 20px; border-radius: 1px;
+                    width:95%;">ML GEA</span>
+                {% endif %}
+                {% if prod.CR_portal_ML_kes == False %}
+                    <span class="col-sm btn-danger" style="border: 1px solid black;padding:20px 20px 20px 20px; border-radius: 1px;
+                    width:95%;">ML Kes</span>
+                {% else %}
+                    <span class="col-sm btn-success" style="border: 1px solid black;padding:20px 20px 20px 20px; border-radius: 1px;
+                    width:95%;">ML Kes</span>
+                {% endif %}
+                {% if prod.CR_portal_ML_arrigo == False %}
+                    <span class="col-sm btn-danger" style="border: 1px solid black;padding:20px 20px 20px 20px; border-radius: 1px;
+                    width:95%;">ML Arrigo</span>
+                {% else %}
+                    <span class="col-sm btn-success" style="border: 1px solid black;padding:20px 20px 20px 20px; border-radius: 1px;
+                    width:95%;">ML Arrigo</span>
+                {% endif %}
+                {% if prod.CR_portal_Magalu_gea == False %}
+                    <span class="col-sm btn-danger" style="border: 1px solid black;padding:20px 20px 20px 20px; border-radius: 1px;
+                    width:95%;">Magalu GEA</span>
+                {% else %}
+                    <span class="col-sm btn-success" style="border: 1px solid black;padding:20px 20px 20px 20px; border-radius: 1px;
+                    width:95%;">Magalu GEA</span>
+                {% endif %}
+                {% if prod.CR_portal_Magalu_kes == False %}
+                    <span class="col-sm btn-danger" style="border: 1px solid black;padding:20px 20px 20px 20px; border-radius: 1px;
+                    width:95%;">Magalu Kes</span>
+                {% else %}
+                    <span class="col-sm btn-success" style="border: 1px solid black;padding:20px 20px 20px 20px; border-radius: 1px;
+                    width:95%;">Magalu Kes</span>
+                {% endif %}
+                {% if prod.CR_portal_Magalu_kc == False %}
+                    <span class="col-sm btn-danger" style="border: 1px solid black;padding:20px 20px 20px 20px; border-radius: 1px;
+                    width:95%;">Magalu KC</span>
+                {% else %}
+                    <span class="col-sm btn-success" style="border: 1px solid black;padding:20px 20px 20px 20px; border-radius: 1px;
+                    width:95%;">Magalu KC</span>
+                {% endif %}
+                {% if prod.CR_portal_Magalu_arrigo == False %}
+                    <span class="col-sm btn-danger" style="border: 1px solid black;padding:20px 20px 20px 20px; border-radius: 1px;
+                    width:95%;">Magalu Arrigo</span>
+                {% else %}
+                    <span class="col-sm btn-success" style="border: 1px solid black;padding:20px 20px 20px 20px; border-radius: 1px;
+                    width:95%;">Magalu Arrigo</span>
+                {% endif %}
+                <span class="col-sm btn-info" style="border: 1px solid black;padding:20px 20px 20px 20px; border-radius: 1px;
+                width:95%;">B2W ALK</a></span>
+                <span class="col-sm btn-info" style="border: 1px solid black;padding:20px 20px 20px 20px; border-radius: 1px;
+                width:95%;">B2W KC</a></span>
+                <span class="col-sm btn-info" style="border: 1px solid black;padding:20px 20px 20px 20px; border-radius: 1px;
+                width:95%;">B2W JCMA</a></span>
+            </div>
+            <div class="row">
+                {% if prod.CR_portal_carrefour_alaok == False %}
+                    <span class="col-sm btn-light" style="border: 1px solid black;padding:20px 20px 20px 20px; border-radius: 1px;
+                    width:95%;">Carr ALK</span>
+                {% else %}
+                    <span class="col-sm btn-success" style="border: 1px solid black;padding:20px 20px 20px 20px; border-radius: 1px;
+                    width:95%;">Carr ALK</span>
+                {% endif %}
+                {% if prod.CR_portal_carrefour_gea == False %}
+                    <span class="col-sm btn-light" style="border: 1px solid black;padding:20px 20px 20px 20px; border-radius: 1px;
+                    width:95%;">Carr GEA</span>
+                {% else %}
+                    <span class="col-sm btn-success" style="border: 1px solid black;padding:20px 20px 20px 20px; border-radius: 1px;
+                    width:95%;">Carr GEA</span>
+                {% endif %}
+                {% if prod.CR_portal_carrefour_arrigo == False %}
+                    <span class="col-sm btn-light" style="border: 1px solid black;padding:20px 20px 20px 20px; border-radius: 1px;
+                    width:95%;">Carr Arrigo</span>
+                {% else %}
+                    <span class="col-sm btn-success" style="border: 1px solid black;padding:20px 20px 20px 20px; border-radius: 1px;
+                    width:95%;">Carr Arrigo</span>
+                {% endif %}
+                {% if prod.CR_portal_netshoes_alk == False %}
+                    <span class="col-sm btn-light" style="border: 1px solid black;padding:20px 20px 20px 20px; border-radius: 1px;
+                    width:95%;">Net ALK</span>
+                {% else %}
+                    <span class="col-sm btn-success" style="border: 1px solid black;padding:20px 20px 20px 20px; border-radius: 1px;
+                    width:95%;">Net ALK</span>
+                {% endif %}
+                {% if prod.CR_portal_netshoes_kes == False %}
+                    <span class="col-sm btn-light" style="border: 1px solid black;padding:20px 20px 20px 20px; border-radius: 1px;
+                    width:95%;">Net Kes</span>
+                {% else %}
+                    <span class="col-sm btn-success" style="border: 1px solid black;padding:20px 20px 20px 20px; border-radius: 1px;
+                    width:95%;">Net Kes</span>
+                {% endif %}
+                <span class="col-sm btn-info" style="border: 1px solid black;padding:20px 20px 20px 20px; border-radius: 1px;
+                width:95%;">Cent ALK</a></span>
+                {% if prod.CR_portal_olist_gea == False %}
+                    <span class="col-sm btn-dark" style="border: 1px solid black;padding:20px 20px 20px 20px; border-radius: 1px;
+                    width:95%;">Olist GEA</span>
+                {% else %}
+                    <span class="col-sm btn-success" style="border: 1px solid black;padding:20px 20px 20px 20px; border-radius: 1px;
+                    width:95%;">Olist GEA</span>
+                {% endif %}
+                {% if prod.CR_portal_olist_arrigo == False %}
+                    <span class="col-sm btn-dark" style="border: 1px solid black;padding:20px 20px 20px 20px; border-radius: 1px;
+                    width:95%;">Olist Arrigo</span>
+                {% else %}
+                    <span class="col-sm btn-success" style="border: 1px solid black;padding:20px 20px 20px 20px; border-radius: 1px;
+                    width:95%;">Olist Arrigo</span>
+                {% endif %}
+                {% if prod.CR_portal_leroy_kes == False %}
+                    <span class="col-sm btn-danger" style="border: 1px solid black;padding:20px 20px 20px 20px; border-radius: 1px;
+                    width:95%;">Leroy Kes</span>
+                {% else %}
+                    <span class="col-sm btn-success" style="border: 1px solid black;padding:20px 20px 20px 20px; border-radius: 1px;
+                    width:95%;">Leroy Kes</span>
+                {% endif %}
+                {% if prod.CR_portal_mobly_kc == False %}
+                    <span class="col-sm btn-danger" style="border: 1px solid black;padding:20px 20px 20px 20px; border-radius: 1px;
+                    width:95%;">Mobly KC</span>
+                {% else %}
+                    <span class="col-sm btn-success" style="border: 1px solid black;padding:20px 20px 20px 20px; border-radius: 1px;
+                    width:95%;">Mobly KC</span>
+                {% endif %}
+            </div>
+            <div class="row">
+                {% if prod.CR_portal_madeiramadeira_kes == False %}
+                    <span class="col-sm btn-light" style="border: 1px solid black;padding:20px 20px 20px 20px; border-radius: 1px;
+                    width:95%;">MM Kes</span>
+                {% else %}
+                    <span class="col-sm btn-success" style="border: 1px solid black;padding:20px 20px 20px 20px; border-radius: 1px;
+                    width:95%;">MM Kes</span>
+                {% endif %}
+                {% if prod.CR_portal_madeiramadeira_arrigo == False %}
+                    <span class="col-sm btn-light" style="border: 1px solid black;padding:20px 20px 20px 20px; border-radius: 1px;
+                    width:95%;">MM Arrigo</span>
+                {% else %}
+                    <span class="col-sm btn-success" style="border: 1px solid black;padding:20px 20px 20px 20px; border-radius: 1px;
+                    width:95%;">MM Arrigo</span>
+                {% endif %}
+                {% if prod.CR_portal_amazon_kes == False %}
+                    <span class="col-sm btn-danger" style="border: 1px solid black;padding:20px 20px 20px 20px; border-radius: 1px;
+                    width:95%;">Amazon Kes</span>
+                {% else %}
+                    <span class="col-sm btn-success" style="border: 1px solid black;padding:20px 20px 20px 20px; border-radius: 1px;
+                    width:95%;">Amazon Kes</span>
+                {% endif %}
+                {% if prod.CR_portal_amazon_kc == False %}
+                    <span class="col-sm btn-danger" style="border: 1px solid black;padding:20px 20px 20px 20px; border-radius: 1px;
+                    width:95%;">Amazon KC</span>
+                {% else %}
+                    <span class="col-sm btn-success" style="border: 1px solid black;padding:20px 20px 20px 20px; border-radius: 1px;
+                    width:95%;">Amazon KC</span>
+                {% endif %}
+                {% if prod.CR_portal_amazon_arrigo == False %}
+                    <span class="col-sm btn-danger" style="border: 1px solid black;padding:20px 20px 20px 20px; border-radius: 1px;
+                    width:95%;">Amazon Arrigo</span>
+                {% else %}
+                    <span class="col-sm btn-success">Amazon Arrigo</span>
+                {% endif %}
+                {% if prod.CR_portal_cnova_kes == False %}
+                    <span class="col-sm btn-light" style="border: 1px solid black;padding:20px 20px 20px 20px; border-radius: 1px;
+                    width:95%;">Cnova Kes</span>
+                {% else %}
+                    <span class="col-sm btn-success" style="border: 1px solid black;padding:20px 20px 20px 20px; border-radius: 1px;
+                    width:95%;">Cnova Kes</span>
+                {% endif %}
+                {% if prod.CR_portal_cnova_arrigo == False %}
+                    <span class="col-sm btn-light" style="border: 1px solid black;padding:20px 20px 20px 20px; border-radius: 1px;
+                    width:95%;">Cnova Arrigo</span>
+                {% else %}
+                    <span class="col-sm btn-success" style="border: 1px solid black;padding:20px 20px 20px 20px; border-radius: 1px;
+                    width:95%;">Cnova Arrigo</span>
+                {% endif %}
+                {% if prod.CR_portal_shopee_kes == False %}
+                    <span class="col-sm btn-danger" style="border: 1px solid black;padding:20px 20px 20px 20px; border-radius: 1px;
+                    width:95%;">Shopee Kes</span>
+                {% else %}
+                    <span class="col-sm btn-success" style="border: 1px solid black;padding:20px 20px 20px 20px; border-radius: 1px;
+                    width:95%;">Shopee Kes</span>
+                {% endif %}
+                {% if prod.CR_portal_aliexpress_arrigo == False %}
+                    <span class="col-sm btn-danger" style="border: 1px solid black;padding:20px 20px 20px 20px; border-radius: 1px;
+                    width:95%;">Aliexpress Arrigo</span>
+                {% else %}
+                    <span class="col-sm btn-success" style="border: 1px solid black;padding:20px 20px 20px 20px; border-radius: 1px;
+                    width:95%;">Aliexpress Arrigo</span>
+                {% endif %}
+                {% if prod.CR_portal_elo7_arrigo == False %}
+                    <span class="col-sm btn-danger" style="border: 1px solid black;padding:20px 20px 20px 20px; border-radius: 1px;
+                    width:95%;">Elo7 Arrigo</span>
+                {% else %}
+                    <span class="col-sm btn-success" style="border: 1px solid black;padding:20px 20px 20px 20px; border-radius: 1px;
+                    width:95%;">Elo7 Arrigo</span>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+{% endblock %}

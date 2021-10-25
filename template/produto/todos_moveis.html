@@ -1,0 +1,45 @@
+{% extends 'base_precos.html' %}
+
+{% block title %}Moveis{% endblock %}
+
+{% block content %}
+    <div class="container" style="padding-bottom: 40px;">
+        <div class="container" >
+            <div class="row">
+                <div class="col-sm">
+
+                    <form method="post" action="/produtos/moveis/">
+                        {% csrf_token %}
+                        <span>Buscar Sku do produto</span>
+                        <input type="text" name="sku">
+                        <input type="submit" value="procurar">
+                    </form>
+                </div>
+                <div class="col-sm">
+                    <a href="{% url 'produtos:criarmovel' %}"><button class="form-control btn btn-success">Criar produto</button></a>
+                </div>
+            </div>
+            
+
+        </div>
+    </div>
+    <div class="row">
+        <span class="col-sm">SKU</a></span>
+        <span class="col-sm-6">Titulo</span>
+        <span class="col-sm">Custo</span>
+        <span class="col-sm">Venda</span>
+        <span class="col-sm">Cor</span>
+        <span class="col-sm">Imagem</span>
+    </div>  
+    {% for prod in moveis %}
+    <div class="row">
+        <span class="col-sm"><a href="/produtos/moveis/{{prod.PA_ID}}">{{prod.PA_sku}}</a></span>
+        <span class="col-sm-6"><a href="/produtos/moveis/{{prod.PA_ID}}">{{prod.PA_titulo}}</a></span>
+        <span class="col-sm">{{prod.PA_custo}}</span>
+        <span class="col-sm">{{prod.PA_preco_venda}}</span>
+        <span class="col-sm">{{prod.PA_cor}}</span>
+        <span class="col-sm"><img src="/{{prod.PA_imagem1}}" width="75" height="75"></span>
+    </div>   
+
+    {% endfor %}
+{% endblock %}

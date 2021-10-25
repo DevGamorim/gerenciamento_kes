@@ -1,0 +1,355 @@
+{% extends 'base3p.html' %}
+
+{% block title %}Editar{% endblock %}
+
+{% block content %}
+{{sku}}
+{{tipo}}
+{{pedido}}
+{{nome_pedido}}
+	{% if tipo == 'Editar' %}
+            <center><p><b>Editar Pedidos</b></p></center>
+            <div class="container" style="display:flex;">
+                <form action="/pedidos/Editar/" method="post">
+                {% csrf_token %}
+                <center>
+                    <div class="row" style="display:flex;">
+                        <div class="col-sm">
+                            <input class="form-control" type="text" name="pedidobuscar" placeholder="N° de Pedido" autocomplete="off">
+                        </div>
+                        <div class="col-sm">
+                            <input class="form-control" value="Buscar" type="submit" class='form-control'>
+                        </div>
+                    </div>
+                </center>
+                </form>
+                <form action="/pedidos/Editar/" method="post">
+                    {% csrf_token %}
+                    <div style="padding-left: 410%;" class="col-sm">
+                        <button type="submit" value="{{pedido}}" name="cancelar-pedido" class="btn btn-danger" onclick="return confirm('Deseja realmente cancelar o pedido {{nome_pedido}}?')">Cancelar Pedido</button>
+                    </div>
+                </form>
+            </div>      
+        
+        
+            <center><p><b>------------</b></p></center>
+            <form action="/pedidos/Editar/" method="post">
+                {% csrf_token %}
+
+                <div class="container">
+                    <div class="row">
+                        <div  class="col-sm">
+                            <center><p>N° de Pedido</p></center>
+                            <input disabled="true" class="form-control" type="text" name="pedido" value="{{sku.PD_identificacao}}" placeholder="{{sku.PD_identificacao}}" class="form-control">
+                            <input hidden="true" class="form-control" type="text" name="pedido" value="{{sku.PD_identificacao}}" placeholder="{{sku.PD_identificacao}}" class="form-control">
+                        
+                        </div>
+                        <div  class="col-sm">
+                            <center><p>Status</p></center>
+                            <select name='status' class="form-control">
+                                <option value="{{sku.PD_status}}">**{{sku.PD_status}}**</option>
+                                <option value="Novo">Novo</option>
+                                <option value="Em produção">Em produção</option>
+                                <option value="Pronto">Pronto</option>
+                                <option value="Concluido">Concluido</option>
+                            </select>
+                        </div>
+                        <div class="col-sm">
+                            <center><p>Portal</p></center>
+                            <select  name='portal' class="form-control">
+                                <option value="{{sku.PD_portal}}"><b>**{{sku.PD_portal}}**</b></option>
+                                <option value="Amazon-KES">Amazon KES</option>
+                                <option value="Amazon-KC">Amazon KC</option>
+                                <option value="B2W-ALK">B2W ALK</option>
+                                <option value="B2W-GEA">B2W GEA</option>
+                                <option value="B2W-JCMA">B2W JCMA</option>
+                                <option value="B2W-KC">B2W KC</option>
+                                <option value="B2W-KES">B2W KES</option>
+                                <option value="Carrefour-ALK">Carrefour ALK</option>
+                                <option value="Carrefour-Arrigo">Carrefour Arrigo</option>
+                                <option value="Carrefour-GEA">Carrefour GEA</option>
+                                <option value="Centauro-ALK">Centauro ALK</option>
+                                <option value="Cnova-KES">Cnova KES</option>
+                                <option value="Elo7-KES">Elo7 KES</option>
+                                <option value="Leroy-KES">Leroy KES</option>
+                                <option value="Madeira-Madeira-KES">Madeira Madeira KES</option>
+                                <option value="Magalu-ALK">Magalu ALK</option>
+                                <option value="Magalu-Arrigo">Magalu Arrigo</option>
+                                <option value="Magalu-GEA">Magalu GEA</option>
+                                <option value="Magalu-KC">Magalu KC</option>
+                                <option value="ML-ALK">Mercado Livre ALAOK</option>
+                                <option value="ML-Arrigo">Mercado Livre Arrigo</option>
+                                <option value="ML-GEA">Mercado Livre G&A</option>
+                                <option value="ML-KES">Mercado Livre Koala</option>
+                                <option value="Mobly-KES">Mobly KES</option>
+                                <option value="Netshoes-ALK">Netshoes ALK</option>
+                                <option value="Netshoes-Kes">Netshoes Kes</option>
+                                <option value="Olist-GEA">Olist GEA</option>
+                                <option value="Shopee-Kes">Shopee Kes</option>
+                                <option value="Site">Site</option>
+                                <option value="Troca/Reenvio">Troca/Reenvio</option>
+                                <option value="Outro">Outro</option>
+                            </select>
+                        </div>
+                        <div  class="col-sm">
+                            <center><p style="padding-right: 20px;">Hora</p></center>
+                            <select name='hora' class="form-control">
+                                <option value="{{sku.PD_coleta}}">**{{sku.PD_coleta}}**</option>
+                                <option value="10:30:0">10:30</option>
+                                <option value="11:30:0">11:30</option>
+                                <option value="14:30:0">14:30</option>
+                                <option value="17:30:0">17:30</option>
+                                <option value="FULL">FULL</option>
+                            </select>
+                        </div>
+                        <div  class="col-sm">
+                            <center><p>Data</p></center>
+                            <input class="form-control" name="data" type="date" value="{{sku.PD_dia_finalizar}}">
+                        </div>
+                        <div class="container" style="padding-bottom: 15px; padding-top: 15px;">
+                        <div class="row" style="padding-bottom: 5px;" id="1">
+                            <div style="display: flex;">
+                                <p class="col-sm">sku</p>
+                                <input class="form-control" type="text" name="sku1" placeholder="{{sku.PD_sku1}}" autocomplete="off"/>
+                                <input type="hidden" type="text" name="skus1" value="{{sku.PD_sku1}}">
+                                <p class="col-sm" >Quantidade</p>
+                                <input class="form-control" type="number" name="quant1" placeholder="{{sku.PD_quant1}}" autocomplete="off"/>
+                                <input type="hidden" type="text" name="quants1" value="{{sku.PD_quant1}}">
+                                <p class="col-sm" >OBS</p>
+                                <input class="form-control" type="text" name="obs1" placeholder="{{sku.PD_obs1}}" autocomplete="off"/><br>
+                                <input type="hidden" type="text" name="obss1" value="{{sku.PD_obs1}}">
+                                <p class="col-sm" >Preço</p>
+                                <input class="form-control" type="text" name="valor1" placeholder="{{sku.PD_preco1}}" autocomplete="off"/>
+                                <input type="hidden" type="text" name="valors1" value="{{sku.PD_preco1}}">
+                            </div>
+                            <div id = "1-2" style="display: block;">
+                                <input class="form-control" type="button" value="+" style="cursor: pointer;" onclick="Mudarestado2();">
+                                <input class="form-control" type="hidden" value="-" style="cursor: pointer;">
+                            </div>                   
+                        </div>
+
+                        
+
+                        <div class="row" id="2" style="display: none; padding-bottom: 5px;">
+                            <div style="display: flex;">
+                                <p class="col-sm" >sku</p>
+                                <input class="form-control" type="text" placeholder="{{sku.PD_sku2}}" name="sku2" autocomplete="off"/>
+                                <input type="hidden" type="text" name="skus2" value="{{sku.PD_sku2}}">
+                                <p class="col-sm" >Quantidade</p>
+                                <input class="form-control" type="number" placeholder="{{sku.PD_quant2}}" name="quant2" autocomplete="off"/>
+                                <input type="hidden" type="text" name="quants2" value="{{sku.PD_quant2}}">
+                                <p class="col-sm" >OBS</p>
+                                <input class="form-control" type="text" placeholder="{{sku.PD_obs2}}" name="obs2" autocomplete="off"/>
+                                <input type="hidden" type="text" name="obss2" value="{{sku.PD_obs2}}">
+                                <p class="col-sm" >Preço</p>
+                                <input class="form-control" type="text" placeholder="{{sku.PD_preco2}}" name="valor2" autocomplete="off"/>
+                                <input type="hidden" type="text" name="valors2" value="{{sku.PD_preco2}}">
+                            </div>
+                                              
+                        </div>
+                        <div id = "2-2" style="display: none;">
+                            <input class="form-control" type="button" value="+" style="cursor: pointer;" onclick="Mudarestado3();">
+                            <input class="form-control" type="button" value="-" style="cursor: pointer;" onclick="removerCampos2(this);">
+                        </div>  
+                        
+
+                        <div class="row" id="3" style="display: none; padding-bottom: 5px;">
+                            <div style="display: flex;">
+                                <p class="col-sm" >sku</p>
+                                <input class="form-control" type="text" placeholder="{{sku.PD_sku3}}" name="sku3" autocomplete="off"/>
+                                <p class="col-sm" >Quantidade</p>
+                                <input type="hidden" type="text" name="skus3" value="{{sku.PD_sku3}}">
+                                <input class="form-control" type="number" placeholder="{{sku.PD_quant3}}" name="quant3" autocomplete="off"/>
+                                <input type="hidden" type="text" name="quants3" value="{{sku.PD_quant3}}">
+                                <p class="col-sm" >OBS</p>
+                                <input class="form-control" type="text" placeholder="{{sku.PD_obs3}}" name="obs3" autocomplete="off"/><br>
+                                <input type="hidden" type="text" name="obss3" value="{{sku.PD_obs3}}">
+                                <p class="col-sm" >Preço</p>
+                                <input class="form-control" type="text" placeholder="{{sku.PD_preco3}}" name="valor3" autocomplete="off"/>
+                                <input type="hidden" type="text" name="valors3" value="{{sku.PD_preco3}}">
+                            </div>
+                            
+                        </div>
+                        <div id = "3-2" style="display: none; padding-bottom: 5px; padding-top: 5px;">
+                            <input class="form-control" type="button" value="+" style="cursor: pointer;" onclick="Mudarestado4();">
+                            <input class="form-control" type="button" value="-" style="cursor: pointer;" onclick="removerCampos3(this);">
+                        </div>
+                        
+                        
+                        <div class="row" id="4" style="display: none; padding-bottom: 5px;">
+                            <div style="display: flex;">
+                                <p class="col-sm" >sku</p>
+                                <input class="form-control" type="text" placeholder="{{sku.PD_sku4}}" name="sku4" autocomplete="off"/>
+                                <p class="col-sm" >Quantidade</p>
+                                <input type="hidden" type="text" name="skus4" value="{{sku.PD_sku4}}">
+                                <input class="form-control" type="number" placeholder="{{sku.PD_quant4}}" name="quant4" autocomplete="off"/>
+                                <input type="hidden" type="text" name="quants4" value="{{sku.PD_quant4}}">
+                                <p class="col-sm" >OBS</p>
+                                <input class="form-control" type="text" placeholder="{{sku.PD_obs4}}" name="obs4" autocomplete="off"/><br>
+                                <input type="hidden" type="text" name="obss4" value="{{sku.PD_obs4}}">
+                                <p class="col-sm" >Preço</p>
+                                <input class="form-control" type="text" placeholder="{{sku.PD_preco4}}" name="valor4" autocomplete="off"/>
+                                <input type="hidden" type="text" name="valors4" value="{{sku.PD_preco4}}">                      
+                            </div>
+                            <div id = "4-2" style="display: none; padding-bottom: 5px; padding-top: 5px;">
+                                <input class="form-control" type="button" value="+" style="cursor: pointer;" onclick="Mudarestado5();">
+                                <input class="form-control" type="button" value="-" style="cursor: pointer;" onclick="removerCampos4(this);">
+                            </div>
+                        </div>
+                        <div id = "4-2" style="display: none; padding-bottom: 5px; padding-top: 5px;">
+                            <input class="form-control" type="button" value="+" style="cursor: pointer;" onclick="Mudarestado5();">
+                            <input class="form-control" type="button" value="-" style="cursor: pointer;" onclick="removerCampos4(this);">
+                        </div>
+
+                        <div class="row" id="5" style="display: none; padding-bottom: 5px;">
+                            <div style="display: flex;">
+                                <p class="col-sm" >sku</p>
+                                <input class="form-control" type="text" placeholder="{{sku.PD_sku5}}" name="sku5" autocomplete="off"/>
+                                <input type="hidden" type="text" name="skus5" value="{{sku.PD_sku5}}">
+                                <p class="col-sm" >Quantidade</p>
+                                <input class="form-control" type="number" placeholder="{{sku.PD_quant5}}" name="quant5" autocomplete="off"/>
+                                <input type="hidden" type="text" name="quants5" value="{{sku.PD_quant5}}">
+                                <p class="col-sm" >OBS</p>
+                                <input class="form-control" type="text" placeholder="{{sku.PD_obs5}}" name="obs5" autocomplete="off"/><br>
+                                <input type="hidden" type="text" name="obss5" value="{{sku.PD_obs5}}">
+                                <p class="col-sm" >Preço</p>
+                                <input class="form-control" type="text" placeholder="{{sku.PD_preco5}}" name="valor5" autocomplete="off"/>
+                                <input type="hidden" type="text" name="valors5" value="{{sku.PD_preco5}}">                    
+                            </div>                    
+                        </div>
+                        <div id = "5-2" style="display: none; padding-bottom: 5px; padding-top: 5px;">
+                            <input class="form-control" type="button" value="+" style="cursor: pointer;" onclick="Mudarestado6();">
+                            <input class="form-control" type="button" value="-" style="cursor: pointer;" onclick="removerCampos5(this);">
+                        </div>
+                        
+                        
+                        <div class="row" id="6" style="display: none; padding-bottom: 5px;">
+                            <div style="display: flex;">
+                                <p class="col-sm" >sku</p>
+                                <input class="form-control" type="text" placeholder="{{sku.PD_sku6}}" name="sku6" autocomplete="off"/>
+                                <input type="hidden" type="text" name="skus6" value="{{sku.PD_sku6}}">
+                                <p class="col-sm" >Quantidade</p>
+                                <input class="form-control" type="number" placeholder="{{sku.PD_quant6}}" name="quant6" autocomplete="off"/>
+                                <input type="hidden" type="text" name="quants6" value="{{sku.PD_quant6}}">
+                                <p class="col-sm" >OBS</p>
+                                <input class="form-control" type="text" placeholder="{{sku.PD_obs6}}" name="obs6" autocomplete="off"/><br>
+                                <input type="hidden" type="text" name="obss6" value="{{sku.PD_obs6}}">
+                                <p class="col-sm" >Preço</p>
+                                <input class="form-control" type="text" placeholder="{{sku.PD_preco6}}" name="valor6" autocomplete="off"/>
+                                <input type="hidden" type="text" name="valors6" value="{{sku.PD_preco6}}">                       
+                            </div>
+                        </div>
+                        <div id = "6-2" style="display: none; padding-bottom: 5px; padding-top: 5px;">
+                            <input class="form-control" type="button" value="+" style="cursor: pointer;" onclick="Mudarestado7();">
+                            <input class="form-control" type="button" value="-" style="cursor: pointer;" onclick="removerCampos6(this);">
+                        </div>
+                        <div class="row" id="7" style="display: none; padding-bottom: 5px;">
+                            <div style="display: flex;">
+                                <p class="col-sm" >sku</p>
+                                <input class="form-control" type="text" placeholder="{{sku.PD_sku7}}" name="sku7" autocomplete="off"/>
+                                <input type="hidden" type="text" name="skus7" value="{{sku.PD_sku7}}">
+                                <p class="col-sm" >Quantidade</p>
+                                <input class="form-control" type="number" placeholder="{{sku.PD_quant7}}" name="quant7" autocomplete="off"/>
+                                <input type="hidden" type="text" name="quants7" value="{{sku.PD_quant7}}">
+                                <p class="col-sm" >OBS</p>
+                                <input class="form-control" type="text" placeholder="{{sku.PD_obs7}}" name="obs7" autocomplete="off"/><br>
+                                <input type="hidden" type="text" name="obss7" value="{{sku.PD_obs7}}">
+                                <p class="col-sm" >Preço</p>
+                                <input class="form-control" type="text" placeholder="{{sku.PD_preco7}}" name="valor7" autocomplete="off"/>
+                                <input type="hidden" type="text" name="valors7" value="{{sku.PD_preco7}}">                       
+                            </div>
+                        </div>
+                        <div id = "7-2" style="display: none; padding-bottom: 5px; padding-top: 5px;">
+                            <input class="form-control" type="button" value="+" style="cursor: pointer;" onclick="Mudarestado8();">
+                            <input class="form-control" type="button" value="-" style="cursor: pointer;" onclick="removerCampos7(this);">
+                        </div>
+
+                        <div class="row" id="8" style="display: none; padding-bottom: 5px;">
+                            <div style="display: flex;">
+                                <p class="col-sm" >sku</p>
+                                <input class="form-control" type="text" placeholder="{{sku.PD_sku8}}" name="sku8" autocomplete="off"/>
+                                <input type="hidden" type="text" name="skus8" value="{{sku.PD_sku8}}">
+                                <p class="col-sm" >Quantidade</p>
+                                <input class="form-control" type="number" placeholder="{{sku.PD_quant8}}" name="quant8" autocomplete="off"/>
+                                <input type="hidden" type="text" name="quants8" value="{{sku.PD_quant8}}">
+                                <p class="col-sm" >OBS</p>
+                                <input class="form-control" type="text" placeholder="{{sku.PD_obs8}}" name="obs8" autocomplete="off"/><br>
+                                <input type="hidden" type="text" name="obss8" value="{{sku.PD_obs8}}">
+                                <p class="col-sm" >Preço</p>
+                                <input class="form-control" type="text" placeholder="{{sku.PD_preco8}}" name="valor8" autocomplete="off"/>
+                                <input type="hidden" type="text" name="valors8" value="{{sku.PD_preco8}}">                    
+                            </div>
+                        </div>
+                        <div id = "8-2" style="display: none; padding-bottom: 5px; padding-top: 5px;">
+                            <input class="form-control" type="button" value="+" style="cursor: pointer;" onclick="Mudarestado9();">
+                            <input class="form-control" type="button" value="-" style="cursor: pointer;" onclick="removerCampos8(this);">
+                        </div>
+
+                        <div class="row" id="9" style="display: none; padding-bottom: 5px;">
+                            <div style="display: flex;">
+                                <p class="col-sm" >sku</p>
+                                <input class="form-control" type="text" placeholder="{{sku.PD_sku9}}" name="sku9" autocomplete="off"/>
+                                <input type="hidden" type="text" name="skus9" value="{{sku.PD_sku9}}">
+                                <p class="col-sm" >Quantidade</p>
+                                <input class="form-control" type="number" placeholder="{{sku.PD_quant9}}" name="quant9" autocomplete="off"/>
+                                <input type="hidden" type="text" name="quants9" value="{{sku.PD_quant9}}">
+                                <p class="col-sm" >OBS</p>
+                                <input class="form-control" type="text" placeholder="{{sku.PD_obs9}}" name="obs9" autocomplete="off"/><br>
+                                <input type="hidden" type="text" name="obss9" value="{{sku.PD_obs9}}">
+                                <p class="col-sm" >Preço</p>
+                                <input class="form-control" type="text" placeholder="{{sku.PD_preco9}}" name="valor9" autocomplete="off"/>
+                                <input type="hidden" type="text" name="valors9" value="{{sku.PD_preco9}}">
+                            </div>
+                        </div>
+                        <div id = "9-2" style="display: none; padding-bottom: 5px; padding-top: 5px;">
+                            <input class="form-control" type="button" value="+" style="cursor: pointer;" onclick="Mudarestado10();">
+                            <input class="form-control" type="button" value="-" style="cursor: pointer;" onclick="removerCampos9(this);">
+                        </div>                
+
+                        <div class="row" id="10" style="display: none; padding-bottom: 5px;">
+                            <div style="display: flex;">
+                                <p class="col-sm" >sku</p>
+                                <input class="form-control" type="text" placeholder="{{sku.PD_sku10}}" name="sku10" autocomplete="off"/>
+                                <input type="hidden" type="text" name="skus10" value="{{sku.PD_sku10}}">
+                                <p class="col-sm" >Quantidade</p>
+                                <input class="form-control" type="number" placeholder="{{sku.PD_quant10}}" name="quant10" autocomplete="off"/>
+                                <input type="hidden" type="text" name="quants10" value="{{sku.PD_quant10}}">
+                                <p class="col-sm" >OBS</p>
+                                <input class="form-control" type="text" placeholder="{{sku.PD_obs10}}" name="obs10" autocomplete="off"/>
+                                <input type="hidden" type="text" name="obss10" value="{{sku.PD_obs10}}">
+                                <p class="col-sm" >Preço</p>
+                                <input class="form-control" type="text" placeholder="{{sku.PD_preco10}}" name="valor10" autocomplete="off"/>
+                                <input type="hidden" type="text" name="valors10" value="{{sku.PD_preco10}}">                     
+                            </div>                    
+                        </div>
+                        <div id = "10-2" style="display: none; padding-bottom: 5px; padding-top: 5px;">
+                            <input class="form-control" type="button" value="-" style="cursor: pointer;" onclick="removerCampos10(this);">
+                        </div>  
+                    </div>            
+                    </div>
+                    <div style="padding-top: 30px;">
+                        <center>
+                        <button class="btn btn-success" type="submit" name="Salvar" value="{{sku.n_pedido}}" nclick="return confirm('Deseja salvar as alterações deste pedido?')">Salvar</button></center>
+                    </div>
+                </div>
+            </form>  
+    {% else %}
+        <form action="/pedidos/Editar/" method="post">
+            {% csrf_token %}
+            <center><p><b>Editar Pedidos</b></p></center>
+            <div class="container" style="display:flex;">
+                <center>
+                    <div class="row" style="display:flex;">
+                        <div class="col-sm">
+                             <input class="form-control" type="text" name="pedidobuscar" placeholder="N° de Pedido" autocomplete="off">
+                        </div>
+                        <div class="col-sm">
+                            <input class="form-control" value="Buscar" type="submit" class='form-control'>
+                        </div>
+                    </div>
+                </center>
+            </div>      
+        </form>
+    {% endif %}
+
+{% endblock %}

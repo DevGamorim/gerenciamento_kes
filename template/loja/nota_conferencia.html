@@ -1,0 +1,34 @@
+{% extends 'base_precos.html' %}
+
+{% block title %}Notas{% endblock %}
+
+{% block content %}
+<div class='principal'>
+    <form action="/Loja/notas/" method='POST'>
+    {% csrf_token %}
+    <input type='submit' class="btn btn-danger" value="Confirmar Conferencia" onclick="return confirm('Confirmar conferencia?')">
+    <p >Atenção!! Clicar no botão acima confirma que realmente foi feito a conferencia...*<br></p>
+    </form>
+    <table>
+        <tr><th >Fornecedor</th>
+            <th >N° Nota</th>
+            <th >SKU</th>
+            <th >Titulo</th>
+            <th >Estoque Loja</th>
+            <th >Preço de venda site</th>
+            <th >Imagem</th>
+        </tr>
+        {% for sku in lista_skus %}
+            <tr>
+                <td >{{sku.forne}}</td>
+                <td >{{sku.nota}}</td>
+                <td >{{sku.Pro_Sku}}</td>
+                <td >{{sku.Pro_Nome}}</td>
+                <td >{{sku.Pro_Loja}}</td>
+                <td >{{sku.Pro_PrecoVenda}}</td>
+                <td ><img src= {{sku.link}} width="75" height="75"></td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}

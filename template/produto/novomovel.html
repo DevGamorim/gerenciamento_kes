@@ -1,0 +1,315 @@
+{% extends 'base_precos.html' %}
+
+{% block title %}Nova Correção{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <form action="{% url 'produtos:criarmovel' %}" method='post'>
+            {% csrf_token %}
+            <div class="container">
+
+                <div class="row" style="padding-bottom: 20px;">
+                    <input name="PA_sku" class="form-control col-sm" placeholder="SKU do produto">
+                    <input name="PA_modelo" class="form-control col-sm" placeholder="Modelo da Peça">
+                    <input name="PA_titulo" class="form-control col-sm" name="PA_titulo" placeholder="Nome do Produto">
+                    <input name="PA_custo" class="form-control col-sm" placeholder="Custo">
+                    <input name="PA_preco_venda" class="form-control col-sm" placeholder="Preço de venda sugerido">
+                </div>
+                
+            </div>
+            <div class="container" style="padding-bottom: 20px;">
+                <div class="row" style="padding-bottom: 10px;">
+                    <span class="col-sm">Cor</span>
+                    <select name="opcao_cor" class="form-control col-sm">
+                        <option value="nao se aplica">Não se aplica</option>
+                        {% for n in cor_opcao %}
+                        <option value="{{n.valor}}">{{n.valor}}</option>
+                        {% endfor%}
+                    </select>
+                    <div class="col-sm">
+                    <button name="botao_opcao_cor" id="botao_opcao_cor" style="width:1;height:1" class="btn-success btn-xs" type="button" onclick="Mudarestado('novo_opcao_cor')">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
+                        </svg>
+                    </button>
+                    </div>
+                    <input name="novo_opcao_cor" placeholder="Adicione um novo valor" type="text" style="display: none;" id="novo_opcao_cor"  class="col-sm">
+                    
+                </div>
+                <div class="row" style="padding-bottom: 10px;">
+                    <span class="col-sm">Verniz</span>
+                    <select name="opcao_verniz" class="form-control col-sm">
+                        <option value="nao se aplica">Não se aplica</option>
+                        {% for n in verniz_opcao %}
+                        <option value="{{n.valor}}">{{n.valor}}</option>
+                        {% endfor%}
+                    </select>
+                    <div class="col-sm">
+                    <button style="width:1;height:1" class="btn-success btn-xs" type="button" onclick="Mudarestado('novo_opcao_verniz')">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
+                        </svg>
+                    </button>
+                    </div>
+                    
+                    <input name="novo_opcao_verniz" placeholder="Adicione um novo valor" type="text" style="display: none;" id="novo_opcao_verniz"  class="col-sm">
+                    
+                </div>
+                <div class="row" style="padding-bottom: 10px;">
+                    <span class="col-sm">Tipo de Tinta</span>
+                    <select name="opcao_tipo_tinta" class="form-control col-sm">
+                        <option value="nao se aplica">Não se aplica</option>
+                        {% for n in tipo_tinta_opcao %}
+                        <option value="{{n.valor}}">{{n.valor}}</option>
+                        {% endfor%}
+                    </select>
+                    <div class="col-sm">
+                    <button style="width:1;height:1" class="btn-success btn-xs" type="button" onclick="Mudarestado('novo_opcao_tipo_tinta')">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
+                        </svg>
+                    </button>
+                    </div>
+                    <input name="novo_opcao_tipo_tinta" placeholder="Adicione um novo valor" type="text" style="display: none;" id="novo_opcao_tipo_tinta"  class="col-sm">
+                    
+                </div>
+                <div class="row" style="padding-bottom: 10px;">
+                    <span class="col-sm">Escala de cor</span>
+                    <select name="opcao_escala_cor" class="form-control col-sm">
+                        <option value="nao se aplica">Não se aplica</option>
+                        {% for n in escala_cor_opcao %}
+                        <option value="{{n.valor}}">{{n.valor}}</option>
+                        {% endfor%}
+                    </select>
+                    <div class="col-sm">
+                    <button style="width:1;height:1" class="btn-success btn-xs" type="button" onclick="Mudarestado('novo_opcao_escala_cor')">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
+                        </svg>
+                    </button>
+                    </div>
+                    <input name="novo_opcao_escala_cor" placeholder="Adicione um novo valor" type="text" style="display: none;" id="novo_opcao_escala_cor"  class="col-sm">
+                    
+                </div>
+                <div class="row" style="padding-bottom: 10px;">
+                    <span class="col-sm">Material</span>
+                    <select name="opcao_material" class="form-control col-sm">
+                        <option value="nao se aplica">Não se aplica</option>
+                        {% for n in material_opcao %}
+                        <option value="{{n.valor}}">{{n.valor}}</option>
+                        {% endfor%}
+                    </select>
+                    <div class="col-sm">
+                    <button style="width:1;height:1" class="btn-success btn-xs" type="button" onclick="Mudarestado('novo_opcao_material')">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
+                        </svg>
+                    </button>
+                    </div>
+                    <input name="novo_opcao_material" placeholder="Adicione um novo valor" type="text" style="display: none;" id="novo_opcao_material"  class="col-sm">
+                    
+                </div>
+                <div class="row" style="padding-bottom: 10px;">
+                    <span class="col-sm">Espessura do Material</span>
+                    <select name="opcao_material_especura" class="form-control col-sm">
+                        <option value="nao se aplica">Não se aplica</option>
+                        {% for n in material_especura_opcao %}
+                        <option value="{{n.valor}}">{{n.valor}}</option>
+                        {% endfor%}
+                    </select>
+                    <div class="col-sm">
+                    <button style="width:1;height:1" class="btn-success btn-xs" type="button" onclick="Mudarestado('novo_opcao_material_especura')">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
+                        </svg>
+                    </button>
+                    </div>
+                    <input name="novo_opcao_material_especura" placeholder="Adicione um novo valor" type="text" style="display: none;" id="novo_opcao_material_especura"  class="col-sm">
+                    
+                </div>
+                <div class="row" style="padding-bottom: 10px;">
+                    <span class="col-sm">Tipo de Suporte</span>
+                    <select name="opcao_material_suporte" class="form-control col-sm">
+                        <option value="nao se aplica">Não se aplica</option>
+                        {% for n in material_suporte_opcao %}
+                        <option value="{{n.valor}}">{{n.valor}}</option>
+                        {% endfor%}
+                    </select>
+                    <div class="col-sm">
+                    <button style="width:1;height:1" class="btn-success btn-xs" type="button" onclick="Mudarestado('novo_opcao_material_suporte')">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
+                        </svg>
+                    </button>
+                    </div>
+                    <input name="novo_opcao_material_suporte" placeholder="Adicione um novo valor" type="text" style="display: none;" id="novo_opcao_material_suporte"  class="col-sm">
+                    
+                </div>
+                <div class="row" style="padding-bottom: 10px;">
+                    <span class="col-sm">Material Pintura do Suporte</span>
+                    <select name="opcao_material_pintura_suporte" class="form-control col-sm">
+                        <option value="nao se aplica">Não se aplica</option>
+                        {% for n in material_pintura_suporte_opcao %}
+                        <option value="{{n.valor}}">{{n.valor}}</option>
+                        {% endfor%}
+                    </select>
+                    <div class="col-sm">
+                    <button style="width:1;height:1" class="btn-success btn-xs" type="button" onclick="Mudarestado('novo_opcao_material_pintura_suporte')">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
+                        </svg>
+                    </button>
+                    </div>
+                    <input name="novo_opcao_material_pintura_suporte" placeholder="Adicione um novo valor" type="text" style="display: none;" id="novo_opcao_material_pintura_suporte"  class="col-sm">
+                    
+                </div>
+                <div class="row" style="padding-bottom: 10px;">
+                    <span class="col-sm">Material do acabamento</span>
+                    <select name="opcao_material_acabamento" class="form-control col-sm">
+                        <option value="nao se aplica">Não se aplica</option>
+                        {% for n in material_acabamento_opcao %}
+                        <option value="{{n.valor}}">{{n.valor}}</option>
+                        {% endfor%}
+                    </select>
+                    <div class="col-sm">
+                    <button style="width:1;height:1" class="btn-success btn-xs" type="button" onclick="Mudarestado('novo_opcao_material_acabamento')">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
+                        </svg>
+                    </button>
+                    </div>
+                    <input name="novo_opcao_material_acabamento" placeholder="Adicione um novo valor" type="text" style="display: none;" id="novo_opcao_material_acabamento"  class="col-sm">
+                    
+                </div>
+                <div class="row" style="padding-bottom: 10px;">
+                    <span class="col-sm">Tipo de móvel</span>
+                    <select name="opcao_localizacao" class="form-control col-sm">
+                        <option value="nao se aplica">Não se aplica</option>
+                        {% for n in localizacao_opcao %}
+                        <option value="{{n.valor}}">{{n.valor}}</option>
+                        {% endfor%}
+                    </select>
+                    <div class="col-sm">
+                    <button style="width:1;height:1" class="btn-success btn-xs" type="button" onclick="Mudarestado('novo_opcao_localizacao')">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
+                        </svg>
+                    </button>
+                    </div>
+                    <input name="novo_opcao_localizacao" placeholder="Adicione um novo valor" type="text" style="display: none;" id="novo_opcao_localizacao"  class="col-sm">
+                    
+                </div>
+                <div class="row" style="padding-bottom: 10px;">
+                    <span class="col-sm">Tipo de suporte</span>
+                    <select name="opcao_tipo_suporte" class="form-control col-sm">
+                        <option value="nao se aplica">Não se aplica</option>
+                        {% for n in tipo_suporte_opcao %}
+                        <option value="{{n.valor}}">{{n.valor}}</option>
+                        {% endfor%}
+                    </select>
+                    <div class="col-sm">
+                    <button style="width:1;height:1" class="btn-success btn-xs" type="button" onclick="Mudarestado('novo_opcao_tipo_suporte')">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
+                        </svg>
+                    </button>
+                    </div>
+                    <input name="novo_opcao_tipo_suporte" placeholder="Adicione um novo valor" type="text" style="display: none;" id="novo_opcao_tipo_suporte"  class="col-sm">
+                    
+                </div>
+                <div class="row" style="padding-bottom: 10px;">
+                    <span class="col-sm">Possui pés?</span>
+                    <select name="opcao_possui_pes" class="form-control col-sm">
+                        <option value="nao se aplica">Não se aplica</option>
+                        {% for n in possui_pes_opcao %}
+                        <option value="{{n.valor}}">{{n.valor}}</option>
+                        {% endfor%}
+                    </select>
+                    <div class="col-sm">
+                    <button style="width:1;height:1" class="btn-success btn-xs" type="button" onclick="Mudarestado('novo_opcao_possui_pes')">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
+                        </svg>
+                    </button>
+                    </div>
+                    <input name="novo_opcao_possui_pes" placeholder="Adicione um novo valor" type="text" style="display: none;" id="novo_opcao_possui_pes"  class="col-sm">
+                    
+                </div>
+                <div class="row" style="padding-bottom: 10px;">
+                    <span class="col-sm">Tipo de fixação</span>
+                    <select name="opcao_tipo_fixacao" class="form-control col-sm">
+                        <option value="nao se aplica">Não se aplica</option>
+                        {% for n in tipo_fixacao_opcao %}
+                        <option value="{{n.valor}}">{{n.valor}}</option>
+                        {% endfor%}
+                    </select>
+                    <div class="col-sm">
+                    <button style="width:1;height:1" class="btn-success btn-xs" type="button" onclick="Mudarestado('novo_opcao_tipo_fixacao')">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
+                        </svg>
+                    </button>
+                    </div>
+                    <input name="novo_opcao_tipo_fixacao" placeholder="Adicione um novo valor" type="text" style="display: none;" id="novo_opcao_tipo_fixacao"  class="col-sm">
+                    
+                </div>
+                <div class="row" style="padding-bottom: 10px;">
+                    <span class="col-sm">Forma de Envio</span>
+                    <select name="opcao_envio" class="form-control col-sm">
+                        <option value="nao se aplica">Não se aplica</option>
+                        {% for n in envio_opcao %}
+                        <option value="{{n.valor}}">{{n.valor}}</option>
+                        {% endfor%}
+                    </select>
+                    <div class="col-sm">
+                    <button style="width:1;height:1" class="btn-success btn-xs" type="button" onclick="Mudarestado('novo_opcao_envio')">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
+                        </svg>
+                    </button>
+                    </div>
+                    <input name="novo_opcao_envio" placeholder="Adicione um novo valor" type="text" style="display: none;" id="novo_opcao_envio"  class="col-sm">
+                    
+                </div>
+            </div>
+
+            <div class="container" style="padding-bottom: 20px;">
+                <div class="row" style="padding-bottom: 10px;">
+                    <input name="PA_peso_suportado" type="number" step="0.001" class="form-control col-sm" placeholder="Peso Suportado">
+                    <input name="PA_capacidade_garrafas" type="number" class="form-control col-sm" placeholder="Capacidade de garrafas">
+                    <input name="PA_capacidade_copos" type="number" class="form-control col-sm" name="PA_titulo" placeholder="Capacidade de copos">
+                    <input name="PA_capacidade_tacas" type="number" class="form-control col-sm" placeholder="Capacidade de taças">
+                    <input name="PA_quantidade_prateleiras" type="number" class="form-control col-sm" placeholder="Quantidade de Pratileiras">
+                </div>
+                <div class="row" style="padding-bottom: 10px;">
+                    <input name="PA_quantidade_suportes" type="number" step="0.001" class="form-control col-sm" placeholder="Quantidade de suportes">
+                    <input name="PA_quantidade_gavetas" type="number" step="0.001" class="form-control col-sm" placeholder="Quantidade de gavetas">
+                    <input name="PA_quantidade_parafusos_fixacao" type="number" step="0.001" class="form-control col-sm" placeholder="Quantidade parafuros fixação">
+                    
+                </div>
+                <div class="row" style="padding-bottom: 10px;">
+                    <input name="PA_peso" type="number" step="0.001" class="form-control col-sm" placeholder="Peso do produto">
+                    <input name="PA_medida_externa_altura" type="number" step="0.001" class="form-control col-sm" placeholder="Altura externa">
+                    <input name="PA_medida_externa_largura" type="number" step="0.001" class="form-control col-sm" placeholder="Largura externa">
+                    <input name="PA_medida_externa_profundidade" type="number" step="0.001" class="form-control col-sm" placeholder="Profundidade externa">
+                    
+                </div>
+                <div class="row" style="padding-bottom: 10px;">
+                    <textarea style="height:auto!important" name="PA_medidas_internas" type="text" class="form-control" placeholder="Medidas internas"></textarea>
+                </div>
+            </div>
+            <input type="submit" class="form-control btn btn-success" value="Salvar">
+            
+        </form>
+    </div>
+    
+    <script>
+        function Mudarestado(el) {
+            var display = document.getElementById(el).style.display;
+            if(display == "none")
+                document.getElementById(el).style.display = 'block';
+            else
+                document.getElementById(el).style.display = 'none';
+        }
+    </script>
+{% endblock %}

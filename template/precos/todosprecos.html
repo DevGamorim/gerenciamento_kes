@@ -1,0 +1,192 @@
+{% extends 'base_precos.html' %}
+
+{% block title %}Preços{% endblock %}
+
+{% block content %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <div class="container" >
+        <span>Caso queira importar produtos e custo direto do master clique <a href="{% url 'precos:importar' %}">aqui.</a></span>
+        <form method="post" action="/precos/">
+            {% csrf_token %}
+            <div style="padding-top: 20px;">
+                <div class="row">
+                    <span class="col-sm-6"><b>Procurar Skus Especificos</b> **Separadores: virgula, espaço e quebra de linha.**</span>
+                    <span class="col-sm"><b>Buscar Kits?</b></span>
+                </div>
+                <div class="row">
+                    <input type="text" class="form-control col-sm-6" name='skus' autocomplete="off">
+                    <div class="col-sm">              
+                        <select class="form-control " name='kits' class="form-control">
+                                <option value="nao">Não</option>
+                                <option value="sim">Sim</option>                    
+                        </select>
+                    </div> 
+                </div>
+            </div>
+            <div class="row">
+                <span class="col-sm"><b>Estoque</b></span>
+                <span class="col-sm"><b>Intervalo de Vendas</b></span>
+                <span class="col-sm"><b>Fornecedor</b></span>
+            </div>
+            <div class="row" style="padding-bottom: 20px;">
+                <div class="col-sm">     
+                    <select class="form-control" name='estoque' class="form-control">
+                        <option value="com">Com Estoque</option>
+                        <option value="sem">Sem Estoque</option>
+                        <option value="todos">Todos **Pode demorar mais tempo para carregar**</option>                    
+                    </select>
+                </div>
+                <div class="col-sm">     
+                    <select class="form-control" name='data' class="form-control">
+                        <option value="0">Não Buscar Vendas</option>
+                        <option value="30">30 Dias</option>
+                        <option value="90">90 Dias</option>
+                        <option value="180">180 Dias</option>
+                        <option value="365">01 Ano</option>
+                        <option value="730">02 Anos</option>                     
+                    </select>
+                </div>
+                <div class="col-sm">     
+                    <select class="form-control" name='fornecedor' class="form-control">
+                        <option value="Todos">Todos</option>
+                        {% for forn in fornecedores %}
+                            <option value="{{forn.FN_Nome}}">{{forn.FN_Nome}}</option>
+                        {% endfor %}               
+                    </select>
+                </div>
+            </div>
+            <div style="padding-bottom: 20px;">
+                <center><input class="btn btn-success" type="submit" value="Procurar"></center>
+            </div>
+        </form>
+    </div>
+
+    {% for preco in precos %}
+        <form name="{{preco.PP_ID}}" id="{{preco.PP_ID}}">
+            {% csrf_token %}
+            <div class="container" style="border: 1px solid #d5d5d5;padding:20px 20px 20px 20px; border-radius: 1px;
+            width:95%;"> 
+                <div style="padding-bottom: 20px;">
+                    <div class="row" >
+                        <span class="col-sm"><b>SKU</b></span>
+                        <span class="col-sm-4"><b>Titulo</b></span>
+                        <span class="col-sm"><b>Estoque</b></span>
+                        <span class="col-sm"><b>Fornecedor</b></span>
+                        <span class="col-sm"><b>Custo</b></span>
+                        <span class="col-sm"><b>Quant Venda</b></span>
+                    </div>
+                    <div class="row">   
+                        <span class="col-sm"><a href="/precos/{{preco.PP_ID}}">{{preco.PP_sku}}</a></span>
+                        <span class="col-sm-4"><a href="/precos/{{preco.PP_ID}}">{{preco.PP_nome}}</a></span>
+                        <span class="col-sm">{{preco.PP_estoque_fisico}}</span>
+                        <span class="col-sm">{{preco.PP_fornecedor}}</span>
+                        <span class="col-sm">R${{preco.PP_custo}}</span>
+                        <span class="col-sm">{{preco.N_Vendas}}</span>
+                    </div>
+                </div>
+                <div>
+                    <div class="row" >
+                        <span class="col-sm"><b>Lucro</b></span>
+                        <!-- <span class="col-sm"><b>Portal</b></span> -->
+                        <span class="col-sm"><b>Custo</b></span>
+                        <span class="col-sm"><b>Custo Adm</b></span>
+                        <span class="col-sm"><b>Imposto</b></span>
+                        <span class="col-sm"><b>Comissões</b></span>
+                        <span class="col-sm"><b>Valor Atual</b></span>
+                        <span class="col-sm"><b>Valor Final</b></span>
+                        <span class="col-sm">          </span>
+                        <span class="col-sm"><b>Desc 15%</b></span>
+                    </div>
+                    <div class="row">
+                        <input class="col-sm" style="width:55px" name="id{{preco.PP_ID}}" id="id{{preco.PP_ID}}" type="hidden" value="{{preco.PP_ID}}">
+                        <input title="Valor para nova precificação Site" step="0.001" class="col-sm" style="width:55px" name="site_novo{{preco.PP_ID}}" id="site_novo{{preco.PP_ID}}" type="number" placeholder="{{preco.PP_Faixa_Site}}">
+                        <input class="col-sm" style="width:55px" name="site_antigo{{preco.PP_ID}}" id="site_antigo{{preco.PP_ID}}" type="hidden" value="{{preco.PP_Faixa_Site}}">
+                        <input title="Custo produto!" step="0.001" class="col-sm" style="width:55px" name="custo{{preco.PP_ID}}" id="custo{{preco.PP_ID}}" type="number" value="{{preco.PP_custo}}" placeholder="{{preco.PP_custo}}"></span>
+                        <input title="Valor para nova precificação Portais" type="hidden" class="col-sm" style="width:55px" name="portal_novo{{preco.PP_ID}}" id="portal_novo{{preco.PP_ID}}" type="number" placeholder="{{preco.PP_Faixa_Portal}}">
+                        <input class="col-sm" style="width:55px" name="portal_antigo{{preco.PP_ID}}" id="portal_antigo{{preco.PP_ID}}" type="hidden" value="{{preco.PP_Faixa_Portal}}">
+                        <input title="Custo Administrativo, alteravel apenas como regra!" class="col-sm" style="width:55px" name="custo_adm{{preco.PP_ID}}" id="custo_adm{{preco.PP_ID}}" type="number" value="{{preco.PP_custo_adm}}" placeholder="{{preco.PP_custo_adm}}" disabled="true"></span>
+                        <input title="Imposto, alteravel apenas como regra!" class="col-sm" style="width:55px" name="imposto{{preco.PP_ID}}" id="imposto{{preco.PP_ID}}" type="number" value="{{preco.PP_imposto}}" placeholder="{{preco.PP_imposto}}" disabled="true"></span>
+                        <input title="Comissão Site, alteravel apenas como regra!" class="col-sm" style="width:55px" name="comissao_site{{preco.PP_ID}}" id="comissao_site{{preco.PP_ID}}" type="number" value="{{preco.PP_Lucratividade_site}}" placeholder="{{preco.PP_Lucratividade_site}}" disabled="true"></span>
+                        <input title="Valor Atual Master" class="col-sm" style="width:55px" name="Valor_atual{{preco.PP_ID}}" id="Valor_atual{{preco.PP_ID}}" value="{{preco.Preco_venda_atual}}" disabled="true"></span>
+                        <input title="Valor final Site" 
+                            onfocus="this.value='';
+                            document.getElementById('confirmar{{preco.PP_ID}}').setAttribute('value','Calcular');
+                            document.getElementById('confirmar{{preco.PP_ID}}').removeAttribute('onclick');
+                            "
+                        class="col-sm" style="width:55px" name="valor_final{{preco.PP_ID}}" id="valor_final{{preco.PP_ID}}" value=""></input>
+                        <input id="confirmar{{preco.PP_ID}}" class="btn btn-success col-sm" type="submit" value="Calcular">
+                        <input title="Valor com desconto Site" class="col-sm" style="width:55px" name="desconto{{preco.PP_ID}}" id="desconto{{preco.PP_ID}}" value="" disabled="true"></span>
+                        
+                    </div>
+                </div>
+            </div>
+        </form>
+        <script type="text/javascript">
+            $("#valor_final{{preco.PP_ID}}").keyup(function() {
+                var valor = $(this).val().length;
+                if (valor === 0){
+                    document.getElementById("confirmar{{preco.PP_ID}}").removeAttribute("onclick");
+                    document.getElementById('confirmar{{preco.PP_ID}}').setAttribute('value','Calcular');
+                    document.getElementsById("confirmar{{preco.PP_ID}}").removeAttribute('aria-disabled');
+                    
+                }
+            });
+        </script>
+
+        <script type="text/javascript">
+            $(document).on('submit','#{{preco.PP_ID}}',function(e){
+                e.preventDefault();
+
+                var id_form = "input[name=id{{preco.PP_ID}}]";
+                var site_novo_form = "input[name=site_novo{{preco.PP_ID}}]";
+                var site_antigo_form = "input[name=site_antigo{{preco.PP_ID}}]";
+                var portal_novo_form = "input[name=portal_novo{{preco.PP_ID}}]";
+                var portal_antigo_form = "input[name=portal_antigo{{preco.PP_ID}}]";
+                var valor_final = "input[name=valor_final{{preco.PP_ID}}]";
+                var custo_prod = "input[name=custo{{preco.PP_ID}}]";
+
+                $.ajax({
+                    type:'POST',
+                    url:"{% url 'precos:alterar_faixa' %}",
+                    data:{
+                        id:$(id_form).val(),
+                        site_novo:$(site_novo_form).val(),
+                        site_antigo:$(site_antigo_form).val(),
+                        portal_novo:$(portal_novo_form).val(),
+                        portal_antigo:$(portal_antigo_form).val(),
+                        valor_final:$(valor_final).val(),
+                        custo:$(custo_prod).val(),
+                        csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+                    },
+                    success: function(data){
+                        console.log(data)
+                        var id = "valor_final"+data[1];
+                        var valor = data[0]
+                        var desconto = "desconto"+data[1];
+                        console.log(id,' ',valor);
+                        //$(id).html(data[0]);
+                        if (data[2] === "salvo"){
+                            document.getElementById("confirmar{{preco.PP_ID}}").removeAttribute("onclick");
+                            document.getElementById("confirmar{{preco.PP_ID}}").setAttribute('value','OK');
+                            document.getElementsById("confirmar{{preco.PP_ID}}").setAttribute('aria-disabled','true');
+                        }else{
+                            document.getElementById(desconto).setAttribute('value',data[3]);
+                            document.getElementById(id).value = valor;
+                            document.getElementById(id).setAttribute("value", data[0]);
+                            document.getElementById("confirmar{{preco.PP_ID}}").setAttribute('value','Salvar');
+                            document.getElementById("confirmar{{preco.PP_ID}}").setAttribute('onclick',"return confirm('Deseja Realmente salvar o preço do produto?')");
+                        }},
+                    error: function(){
+                        url = "{% url 'precos:alterar_faixa' %}";
+                        console.log(url);
+                    }
+                });
+
+            })
+
+        </script>
+    {% endfor %}
+
+    
+    
+{% endblock %}

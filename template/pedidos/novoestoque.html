@@ -1,0 +1,180 @@
+{% extends 'basep.html' %}
+
+{% block title %}Inicio{% endblock %}
+
+{% block content %}
+    <div style="display: center;">Editar/Adicionar Estoque:</div>
+
+    <div>
+        <form action="/pedidos/EditarEstoque/" method="post">
+            {% csrf_token%}
+            <div class="container" style="padding-bottom: 30px; padding-top: 30px;"></div>
+                <div class="row" id="1" style=" padding-bottom: 5px;">
+                    <div style="display: flex;">
+                        <p class="col-sm">SKU</p>
+                        <input class="form-control" type="text" name="sku1" autocomplete="off"/>
+                        <p class="col-sm" >Arrigo</p>
+                        <input class="form-control" type="number" name="quant1" autocomplete="off"/><br>
+                        <p class="col-sm" >Koala</p>
+                        <input class="form-control" type="number" name="obs1" autocomplete="off"/><br>
+                    </div>
+                                    
+                </div>
+                
+                <div id = "1-2" style="display: block;">
+                    <input class="form-control" type="button" value="+" style="cursor: pointer;" onclick="Mudarestado2();">
+                    <input class="form-control" type="hidden" value="-" style="cursor: pointer;">
+                </div>                 
+
+                <div class="row" id="2" style="display: none; padding-bottom: 5px;">
+                    <div style="display: flex;">
+                        <p class="col-sm">SKU</p>
+                        <input class="form-control" type="text" name="sku2" autocomplete="off"/>
+                        <p class="col-sm" >Arrigo</p>
+                        <input class="form-control" type="number" name="quant2" autocomplete="off"/><br>
+                        <p class="col-sm" >Koala</p>
+                        <input class="form-control" type="number" name="obs2" autocomplete="off"/><br>
+                    </div>
+                                      
+                </div>
+                <div id = "2-2" style="display: none;">
+                    <input class="form-control" type="button" value="+" style="cursor: pointer;" onclick="Mudarestado3();">
+                    <input class="form-control" type="button" value="-" style="cursor: pointer;" onclick="removerCampos2(this);">
+                </div>  
+                
+
+                <div class="row" id="3" style="display: none; padding-bottom: 5px;">
+                    <div style="display: flex;">
+                        <p class="col-sm">SKU</p>
+                        <input class="form-control" type="text" name="sku3" autocomplete="off"/>
+                        <p class="col-sm" >Arrigo</p>
+                        <input class="form-control" type="number" name="quant3" autocomplete="off"/><br>
+                        <p class="col-sm" >Koala</p>
+                        <input class="form-control" type="number" name="obs3" autocomplete="off"/><br>
+                    </div>
+                    
+                </div>
+                <div id = "3-2" style="display: none; padding-bottom: 5px; padding-top: 5px;">
+                    <input class="form-control" type="button" value="+" style="cursor: pointer;" onclick="Mudarestado4();">
+                    <input class="form-control" type="button" value="-" style="cursor: pointer;" onclick="removerCampos3(this);">
+                </div>
+                
+                
+                <div class="row" id="4" style="display: none; padding-bottom: 5px;">
+                    <div style="display: flex;">
+                        <p class="col-sm">SKU</p>
+                        <input class="form-control" type="text" name="sku4" autocomplete="off"/>
+                        <p class="col-sm" >Arrigo</p>
+                        <input class="form-control" type="number" name="quant4" autocomplete="off"/><br>
+                        <p class="col-sm" >Koala</p>
+                        <input class="form-control" type="number" name="obs4" autocomplete="off"/><br>                      
+                    </div>
+                    <div id = "4-2" style="display: none; padding-bottom: 5px; padding-top: 5px;">
+                        <input class="form-control" type="button" value="+" style="cursor: pointer;" onclick="Mudarestado5();">
+                        <input class="form-control" type="button" value="-" style="cursor: pointer;" onclick="removerCampos4(this);">
+                    </div>
+                </div>
+                <div id = "4-2" style="display: none; padding-bottom: 5px; padding-top: 5px;">
+                    <input class="form-control" type="button" value="+" style="cursor: pointer;" onclick="Mudarestado5();">
+                    <input class="form-control" type="button" value="-" style="cursor: pointer;" onclick="removerCampos4(this);">
+                </div>
+
+                <div class="row" id="5" style="display: none; padding-bottom: 5px;">
+                    <div style="display: flex;">
+                        <p class="col-sm">SKU</p>
+                        <input class="form-control" type="text" name="sku5" autocomplete="off"/>
+                        <p class="col-sm" >Arrigo</p>
+                        <input class="form-control" type="number" name="quant5" autocomplete="off"/><br>
+                        <p class="col-sm" >Koala</p>
+                        <input class="form-control" type="number" name="obs5" autocomplete="off"/><br>                      
+                    </div>                    
+                </div>
+                <div id = "5-2" style="display: none; padding-bottom: 5px; padding-top: 5px;">
+                    <input class="form-control" type="button" value="+" style="cursor: pointer;" onclick="Mudarestado6();">
+                    <input class="form-control" type="button" value="-" style="cursor: pointer;" onclick="removerCampos5(this);">
+                </div>
+                
+                
+                <div class="row" id="6" style="display: none; padding-bottom: 5px;">
+                    <div style="display: flex;">
+                        <p class="col-sm">SKU</p>
+                        <input class="form-control" type="text" name="sku6" autocomplete="off"/>
+                        <p class="col-sm" >Arrigo</p>
+                        <input class="form-control" type="number" name="quant6" autocomplete="off"/><br>
+                        <p class="col-sm" >Koala</p>
+                        <input class="form-control" type="number" name="obs6" autocomplete="off"/><br>                      
+                    </div>
+                </div>
+                <div id = "6-2" style="display: none; padding-bottom: 5px; padding-top: 5px;">
+                    <input class="form-control" type="button" value="+" style="cursor: pointer;" onclick="Mudarestado7();">
+                    <input class="form-control" type="button" value="-" style="cursor: pointer;" onclick="removerCampos6(this);">
+                </div>
+                <div class="row" id="7" style="display: none; padding-bottom: 5px;">
+                    <div style="display: flex;">
+                        <p class="col-sm">SKU</p>
+                        <input class="form-control" type="text" name="sku7" autocomplete="off"/>
+                        <p class="col-sm" >Arrigo</p>
+                        <input class="form-control" type="number" name="quant7" autocomplete="off"/><br>
+                        <p class="col-sm" >Koala</p>
+                        <input class="form-control" type="number" name="obs7" autocomplete="off"/><br>                       
+                    </div>
+                </div>
+                <div id = "7-2" style="display: none; padding-bottom: 5px; padding-top: 5px;">
+                    <input class="form-control" type="button" value="+" style="cursor: pointer;" onclick="Mudarestado8();">
+                    <input class="form-control" type="button" value="-" style="cursor: pointer;" onclick="removerCampos7(this);">
+                </div>
+
+                <div class="row" id="8" style="display: none; padding-bottom: 5px;">
+                    <div style="display: flex;">
+                        <p class="col-sm">SKU</p>
+                        <input class="form-control" type="text" name="sku8" autocomplete="off"/>
+                        <p class="col-sm" >Arrigo</p>
+                        <input class="form-control" type="number" name="quant8" autocomplete="off"/><br>
+                        <p class="col-sm" >Koala</p>
+                        <input class="form-control" type="number" name="obs8" autocomplete="off"/><br>                       
+                    </div>
+                </div>
+                <div id = "8-2" style="display: none; padding-bottom: 5px; padding-top: 5px;">
+                    <input class="form-control" type="button" value="+" style="cursor: pointer;" onclick="Mudarestado9();">
+                    <input class="form-control" type="button" value="-" style="cursor: pointer;" onclick="removerCampos8(this);">
+                </div>
+
+                <div class="row" id="9" style="display: none; padding-bottom: 5px;">
+                    <div style="display: flex;">
+                        <p class="col-sm">SKU</p>
+                        <input class="form-control" type="text" name="sku9" autocomplete="off"/>
+                        <p class="col-sm" >Arrigo</p>
+                        <input class="form-control" type="number" name="quant9" autocomplete="off"/><br>
+                        <p class="col-sm" >Koala</p>
+                        <input class="form-control" type="number" name="obs9" autocomplete="off"/><br>                       
+                    </div>
+                </div>
+                <div id = "9-2" style="display: none; padding-bottom: 5px; padding-top: 5px;">
+                    <input class="form-control" type="button" value="+" style="cursor: pointer;" onclick="Mudarestado10();">
+                    <input class="form-control" type="button" value="-" style="cursor: pointer;" onclick="removerCampos9(this);">
+                </div>                
+
+                <div class="row" id="10" style="display: none; padding-bottom: 5px;">
+                    <div style="display: flex;">
+                        <p class="col-sm">SKU</p>
+                        <input class="form-control" type="text" name="sku10" autocomplete="off"/>
+                        <p class="col-sm" >Arrigo</p>
+                        <input class="form-control" type="number" name="quant10" autocomplete="off"/><br>
+                        <p class="col-sm" >Koala</p>
+                        <input class="form-control" type="number" name="obs10" autocomplete="off"/><br>                       
+                    </div>                    
+                </div>
+                <div id = "10-2" style="display: none; padding-bottom: 5px; padding-top: 5px;">
+                    <input class="form-control" type="button" value="-" style="cursor: pointer;" onclick="removerCampos10(this);">
+                </div>  
+            </div>
+
+            <div style="text-align :center; padding-top:50px">
+                <input style="padding-right: 50px; padding-left: 50px;" class="btn btn-success" type="submit" value="Enviar">
+            </div><br><br><br>
+        </form>
+        <hr class="separadordebaixo">
+    
+    </div>
+    
+{% endblock %}

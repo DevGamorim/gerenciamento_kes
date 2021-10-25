@@ -1,0 +1,1415 @@
+{% extends 'base_precos.html' %}
+
+{% block title %}Preços {{preco.PP_sku}}{% endblock %}
+
+{% block content %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+<div class='container'>
+    <center style="padding-bottom: 20px;"><b>Alterar/Visualizar</b></b></center>
+    <div class='row'>
+        <span class='col-sm'><b>ID</b></span>
+        <span class='col-sm'><b>SKU</b></span>
+        <span class='col-sm-3'><b>Titulo</b></span>
+        <span class='col-sm'><b>Estoque</b></span>
+        <span class='col-sm-2'><b>Custo</b></span>
+        <span class='col-sm-3'><b>Fornecedor</b></span>
+    </div>
+    <div class='row' style="padding-bottom: 20px;">
+        <span class='col-sm'>{{preco.PP_ID}}</span>
+        <span class='col-sm'>{{preco.PP_sku}}</span>
+        <span class='col-sm-3'>{{preco.PP_nome}}</span>
+        <span class='col-sm'>{{preco.PP_estoque_fisico}}</span>
+        <span class='col-sm-2'>R$ {{preco.PP_custo}}0</span>
+        <span class='col-sm-3'>{{preco.PP_fornecedor}}</span>
+    </div>
+    <!-- Começo Amazon -->
+    <div style="border: 1px solid #d5d5d5;padding:20px 20px 20px 20px; border-radius: 1px;
+    width:95%;">
+        <center style="padding-bottom: 20px;"><b>Amazon</b></b></center>
+    
+        <div class="row" >
+            <span class="col-sm"><b>Amazon</b></span>
+            <!-- <span class="col-sm"><b>Portal</b></span> -->
+            <span class="col-sm"><b>Custo Adm</b></span>
+            <span class="col-sm"><b>Imposto</b></span>
+            <span class="col-sm"><b>Comissão</b></span>
+            <span class="col-sm"><b>Valor Atual</b></span>
+            <span class="col-sm"><b>Valor Final</b></span>
+            <span class="col-sm">          </span>
+        </div>
+        <form  name="amazon" id="amazon">
+            {% csrf_token %}
+            <div class="row" >
+                <input name="id{{preco.PP_ID}}" class="col-sm" style="width:55px"  id="id{{preco.PP_ID}}" type="hidden" value="{{preco.PP_ID}}">
+                <input name="portal_amazon" class="col-sm" style="width:55px"  id="portal_amazon" type="hidden" value="Amazon">
+                <input name="Amazon_antigo{{preco.PP_ID}}" class="col-sm" style="width:55px"  id="Amazon_antigo{{preco.PP_ID}}" type="hidden" value="{{preco.PP_Amazon_KES}}">
+                <input name="amazon{{preco.PP_ID}}" title="Valor para nova precificação Amazon" step="0.01" class="col-sm" style="width:55px"  id="amazon{{preco.PP_ID}}" type="number" placeholder="{{preco.PP_Amazon_KES}}">
+                <input name="custo_adm{{preco.PP_ID}}" title="Custo Administrativo, alteravel apenas como regra!" class="col-sm" style="width:55px" id="custo_adm{{preco.PP_ID}}" type="number" value="{{preco.PP_custo_adm_portal}}" placeholder="{{preco.PP_custo_adm_portal}}" disabled="true"></span>
+                <input name="imposto{{preco.PP_ID}}" title="Imposto, alteravel apenas como regra!" class="col-sm" style="width:55px" id="imposto{{preco.PP_ID}}" type="number" value="{{preco.PP_imposto}}" placeholder="{{preco.PP_imposto}}" disabled="true"></span>
+                <input name="comissao_amazon{{preco.PP_ID}}" title="Comissão Amazon, alteravel apenas como regra!" class="col-sm" style="width:55px" id="comissao_amazon{{preco.PP_ID}}" type="number" value="{{comissoes.CS_Amazon_Comissao}}" placeholder="{{comissoes.CS_Amazon_Comissao}}" disabled="true"></span>
+                <input name="Valor_atual_amazon{{preco.PPID}}" title="Valor Atual Amazon" class="col-sm" style="width:55px" id="Valor_atual_amazon{{preco.PP_ID}}" value="{{calculado.amazon}}" disabled="true"></span>
+                <input name="valor_final_amazon{{preco.PP_ID}}" onfocus="this.value='';
+                document.getElementById('confirmar_amazon{{preco.PP_ID}}').setAttribute('value','Calcular');
+                document.getElementById('confirmar_amazon{{preco.PP_ID}}').removeAttribute('onclick');
+                " title="Valor final Amzon" class="col-sm" style="width:55px" id="valor_final_amazon{{preco.PP_ID}}" value=""></input>        
+                <input id="confirmar_amazon{{preco.PP_ID}}" class="btn btn-success col-sm" type="submit" value="Calcular">
+            </div>
+        </form>
+
+        <script type="text/javascript">
+            $("#valor_final_amazon{{preco.PP_sku}}").keyup(function() {
+                var valor = $(this).val().length;
+                if (valor === 0){
+                    document.getElementById("confirmar_amazon{{preco.PP_ID}}").removeAttribute("onclick");
+                    document.getElementById("confirmar_amazon{{preco.PP_ID}}").setAttribute('value','Calcular');
+                    document.getElementsById("confirmar_amazon{{preco.PP_ID}}").removeAttribute('aria-disabled');
+                    
+                }
+            });
+        </script>
+    
+        <script type="text/javascript">
+            $(document).on('submit','#amazon',function(e){
+                e.preventDefault();
+    
+                var id_form = "input[name=id{{preco.PP_ID}}]";
+                var Amazon_antigo = "input[name=Amazon_antigo{{preco.PP_ID}}]";
+                var Amazon_novo = "input[name=amazon{{preco.PP_ID}}]";
+                var custo_adm = "input[name=custo_adm{{preco.PP_ID}}]";
+                var imposto = "input[name=imposto{{preco.PP_ID}}]";
+                var comissao_amazon = "input[name=comissao_amazon{{preco.PP_ID}}]";
+                var valor_final = "input[name=valor_final_amazon{{preco.PP_ID}}]";
+                var portal = "input[name=portal_amazon]";
+    
+                $.ajax({
+                    type:'POST',
+                    url:"{% url 'precos:portais' %}",
+                    data:{
+                        id:$(id_form).val(),
+                        portal:$(portal).val(),
+                        portal_novo:$(Amazon_novo).val(),
+                        portal_antigo:$(Amazon_antigo).val(),
+                        adm:$(custo_adm).val(),
+                        imposto_geral:$(imposto).val(),
+                        comissao_portal:$(comissao_amazon).val(),
+                        final:$(valor_final).val(),
+                        csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                    },
+                    success: function(data){
+                        console.log(data)
+                        var id = "valor_final_amazon"+data[1];
+                        var valor = data[0]
+                        console.log(id,' ',valor);
+                        if (data[2] === "salvo"){
+                            document.getElementById("confirmar_amazon{{preco.PP_ID}}").removeAttribute("onclick");
+                            document.getElementById("confirmar_amazon{{preco.PP_ID}}").setAttribute('value','OK');
+                            document.getElementsById("confirmar_amazon{{preco.PP_ID}}").setAttribute('aria-disabled','true');
+                        }else{
+                            document.getElementById(id).value = valor;
+                            document.getElementById(id).setAttribute("value", data[0]);
+                            document.getElementById("confirmar_amazon{{preco.PP_ID}}").setAttribute('value','Salvar');
+                            document.getElementById("confirmar_amazon{{preco.PP_ID}}").setAttribute('onclick',"return confirm('Deseja Realmente salvar o preço do produto?')");
+                        }},
+                    error: function(){
+                        url = "{% url 'precos:portais' %}";
+                        console.log(url);
+                    }
+                });
+    
+            })
+    
+        </script>
+    </div>
+    <!-- Fim amazon -->
+    <!-- Começo B2W_ALK -->
+    <div style="border: 1px solid #d5d5d5;padding:20px 20px 20px 20px; border-radius: 1px;
+    width:95%;">
+        <center style="padding-bottom: 20px;"><b>B2W_ALK</b></b></center>
+    
+        <div class="row" >
+            <span class="col-sm"><b>B2W_ALK</b></span>
+            <!-- <span class="col-sm"><b>Portal</b></span> -->
+            <span class="col-sm"><b>Custo Adm</b></span>
+            <span class="col-sm"><b>Imposto</b></span>
+            <span class="col-sm"><b>Comissão</b></span>
+            <span class="col-sm"><b>Valor Atual</b></span>
+            <span class="col-sm"><b>Valor Final</b></span>
+            <span class="col-sm">          </span>
+        </div>
+        <form  name="B2W_ALK" id="B2W_ALK">
+            {% csrf_token %}
+            <div class="row" >
+                <input name="id{{preco.PP_ID}}" class="col-sm" style="width:55px"  id="id{{preco.PP_ID}}" type="hidden" value="{{preco.PP_ID}}">
+                <input name="portal_B2W_ALK" class="col-sm" style="width:55px"  id="portal_B2W_ALK" type="hidden" value="B2W_ALK">
+                <input name="B2W_ALK_antigo{{preco.PP_ID}}" class="col-sm" style="width:55px"  id="B2W_ALK_antigo{{preco.PP_ID}}" type="hidden" value="{{preco.PP_B2W_ALK}}">
+                <input name="B2W_ALK{{preco.PP_ID}}" title="Valor para nova precificação B2W_ALK" step="0.01" class="col-sm" style="width:55px"  id="B2W_ALK{{preco.PP_ID}}" type="number" placeholder="{{preco.PP_B2W_ALK}}">
+                <input name="custo_adm{{preco.PP_ID}}" title="Custo Administrativo, alteravel apenas como regra!" class="col-sm" style="width:55px" id="custo_adm{{preco.PP_ID}}" type="number" value="{{preco.PP_custo_adm_portal}}" placeholder="{{preco.PP_custo_adm_portal}}" disabled="true"></span>
+                <input name="imposto{{preco.PP_ID}}" title="Imposto, alteravel apenas como regra!" class="col-sm" style="width:55px" id="imposto{{preco.PP_ID}}" type="number" value="{{preco.PP_imposto}}" placeholder="{{preco.PP_imposto}}" disabled="true"></span>
+                <input name="comissao_B2W_ALK{{preco.PP_ID}}" title="Comissão B2W_ALK, alteravel apenas como regra!" class="col-sm" style="width:55px" id="comissao_B2W_ALK{{preco.PP_ID}}" type="number" value="{{comissoes.CS_B2W_ALK_Comissao}}" placeholder="{{comissoes.CS_B2W_ALK_Comissao}}" disabled="true"></span>
+                <input name="Valor_atual_B2W_ALK{{preco.PPID}}" title="Valor Atual B2W_ALK" class="col-sm" style="width:55px" id="Valor_atual_B2W_ALK{{preco.PP_ID}}" value="{{calculado.B2W_ALK}}" disabled="true"></span>
+                <input name="valor_final_B2W_ALK{{preco.PP_ID}}" onfocus="this.value='';
+                document.getElementById('confirmar_B2W_ALK{{preco.PP_ID}}').setAttribute('value','Calcular');
+                document.getElementById('confirmar_B2W_ALK{{preco.PP_ID}}').removeAttribute('onclick');
+                " title="Valor final Amzon" class="col-sm" style="width:55px" id="valor_final_B2W_ALK{{preco.PP_ID}}" value=""></input>        
+                <input id="confirmar_B2W_ALK{{preco.PP_ID}}" class="btn btn-success col-sm" type="submit" value="Calcular">
+            </div>
+        </form>
+
+        <script type="text/javascript">
+            $("#valor_final_B2W_ALK{{preco.PP_sku}}").keyup(function() {
+                var valor = $(this).val().length;
+                if (valor === 0){
+                    document.getElementById("confirmar_B2W_ALK{{preco.PP_ID}}").removeAttribute("onclick");
+                    document.getElementById("confirmar_B2W_ALK{{preco.PP_ID}}").setAttribute('value','Calcular');
+                    document.getElementsById("confirmar_B2W_ALK{{preco.PP_ID}}").removeAttribute('aria-disabled');
+                    
+                }
+            });
+        </script>
+    
+        <script type="text/javascript">
+            $(document).on('submit','#B2W_ALK',function(e){
+                e.preventDefault();
+    
+                var id_form = "input[name=id{{preco.PP_ID}}]";
+                var B2W_ALK_antigo = "input[name=B2W_ALK_antigo{{preco.PP_ID}}]";
+                var B2W_ALK_novo = "input[name=B2W_ALK{{preco.PP_ID}}]";
+                var custo_adm = "input[name=custo_adm{{preco.PP_ID}}]";
+                var imposto = "input[name=imposto{{preco.PP_ID}}]";
+                var comissao_B2W_ALK = "input[name=comissao_B2W_ALK{{preco.PP_ID}}]";
+                var valor_final = "input[name=valor_final_B2W_ALK{{preco.PP_ID}}]";
+                var portal = "input[name=portal_B2W_ALK]";
+    
+                $.ajax({
+                    type:'POST',
+                    url:"{% url 'precos:portais' %}",
+                    data:{
+                        id:$(id_form).val(),
+                        portal:$(portal).val(),
+                        portal_novo:$(B2W_ALK_novo).val(),
+                        portal_antigo:$(B2W_ALK_antigo).val(),
+                        adm:$(custo_adm).val(),
+                        imposto_geral:$(imposto).val(),
+                        comissao_portal:$(comissao_B2W_ALK).val(),
+                        final:$(valor_final).val(),
+                        csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                    },
+                    success: function(data){
+                        console.log(data)
+                        var id = "valor_final_B2W_ALK"+data[1];
+                        var valor = data[0]
+                        console.log(id,' ',valor);
+                        if (data[2] === "salvo"){
+                            document.getElementById("confirmar_B2W_ALK{{preco.PP_ID}}").removeAttribute("onclick");
+                            document.getElementById("confirmar_B2W_ALK{{preco.PP_ID}}").setAttribute('value','OK');
+                            document.getElementsById("confirmar_B2W_ALK{{preco.PP_ID}}").setAttribute('aria-disabled','true');
+                        }else{
+                            document.getElementById(id).value = valor;
+                            document.getElementById(id).setAttribute("value", data[0]);
+                            document.getElementById("confirmar_B2W_ALK{{preco.PP_ID}}").setAttribute('value','Salvar');
+                            document.getElementById("confirmar_B2W_ALK{{preco.PP_ID}}").setAttribute('onclick',"return confirm('Deseja Realmente salvar o preço do produto?')");
+                        }},
+                    error: function(){
+                        url = "{% url 'precos:portais' %}";
+                        console.log(url);
+                    }
+                });
+    
+            })
+    
+        </script>
+    </div>
+    <!-- Fim B2W_ALK -->
+    <!-- Começo B2W_GEA -->
+    <div style="border: 1px solid #d5d5d5;padding:20px 20px 20px 20px; border-radius: 1px;
+    width:95%;">
+        <center style="padding-bottom: 20px;"><b>B2W_GEA</b></b></center>
+    
+        <div class="row" >
+            <span class="col-sm"><b>B2W_GEA</b></span>
+            <!-- <span class="col-sm"><b>Portal</b></span> -->
+            <span class="col-sm"><b>Custo Adm</b></span>
+            <span class="col-sm"><b>Imposto</b></span>
+            <span class="col-sm"><b>Comissão</b></span>
+            <span class="col-sm"><b>Valor Atual</b></span>
+            <span class="col-sm"><b>Valor Final</b></span>
+            <span class="col-sm">          </span>
+        </div>
+        <form  name="B2W_GEA" id="B2W_GEA">
+            {% csrf_token %}
+            <div class="row" >
+                <input name="id{{preco.PP_ID}}" class="col-sm" style="width:55px"  id="id{{preco.PP_ID}}" type="hidden" value="{{preco.PP_ID}}">
+                <input name="portal_B2W_GEA" class="col-sm" style="width:55px"  id="portal_B2W_GEA" type="hidden" value="B2W_GEA">
+                <input name="B2W_GEA_antigo{{preco.PP_ID}}" class="col-sm" style="width:55px"  id="B2W_GEA_antigo{{preco.PP_ID}}" type="hidden" value="{{preco.PP_B2W_GEA}}">
+                <input name="B2W_GEA{{preco.PP_ID}}" title="Valor para nova precificação B2W_GEA" step="0.01" class="col-sm" style="width:55px"  id="B2W_GEA{{preco.PP_ID}}" type="number" placeholder="{{preco.PP_B2W_GEA}}">
+                <input name="custo_adm{{preco.PP_ID}}" title="Custo Administrativo, alteravel apenas como regra!" class="col-sm" style="width:55px" id="custo_adm{{preco.PP_ID}}" type="number" value="{{preco.PP_custo_adm_portal}}" placeholder="{{preco.PP_custo_adm_portal}}" disabled="true"></span>
+                <input name="imposto{{preco.PP_ID}}" title="Imposto, alteravel apenas como regra!" class="col-sm" style="width:55px" id="imposto{{preco.PP_ID}}" type="number" value="{{preco.PP_imposto}}" placeholder="{{preco.PP_imposto}}" disabled="true"></span>
+                <input name="comissao_B2W_GEA{{preco.PP_ID}}" title="Comissão B2W_GEA, alteravel apenas como regra!" class="col-sm" style="width:55px" id="comissao_B2W_GEA{{preco.PP_ID}}" type="number" value="{{comissoes.CS_B2W_GEA_Comissao}}" placeholder="{{comissoes.CS_B2W_GEA_Comissao}}" disabled="true"></span>
+                <input name="Valor_atual_B2W_GEA{{preco.PPID}}" title="Valor Atual B2W_GEA" class="col-sm" style="width:55px" id="Valor_atual_B2W_GEA{{preco.PP_ID}}" value="{{calculado.B2W_GEA}}" disabled="true"></span>
+                <input name="valor_final_B2W_GEA{{preco.PP_ID}}" onfocus="this.value='';
+                document.getElementById('confirmar_B2W_GEA{{preco.PP_ID}}').setAttribute('value','Calcular');
+                document.getElementById('confirmar_B2W_GEA{{preco.PP_ID}}').removeAttribute('onclick');
+                " title="Valor final Amzon" class="col-sm" style="width:55px" id="valor_final_B2W_GEA{{preco.PP_ID}}" value=""></input>        
+                <input id="confirmar_B2W_GEA{{preco.PP_ID}}" class="btn btn-success col-sm" type="submit" value="Calcular">
+            </div>
+        </form>
+
+        <script type="text/javascript">
+            $("#valor_final_B2W_GEA{{preco.PP_sku}}").keyup(function() {
+                var valor = $(this).val().length;
+                if (valor === 0){
+                    document.getElementById("confirmar_B2W_GEA{{preco.PP_ID}}").removeAttribute("onclick");
+                    document.getElementById("confirmar_B2W_GEA{{preco.PP_ID}}").setAttribute('value','Calcular');
+                    document.getElementsById("confirmar_B2W_GEA{{preco.PP_ID}}").removeAttribute('aria-disabled');
+                    
+                }
+            });
+        </script>
+    
+        <script type="text/javascript">
+            $(document).on('submit','#B2W_GEA',function(e){
+                e.preventDefault();
+    
+                var id_form = "input[name=id{{preco.PP_ID}}]";
+                var B2W_GEA_antigo = "input[name=B2W_GEA_antigo{{preco.PP_ID}}]";
+                var B2W_GEA_novo = "input[name=B2W_GEA{{preco.PP_ID}}]";
+                var custo_adm = "input[name=custo_adm{{preco.PP_ID}}]";
+                var imposto = "input[name=imposto{{preco.PP_ID}}]";
+                var comissao_B2W_GEA = "input[name=comissao_B2W_GEA{{preco.PP_ID}}]";
+                var valor_final = "input[name=valor_final_B2W_GEA{{preco.PP_ID}}]";
+                var portal = "input[name=portal_B2W_GEA]";
+    
+                $.ajax({
+                    type:'POST',
+                    url:"{% url 'precos:portais' %}",
+                    data:{
+                        id:$(id_form).val(),
+                        portal:$(portal).val(),
+                        portal_novo:$(B2W_GEA_novo).val(),
+                        portal_antigo:$(B2W_GEA_antigo).val(),
+                        adm:$(custo_adm).val(),
+                        imposto_geral:$(imposto).val(),
+                        comissao_portal:$(comissao_B2W_GEA).val(),
+                        final:$(valor_final).val(),
+                        csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                    },
+                    success: function(data){
+                        console.log(data)
+                        var id = "valor_final_B2W_GEA"+data[1];
+                        var valor = data[0]
+                        console.log(id,' ',valor);
+                        if (data[2] === "salvo"){
+                            document.getElementById("confirmar_B2W_GEA{{preco.PP_ID}}").removeAttribute("onclick");
+                            document.getElementById("confirmar_B2W_GEA{{preco.PP_ID}}").setAttribute('value','OK');
+                            document.getElementsById("confirmar_B2W_GEA{{preco.PP_ID}}").setAttribute('aria-disabled','true');
+                        }else{
+                            document.getElementById(id).value = valor;
+                            document.getElementById(id).setAttribute("value", data[0]);
+                            document.getElementById("confirmar_B2W_GEA{{preco.PP_ID}}").setAttribute('value','Salvar');
+                            document.getElementById("confirmar_B2W_GEA{{preco.PP_ID}}").setAttribute('onclick',"return confirm('Deseja Realmente salvar o preço do produto?')");
+                        }},
+                    error: function(){
+                        url = "{% url 'precos:portais' %}";
+                        console.log(url);
+                    }
+                });
+    
+            })
+    
+        </script>
+    </div>
+    <!-- Fim B2W_GEA -->
+    <!-- Começo B2W_JCMA -->
+    <div style="border: 1px solid #d5d5d5;padding:20px 20px 20px 20px; border-radius: 1px;
+    width:95%;">
+        <center style="padding-bottom: 20px;"><b>B2W_JCMA</b></b></center>
+    
+        <div class="row" >
+            <span class="col-sm"><b>B2W_JCMA</b></span>
+            <!-- <span class="col-sm"><b>Portal</b></span> -->
+            <span class="col-sm"><b>Custo Adm</b></span>
+            <span class="col-sm"><b>Imposto</b></span>
+            <span class="col-sm"><b>Comissão</b></span>
+            <span class="col-sm"><b>Valor Atual</b></span>
+            <span class="col-sm"><b>Valor Final</b></span>
+            <span class="col-sm">          </span>
+        </div>
+        <form  name="B2W_JCMA" id="B2W_JCMA">
+            {% csrf_token %}
+            <div class="row" >
+                <input name="id{{preco.PP_ID}}" class="col-sm" style="width:55px"  id="id{{preco.PP_ID}}" type="hidden" value="{{preco.PP_ID}}">
+                <input name="portal_B2W_JCMA" class="col-sm" style="width:55px"  id="portal_B2W_JCMA" type="hidden" value="B2W_JCMA">
+                <input name="B2W_JCMA_antigo{{preco.PP_ID}}" class="col-sm" style="width:55px"  id="B2W_JCMA_antigo{{preco.PP_ID}}" type="hidden" value="{{preco.PP_B2W_JCMA}}">
+                <input name="B2W_JCMA{{preco.PP_ID}}" title="Valor para nova precificação B2W_JCMA" step="0.01" class="col-sm" style="width:55px"  id="B2W_JCMA{{preco.PP_ID}}" type="number" placeholder="{{preco.PP_B2W_JCMA}}">
+                <input name="custo_adm{{preco.PP_ID}}" title="Custo Administrativo, alteravel apenas como regra!" class="col-sm" style="width:55px" id="custo_adm{{preco.PP_ID}}" type="number" value="{{preco.PP_custo_adm_portal}}" placeholder="{{preco.PP_custo_adm_portal}}" disabled="true"></span>
+                <input name="imposto{{preco.PP_ID}}" title="Imposto, alteravel apenas como regra!" class="col-sm" style="width:55px" id="imposto{{preco.PP_ID}}" type="number" value="{{preco.PP_imposto}}" placeholder="{{preco.PP_imposto}}" disabled="true"></span>
+                <input name="comissao_B2W_JCMA{{preco.PP_ID}}" title="Comissão B2W_JCMA, alteravel apenas como regra!" class="col-sm" style="width:55px" id="comissao_B2W_JCMA{{preco.PP_ID}}" type="number" value="{{comissoes.CS_B2W_JCMA_Comissao}}" placeholder="{{comissoes.CS_B2W_JCMA_Comissao}}" disabled="true"></span>
+                <input name="Valor_atual_B2W_JCMA{{preco.PPID}}" title="Valor Atual B2W_JCMA" class="col-sm" style="width:55px" id="Valor_atual_B2W_JCMA{{preco.PP_ID}}" value="{{calculado.B2W_JCMA}}" disabled="true"></span>
+                <input name="valor_final_B2W_JCMA{{preco.PP_ID}}" onfocus="this.value='';
+                document.getElementById('confirmar_B2W_JCMA{{preco.PP_ID}}').setAttribute('value','Calcular');
+                document.getElementById('confirmar_B2W_JCMA{{preco.PP_ID}}').removeAttribute('onclick');
+                " title="Valor final Amzon" class="col-sm" style="width:55px" id="valor_final_B2W_JCMA{{preco.PP_ID}}" value=""></input>        
+                <input id="confirmar_B2W_JCMA{{preco.PP_ID}}" class="btn btn-success col-sm" type="submit" value="Calcular">
+            </div>
+        </form>
+
+        <script type="text/javascript">
+            $("#valor_final_B2W_JCMA{{preco.PP_sku}}").keyup(function() {
+                var valor = $(this).val().length;
+                if (valor === 0){
+                    document.getElementById("confirmar_B2W_JCMA{{preco.PP_ID}}").removeAttribute("onclick");
+                    document.getElementById("confirmar_B2W_JCMA{{preco.PP_ID}}").setAttribute('value','Calcular');
+                    document.getElementsById("confirmar_B2W_JCMA{{preco.PP_ID}}").removeAttribute('aria-disabled');
+                    
+                }
+            });
+        </script>
+    
+        <script type="text/javascript">
+            $(document).on('submit','#B2W_JCMA',function(e){
+                e.preventDefault();
+    
+                var id_form = "input[name=id{{preco.PP_ID}}]";
+                var B2W_JCMA_antigo = "input[name=B2W_JCMA_antigo{{preco.PP_ID}}]";
+                var B2W_JCMA_novo = "input[name=B2W_JCMA{{preco.PP_ID}}]";
+                var custo_adm = "input[name=custo_adm{{preco.PP_ID}}]";
+                var imposto = "input[name=imposto{{preco.PP_ID}}]";
+                var comissao_B2W_JCMA = "input[name=comissao_B2W_JCMA{{preco.PP_ID}}]";
+                var valor_final = "input[name=valor_final_B2W_JCMA{{preco.PP_ID}}]";
+                var portal = "input[name=portal_B2W_JCMA]";
+    
+                $.ajax({
+                    type:'POST',
+                    url:"{% url 'precos:portais' %}",
+                    data:{
+                        id:$(id_form).val(),
+                        portal:$(portal).val(),
+                        portal_novo:$(B2W_JCMA_novo).val(),
+                        portal_antigo:$(B2W_JCMA_antigo).val(),
+                        adm:$(custo_adm).val(),
+                        imposto_geral:$(imposto).val(),
+                        comissao_portal:$(comissao_B2W_JCMA).val(),
+                        final:$(valor_final).val(),
+                        csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                    },
+                    success: function(data){
+                        console.log(data)
+                        var id = "valor_final_B2W_JCMA"+data[1];
+                        var valor = data[0]
+                        console.log(id,' ',valor);
+                        if (data[2] === "salvo"){
+                            document.getElementById("confirmar_B2W_JCMA{{preco.PP_ID}}").removeAttribute("onclick");
+                            document.getElementById("confirmar_B2W_JCMA{{preco.PP_ID}}").setAttribute('value','OK');
+                            document.getElementsById("confirmar_B2W_JCMA{{preco.PP_ID}}").setAttribute('aria-disabled','true');
+                        }else{
+                            document.getElementById(id).value = valor;
+                            document.getElementById(id).setAttribute("value", data[0]);
+                            document.getElementById("confirmar_B2W_JCMA{{preco.PP_ID}}").setAttribute('value','Salvar');
+                            document.getElementById("confirmar_B2W_JCMA{{preco.PP_ID}}").setAttribute('onclick',"return confirm('Deseja Realmente salvar o preço do produto?')");
+                        }},
+                    error: function(){
+                        url = "{% url 'precos:portais' %}";
+                        console.log(url);
+                    }
+                });
+    
+            })
+    
+        </script>
+    </div>
+    <!-- Fim B2W_JCMA -->
+    <!-- Começo B2W_KC -->
+    <div style="border: 1px solid #d5d5d5;padding:20px 20px 20px 20px; border-radius: 1px;
+    width:95%;">
+        <center style="padding-bottom: 20px;"><b>B2W_KC</b></b></center>
+    
+        <div class="row" >
+            <span class="col-sm"><b>B2W_KC</b></span>
+            <!-- <span class="col-sm"><b>Portal</b></span> -->
+            <span class="col-sm"><b>Custo Adm</b></span>
+            <span class="col-sm"><b>Imposto</b></span>
+            <span class="col-sm"><b>Comissão</b></span>
+            <span class="col-sm"><b>Valor Atual</b></span>
+            <span class="col-sm"><b>Valor Final</b></span>
+            <span class="col-sm">          </span>
+        </div>
+        <form  name="B2W_KC" id="B2W_KC">
+            {% csrf_token %}
+            <div class="row" >
+                <input name="id{{preco.PP_ID}}" class="col-sm" style="width:55px"  id="id{{preco.PP_ID}}" type="hidden" value="{{preco.PP_ID}}">
+                <input name="portal_B2W_KC" class="col-sm" style="width:55px"  id="portal_B2W_KC" type="hidden" value="B2W_KC">
+                <input name="B2W_KC_antigo{{preco.PP_ID}}" class="col-sm" style="width:55px"  id="B2W_KC_antigo{{preco.PP_ID}}" type="hidden" value="{{preco.PP_B2W_KC}}">
+                <input name="B2W_KC{{preco.PP_ID}}" title="Valor para nova precificação B2W_KC" step="0.01" class="col-sm" style="width:55px"  id="B2W_KC{{preco.PP_ID}}" type="number" placeholder="{{preco.PP_B2W_KC}}">
+                <input name="custo_adm{{preco.PP_ID}}" title="Custo Administrativo, alteravel apenas como regra!" class="col-sm" style="width:55px" id="custo_adm{{preco.PP_ID}}" type="number" value="{{preco.PP_custo_adm_portal}}" placeholder="{{preco.PP_custo_adm_portal}}" disabled="true"></span>
+                <input name="imposto{{preco.PP_ID}}" title="Imposto, alteravel apenas como regra!" class="col-sm" style="width:55px" id="imposto{{preco.PP_ID}}" type="number" value="{{preco.PP_imposto}}" placeholder="{{preco.PP_imposto}}" disabled="true"></span>
+                <input name="comissao_B2W_KC{{preco.PP_ID}}" title="Comissão B2W_KC, alteravel apenas como regra!" class="col-sm" style="width:55px" id="comissao_B2W_KC{{preco.PP_ID}}" type="number" value="{{comissoes.CS_B2W_KC_Comissao}}" placeholder="{{comissoes.CS_B2W_KC_Comissao}}" disabled="true"></span>
+                <input name="Valor_atual_B2W_KC{{preco.PPID}}" title="Valor Atual B2W_KC" class="col-sm" style="width:55px" id="Valor_atual_B2W_KC{{preco.PP_ID}}" value="{{calculado.B2W_KC}}" disabled="true"></span>
+                <input name="valor_final_B2W_KC{{preco.PP_ID}}" onfocus="this.value='';
+                document.getElementById('confirmar_B2W_KC{{preco.PP_ID}}').setAttribute('value','Calcular');
+                document.getElementById('confirmar_B2W_KC{{preco.PP_ID}}').removeAttribute('onclick');
+                " title="Valor final Amzon" class="col-sm" style="width:55px" id="valor_final_B2W_KC{{preco.PP_ID}}" value=""></input>        
+                <input id="confirmar_B2W_KC{{preco.PP_ID}}" class="btn btn-success col-sm" type="submit" value="Calcular">
+            </div>
+        </form>
+
+        <script type="text/javascript">
+            $("#valor_final_B2W_KC{{preco.PP_sku}}").keyup(function() {
+                var valor = $(this).val().length;
+                if (valor === 0){
+                    document.getElementById("confirmar_B2W_KC{{preco.PP_ID}}").removeAttribute("onclick");
+                    document.getElementById("confirmar_B2W_KC{{preco.PP_ID}}").setAttribute('value','Calcular');
+                    document.getElementsById("confirmar_B2W_KC{{preco.PP_ID}}").removeAttribute('aria-disabled');
+                    
+                }
+            });
+        </script>
+    
+        <script type="text/javascript">
+            $(document).on('submit','#B2W_KC',function(e){
+                e.preventDefault();
+    
+                var id_form = "input[name=id{{preco.PP_ID}}]";
+                var B2W_KC_antigo = "input[name=B2W_KC_antigo{{preco.PP_ID}}]";
+                var B2W_KC_novo = "input[name=B2W_KC{{preco.PP_ID}}]";
+                var custo_adm = "input[name=custo_adm{{preco.PP_ID}}]";
+                var imposto = "input[name=imposto{{preco.PP_ID}}]";
+                var comissao_B2W_KC = "input[name=comissao_B2W_KC{{preco.PP_ID}}]";
+                var valor_final = "input[name=valor_final_B2W_KC{{preco.PP_ID}}]";
+                var portal = "input[name=portal_B2W_KC]";
+    
+                $.ajax({
+                    type:'POST',
+                    url:"{% url 'precos:portais' %}",
+                    data:{
+                        id:$(id_form).val(),
+                        portal:$(portal).val(),
+                        portal_novo:$(B2W_KC_novo).val(),
+                        portal_antigo:$(B2W_KC_antigo).val(),
+                        adm:$(custo_adm).val(),
+                        imposto_geral:$(imposto).val(),
+                        comissao_portal:$(comissao_B2W_KC).val(),
+                        final:$(valor_final).val(),
+                        csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                    },
+                    success: function(data){
+                        console.log(data)
+                        var id = "valor_final_B2W_KC"+data[1];
+                        var valor = data[0]
+                        console.log(id,' ',valor);
+                        if (data[2] === "salvo"){
+                            document.getElementById("confirmar_B2W_KC{{preco.PP_ID}}").removeAttribute("onclick");
+                            document.getElementById("confirmar_B2W_KC{{preco.PP_ID}}").setAttribute('value','OK');
+                            document.getElementsById("confirmar_B2W_KC{{preco.PP_ID}}").setAttribute('aria-disabled','true');
+                        }else{
+                            document.getElementById(id).value = valor;
+                            document.getElementById(id).setAttribute("value", data[0]);
+                            document.getElementById("confirmar_B2W_KC{{preco.PP_ID}}").setAttribute('value','Salvar');
+                            document.getElementById("confirmar_B2W_KC{{preco.PP_ID}}").setAttribute('onclick',"return confirm('Deseja Realmente salvar o preço do produto?')");
+                        }},
+                    error: function(){
+                        url = "{% url 'precos:portais' %}";
+                        console.log(url);
+                    }
+                });
+    
+            })
+    
+        </script>
+    </div>
+    <!-- Fim B2W_KC -->
+    <!-- Começo Carrefour_ALK -->
+    <div style="border: 1px solid #d5d5d5;padding:20px 20px 20px 20px; border-radius: 1px;
+    width:95%;">
+        <center style="padding-bottom: 20px;"><b>Carrefour_ALK</b></b></center>
+    
+        <div class="row" >
+            <span class="col-sm"><b>Carrefour_ALK</b></span>
+            <!-- <span class="col-sm"><b>Portal</b></span> -->
+            <span class="col-sm"><b>Custo Adm</b></span>
+            <span class="col-sm"><b>Imposto</b></span>
+            <span class="col-sm"><b>Comissão</b></span>
+            <span class="col-sm"><b>Valor Atual</b></span>
+            <span class="col-sm"><b>Valor Final</b></span>
+            <span class="col-sm">          </span>
+        </div>
+        <form  name="Carrefour_ALK" id="Carrefour_ALK">
+            {% csrf_token %}
+            <div class="row" >
+                <input name="id{{preco.PP_ID}}" class="col-sm" style="width:55px"  id="id{{preco.PP_ID}}" type="hidden" value="{{preco.PP_ID}}">
+                <input name="portal_Carrefour_ALK" class="col-sm" style="width:55px"  id="portal_Carrefour_ALK" type="hidden" value="Carrefour_ALK">
+                <input name="Carrefour_ALK_antigo{{preco.PP_ID}}" class="col-sm" style="width:55px"  id="Carrefour_ALK_antigo{{preco.PP_ID}}" type="hidden" value="{{preco.PP_Carrefour_ALK}}">
+                <input name="Carrefour_ALK{{preco.PP_ID}}" title="Valor para nova precificação Carrefour_ALK" step="0.01" class="col-sm" style="width:55px"  id="Carrefour_ALK{{preco.PP_ID}}" type="number" placeholder="{{preco.PP_Carrefour_ALK}}">
+                <input name="custo_adm{{preco.PP_ID}}" title="Custo Administrativo, alteravel apenas como regra!" class="col-sm" style="width:55px" id="custo_adm{{preco.PP_ID}}" type="number" value="{{preco.PP_custo_adm_portal}}" placeholder="{{preco.PP_custo_adm_portal}}" disabled="true"></span>
+                <input name="imposto{{preco.PP_ID}}" title="Imposto, alteravel apenas como regra!" class="col-sm" style="width:55px" id="imposto{{preco.PP_ID}}" type="number" value="{{preco.PP_imposto}}" placeholder="{{preco.PP_imposto}}" disabled="true"></span>
+                <input name="comissao_Carrefour_ALK{{preco.PP_ID}}" title="Comissão Carrefour_ALK, alteravel apenas como regra!" class="col-sm" style="width:55px" id="comissao_Carrefour_ALK{{preco.PP_ID}}" type="number" value="{{comissoes.CS_Carrefour_ALK_Comissao}}" placeholder="{{comissoes.CS_Carrefour_ALK_Comissao}}" disabled="true"></span>
+                <input name="Valor_atual_Carrefour_ALK{{preco.PPID}}" title="Valor Atual Carrefour_ALK" class="col-sm" style="width:55px" id="Valor_atual_Carrefour_ALK{{preco.PP_ID}}" value="{{calculado.Carrefour_ALK}}" disabled="true"></span>
+                <input name="valor_final_Carrefour_ALK{{preco.PP_ID}}" onfocus="this.value='';
+                document.getElementById('confirmar_Carrefour_ALK{{preco.PP_ID}}').setAttribute('value','Calcular');
+                document.getElementById('confirmar_Carrefour_ALK{{preco.PP_ID}}').removeAttribute('onclick');
+                " title="Valor final Amzon" class="col-sm" style="width:55px" id="valor_final_Carrefour_ALK{{preco.PP_ID}}" value=""></input>        
+                <input id="confirmar_Carrefour_ALK{{preco.PP_ID}}" class="btn btn-success col-sm" type="submit" value="Calcular">
+            </div>
+        </form>
+
+        <script type="text/javascript">
+            $("#valor_final_Carrefour_ALK{{preco.PP_sku}}").keyup(function() {
+                var valor = $(this).val().length;
+                if (valor === 0){
+                    document.getElementById("confirmar_Carrefour_ALK{{preco.PP_ID}}").removeAttribute("onclick");
+                    document.getElementById("confirmar_Carrefour_ALK{{preco.PP_ID}}").setAttribute('value','Calcular');
+                    document.getElementsById("confirmar_Carrefour_ALK{{preco.PP_ID}}").removeAttribute('aria-disabled');
+                    
+                }
+            });
+        </script>
+    
+        <script type="text/javascript">
+            $(document).on('submit','#Carrefour_ALK',function(e){
+                e.preventDefault();
+    
+                var id_form = "input[name=id{{preco.PP_ID}}]";
+                var Carrefour_ALK_antigo = "input[name=Carrefour_ALK_antigo{{preco.PP_ID}}]";
+                var Carrefour_ALK_novo = "input[name=Carrefour_ALK{{preco.PP_ID}}]";
+                var custo_adm = "input[name=custo_adm{{preco.PP_ID}}]";
+                var imposto = "input[name=imposto{{preco.PP_ID}}]";
+                var comissao_Carrefour_ALK = "input[name=comissao_Carrefour_ALK{{preco.PP_ID}}]";
+                var valor_final = "input[name=valor_final_Carrefour_ALK{{preco.PP_ID}}]";
+                var portal = "input[name=portal_Carrefour_ALK]";
+    
+                $.ajax({
+                    type:'POST',
+                    url:"{% url 'precos:portais' %}",
+                    data:{
+                        id:$(id_form).val(),
+                        portal:$(portal).val(),
+                        portal_novo:$(Carrefour_ALK_novo).val(),
+                        portal_antigo:$(Carrefour_ALK_antigo).val(),
+                        adm:$(custo_adm).val(),
+                        imposto_geral:$(imposto).val(),
+                        comissao_portal:$(comissao_Carrefour_ALK).val(),
+                        final:$(valor_final).val(),
+                        csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                    },
+                    success: function(data){
+                        console.log(data)
+                        var id = "valor_final_Carrefour_ALK"+data[1];
+                        var valor = data[0]
+                        console.log(id,' ',valor);
+                        if (data[2] === "salvo"){
+                            document.getElementById("confirmar_Carrefour_ALK{{preco.PP_ID}}").removeAttribute("onclick");
+                            document.getElementById("confirmar_Carrefour_ALK{{preco.PP_ID}}").setAttribute('value','OK');
+                            document.getElementsById("confirmar_Carrefour_ALK{{preco.PP_ID}}").setAttribute('aria-disabled','true');
+                        }else{
+                            document.getElementById(id).value = valor;
+                            document.getElementById(id).setAttribute("value", data[0]);
+                            document.getElementById("confirmar_Carrefour_ALK{{preco.PP_ID}}").setAttribute('value','Salvar');
+                            document.getElementById("confirmar_Carrefour_ALK{{preco.PP_ID}}").setAttribute('onclick',"return confirm('Deseja Realmente salvar o preço do produto?')");
+                        }},
+                    error: function(){
+                        url = "{% url 'precos:portais' %}";
+                        console.log(url);
+                    }
+                });
+    
+            })
+    
+        </script>
+    </div>
+    <!-- Fim Carrefour_ALK -->
+    <!-- Começo Carrefour_GEA -->
+    <div style="border: 1px solid #d5d5d5;padding:20px 20px 20px 20px; border-radius: 1px;
+    width:95%;">
+        <center style="padding-bottom: 20px;"><b>Carrefour_GEA</b></b></center>
+    
+        <div class="row" >
+            <span class="col-sm"><b>Carrefour_GEA</b></span>
+            <!-- <span class="col-sm"><b>Portal</b></span> -->
+            <span class="col-sm"><b>Custo Adm</b></span>
+            <span class="col-sm"><b>Imposto</b></span>
+            <span class="col-sm"><b>Comissão</b></span>
+            <span class="col-sm"><b>Valor Atual</b></span>
+            <span class="col-sm"><b>Valor Final</b></span>
+            <span class="col-sm">          </span>
+        </div>
+        <form  name="Carrefour_GEA" id="Carrefour_GEA">
+            {% csrf_token %}
+            <div class="row" >
+                <input name="id{{preco.PP_ID}}" class="col-sm" style="width:55px"  id="id{{preco.PP_ID}}" type="hidden" value="{{preco.PP_ID}}">
+                <input name="portal_Carrefour_GEA" class="col-sm" style="width:55px"  id="portal_Carrefour_GEA" type="hidden" value="Carrefour_GEA">
+                <input name="Carrefour_GEA_antigo{{preco.PP_ID}}" class="col-sm" style="width:55px"  id="Carrefour_GEA_antigo{{preco.PP_ID}}" type="hidden" value="{{preco.PP_Carrefour_GEA}}">
+                <input name="Carrefour_GEA{{preco.PP_ID}}" title="Valor para nova precificação Carrefour_GEA" step="0.01" class="col-sm" style="width:55px"  id="Carrefour_GEA{{preco.PP_ID}}" type="number" placeholder="{{preco.PP_Carrefour_GEA}}">
+                <input name="custo_adm{{preco.PP_ID}}" title="Custo Administrativo, alteravel apenas como regra!" class="col-sm" style="width:55px" id="custo_adm{{preco.PP_ID}}" type="number" value="{{preco.PP_custo_adm_portal}}" placeholder="{{preco.PP_custo_adm_portal}}" disabled="true"></span>
+                <input name="imposto{{preco.PP_ID}}" title="Imposto, alteravel apenas como regra!" class="col-sm" style="width:55px" id="imposto{{preco.PP_ID}}" type="number" value="{{preco.PP_imposto}}" placeholder="{{preco.PP_imposto}}" disabled="true"></span>
+                <input name="comissao_Carrefour_GEA{{preco.PP_ID}}" title="Comissão Carrefour_GEA, alteravel apenas como regra!" class="col-sm" style="width:55px" id="comissao_Carrefour_GEA{{preco.PP_ID}}" type="number" value="{{comissoes.CS_Carrefour_GEA_Comissao}}" placeholder="{{comissoes.CS_Carrefour_GEA_Comissao}}" disabled="true"></span>
+                <input name="Valor_atual_Carrefour_GEA{{preco.PPID}}" title="Valor Atual Carrefour_GEA" class="col-sm" style="width:55px" id="Valor_atual_Carrefour_GEA{{preco.PP_ID}}" value="{{calculado.Carrefour_GEA}}" disabled="true"></span>
+                <input name="valor_final_Carrefour_GEA{{preco.PP_ID}}" onfocus="this.value='';
+                document.getElementById('confirmar_Carrefour_GEA{{preco.PP_ID}}').setAttribute('value','Calcular');
+                document.getElementById('confirmar_Carrefour_GEA{{preco.PP_ID}}').removeAttribute('onclick');
+                " title="Valor final Amzon" class="col-sm" style="width:55px" id="valor_final_Carrefour_GEA{{preco.PP_ID}}" value=""></input>        
+                <input id="confirmar_Carrefour_GEA{{preco.PP_ID}}" class="btn btn-success col-sm" type="submit" value="Calcular">
+            </div>
+        </form>
+
+        <script type="text/javascript">
+            $("#valor_final_Carrefour_GEA{{preco.PP_sku}}").keyup(function() {
+                var valor = $(this).val().length;
+                if (valor === 0){
+                    document.getElementById("confirmar_Carrefour_GEA{{preco.PP_ID}}").removeAttribute("onclick");
+                    document.getElementById("confirmar_Carrefour_GEA{{preco.PP_ID}}").setAttribute('value','Calcular');
+                    document.getElementsById("confirmar_Carrefour_GEA{{preco.PP_ID}}").removeAttribute('aria-disabled');
+                    
+                }
+            });
+        </script>
+    
+        <script type="text/javascript">
+            $(document).on('submit','#Carrefour_GEA',function(e){
+                e.preventDefault();
+    
+                var id_form = "input[name=id{{preco.PP_ID}}]";
+                var Carrefour_GEA_antigo = "input[name=Carrefour_GEA_antigo{{preco.PP_ID}}]";
+                var Carrefour_GEA_novo = "input[name=Carrefour_GEA{{preco.PP_ID}}]";
+                var custo_adm = "input[name=custo_adm{{preco.PP_ID}}]";
+                var imposto = "input[name=imposto{{preco.PP_ID}}]";
+                var comissao_Carrefour_GEA = "input[name=comissao_Carrefour_GEA{{preco.PP_ID}}]";
+                var valor_final = "input[name=valor_final_Carrefour_GEA{{preco.PP_ID}}]";
+                var portal = "input[name=portal_Carrefour_GEA]";
+    
+                $.ajax({
+                    type:'POST',
+                    url:"{% url 'precos:portais' %}",
+                    data:{
+                        id:$(id_form).val(),
+                        portal:$(portal).val(),
+                        portal_novo:$(Carrefour_GEA_novo).val(),
+                        portal_antigo:$(Carrefour_GEA_antigo).val(),
+                        adm:$(custo_adm).val(),
+                        imposto_geral:$(imposto).val(),
+                        comissao_portal:$(comissao_Carrefour_GEA).val(),
+                        final:$(valor_final).val(),
+                        csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                    },
+                    success: function(data){
+                        console.log(data)
+                        var id = "valor_final_Carrefour_GEA"+data[1];
+                        var valor = data[0]
+                        console.log(id,' ',valor);
+                        if (data[2] === "salvo"){
+                            document.getElementById("confirmar_Carrefour_GEA{{preco.PP_ID}}").removeAttribute("onclick");
+                            document.getElementById("confirmar_Carrefour_GEA{{preco.PP_ID}}").setAttribute('value','OK');
+                            document.getElementsById("confirmar_Carrefour_GEA{{preco.PP_ID}}").setAttribute('aria-disabled','true');
+                        }else{
+                            document.getElementById(id).value = valor;
+                            document.getElementById(id).setAttribute("value", data[0]);
+                            document.getElementById("confirmar_Carrefour_GEA{{preco.PP_ID}}").setAttribute('value','Salvar');
+                            document.getElementById("confirmar_Carrefour_GEA{{preco.PP_ID}}").setAttribute('onclick',"return confirm('Deseja Realmente salvar o preço do produto?')");
+                        }},
+                    error: function(){
+                        url = "{% url 'precos:portais' %}";
+                        console.log(url);
+                    }
+                });
+    
+            })
+    
+        </script>
+    </div>
+    <!-- Fim Carrefour_GEA -->
+    <!-- Começo Centauro_ALK -->
+    <div style="border: 1px solid #d5d5d5;padding:20px 20px 20px 20px; border-radius: 1px;
+    width:95%;">
+        <center style="padding-bottom: 20px;"><b>Centauro_ALK</b></b></center>
+    
+        <div class="row" >
+            <span class="col-sm"><b>Centauro_ALK</b></span>
+            <!-- <span class="col-sm"><b>Portal</b></span> -->
+            <span class="col-sm"><b>Custo Adm</b></span>
+            <span class="col-sm"><b>Imposto</b></span>
+            <span class="col-sm"><b>Comissão</b></span>
+            <span class="col-sm"><b>Valor Atual</b></span>
+            <span class="col-sm"><b>Valor Final</b></span>
+            <span class="col-sm">          </span>
+        </div>
+        <form  name="Centauro_ALK" id="Centauro_ALK">
+            {% csrf_token %}
+            <div class="row" >
+                <input name="id{{preco.PP_ID}}" class="col-sm" style="width:55px"  id="id{{preco.PP_ID}}" type="hidden" value="{{preco.PP_ID}}">
+                <input name="portal_Centauro_ALK" class="col-sm" style="width:55px"  id="portal_Centauro_ALK" type="hidden" value="Centauro_ALK">
+                <input name="Centauro_ALK_antigo{{preco.PP_ID}}" class="col-sm" style="width:55px"  id="Centauro_ALK_antigo{{preco.PP_ID}}" type="hidden" value="{{preco.PP_Centauro_ALK}}">
+                <input name="Centauro_ALK{{preco.PP_ID}}" title="Valor para nova precificação Centauro_ALK" step="0.01" class="col-sm" style="width:55px"  id="Centauro_ALK{{preco.PP_ID}}" type="number" placeholder="{{preco.PP_Centauro_ALK}}">
+                <input name="custo_adm{{preco.PP_ID}}" title="Custo Administrativo, alteravel apenas como regra!" class="col-sm" style="width:55px" id="custo_adm{{preco.PP_ID}}" type="number" value="{{preco.PP_custo_adm_portal}}" placeholder="{{preco.PP_custo_adm_portal}}" disabled="true"></span>
+                <input name="imposto{{preco.PP_ID}}" title="Imposto, alteravel apenas como regra!" class="col-sm" style="width:55px" id="imposto{{preco.PP_ID}}" type="number" value="{{preco.PP_imposto}}" placeholder="{{preco.PP_imposto}}" disabled="true"></span>
+                <input name="comissao_Centauro_ALK{{preco.PP_ID}}" title="Comissão Centauro_ALK, alteravel apenas como regra!" class="col-sm" style="width:55px" id="comissao_Centauro_ALK{{preco.PP_ID}}" type="number" value="{{comissoes.CS_Centauro_ALK_Comissao}}" placeholder="{{comissoes.CS_Centauro_ALK_Comissao}}" disabled="true"></span>
+                <input name="Valor_atual_Centauro_ALK{{preco.PPID}}" title="Valor Atual Centauro_ALK" class="col-sm" style="width:55px" id="Valor_atual_Centauro_ALK{{preco.PP_ID}}" value="{{calculado.Centauro_ALK}}" disabled="true"></span>
+                <input name="valor_final_Centauro_ALK{{preco.PP_ID}}" onfocus="this.value='';
+                document.getElementById('confirmar_Centauro_ALK{{preco.PP_ID}}').setAttribute('value','Calcular');
+                document.getElementById('confirmar_Centauro_ALK{{preco.PP_ID}}').removeAttribute('onclick');
+                " title="Valor final Amzon" class="col-sm" style="width:55px" id="valor_final_Centauro_ALK{{preco.PP_ID}}" value=""></input>        
+                <input id="confirmar_Centauro_ALK{{preco.PP_ID}}" class="btn btn-success col-sm" type="submit" value="Calcular">
+            </div>
+        </form>
+
+        <script type="text/javascript">
+            $("#valor_final_Centauro_ALK{{preco.PP_sku}}").keyup(function() {
+                var valor = $(this).val().length;
+                if (valor === 0){
+                    document.getElementById("confirmar_Centauro_ALK{{preco.PP_ID}}").removeAttribute("onclick");
+                    document.getElementById("confirmar_Centauro_ALK{{preco.PP_ID}}").setAttribute('value','Calcular');
+                    document.getElementsById("confirmar_Centauro_ALK{{preco.PP_ID}}").removeAttribute('aria-disabled');
+                    
+                }
+            });
+        </script>
+    
+        <script type="text/javascript">
+            $(document).on('submit','#Centauro_ALK',function(e){
+                e.preventDefault();
+    
+                var id_form = "input[name=id{{preco.PP_ID}}]";
+                var Centauro_ALK_antigo = "input[name=Centauro_ALK_antigo{{preco.PP_ID}}]";
+                var Centauro_ALK_novo = "input[name=Centauro_ALK{{preco.PP_ID}}]";
+                var custo_adm = "input[name=custo_adm{{preco.PP_ID}}]";
+                var imposto = "input[name=imposto{{preco.PP_ID}}]";
+                var comissao_Centauro_ALK = "input[name=comissao_Centauro_ALK{{preco.PP_ID}}]";
+                var valor_final = "input[name=valor_final_Centauro_ALK{{preco.PP_ID}}]";
+                var portal = "input[name=portal_Centauro_ALK]";
+    
+                $.ajax({
+                    type:'POST',
+                    url:"{% url 'precos:portais' %}",
+                    data:{
+                        id:$(id_form).val(),
+                        portal:$(portal).val(),
+                        portal_novo:$(Centauro_ALK_novo).val(),
+                        portal_antigo:$(Centauro_ALK_antigo).val(),
+                        adm:$(custo_adm).val(),
+                        imposto_geral:$(imposto).val(),
+                        comissao_portal:$(comissao_Centauro_ALK).val(),
+                        final:$(valor_final).val(),
+                        csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                    },
+                    success: function(data){
+                        console.log(data)
+                        var id = "valor_final_Centauro_ALK"+data[1];
+                        var valor = data[0]
+                        console.log(id,' ',valor);
+                        if (data[2] === "salvo"){
+                            document.getElementById("confirmar_Centauro_ALK{{preco.PP_ID}}").removeAttribute("onclick");
+                            document.getElementById("confirmar_Centauro_ALK{{preco.PP_ID}}").setAttribute('value','OK');
+                            document.getElementsById("confirmar_Centauro_ALK{{preco.PP_ID}}").setAttribute('aria-disabled','true');
+                        }else{
+                            document.getElementById(id).value = valor;
+                            document.getElementById(id).setAttribute("value", data[0]);
+                            document.getElementById("confirmar_Centauro_ALK{{preco.PP_ID}}").setAttribute('value','Salvar');
+                            document.getElementById("confirmar_Centauro_ALK{{preco.PP_ID}}").setAttribute('onclick',"return confirm('Deseja Realmente salvar o preço do produto?')");
+                        }},
+                    error: function(){
+                        url = "{% url 'precos:portais' %}";
+                        console.log(url);
+                    }
+                });
+    
+            })
+    
+        </script>
+    </div>
+    <!-- Fim Centauro_ALK -->
+    <!-- Começo Cnova_KES -->
+    <div style="border: 1px solid #d5d5d5;padding:20px 20px 20px 20px; border-radius: 1px;
+    width:95%;">
+        <center style="padding-bottom: 20px;"><b>Cnova_KES</b></b></center>
+    
+        <div class="row" >
+            <span class="col-sm"><b>Cnova_KES</b></span>
+            <!-- <span class="col-sm"><b>Portal</b></span> -->
+            <span class="col-sm"><b>Custo Adm</b></span>
+            <span class="col-sm"><b>Imposto</b></span>
+            <span class="col-sm"><b>Comissão</b></span>
+            <span class="col-sm"><b>Valor Atual</b></span>
+            <span class="col-sm"><b>Valor Final</b></span>
+            <span class="col-sm">          </span>
+        </div>
+        <form  name="Cnova_KES" id="Cnova_KES">
+            {% csrf_token %}
+            <div class="row" >
+                <input name="id{{preco.PP_ID}}" class="col-sm" style="width:55px"  id="id{{preco.PP_ID}}" type="hidden" value="{{preco.PP_ID}}">
+                <input name="portal_Cnova_KES" class="col-sm" style="width:55px"  id="portal_Cnova_KES" type="hidden" value="Cnova_KES">
+                <input name="Cnova_KES_antigo{{preco.PP_ID}}" class="col-sm" style="width:55px"  id="Cnova_KES_antigo{{preco.PP_ID}}" type="hidden" value="{{preco.PP_Cnova_KES}}">
+                <input name="Cnova_KES{{preco.PP_ID}}" title="Valor para nova precificação Cnova_KES" step="0.01" class="col-sm" style="width:55px"  id="Cnova_KES{{preco.PP_ID}}" type="number" placeholder="{{preco.PP_Cnova_KES}}">
+                <input name="custo_adm{{preco.PP_ID}}" title="Custo Administrativo, alteravel apenas como regra!" class="col-sm" style="width:55px" id="custo_adm{{preco.PP_ID}}" type="number" value="{{preco.PP_custo_adm_portal}}" placeholder="{{preco.PP_custo_adm_portal}}" disabled="true"></span>
+                <input name="imposto{{preco.PP_ID}}" title="Imposto, alteravel apenas como regra!" class="col-sm" style="width:55px" id="imposto{{preco.PP_ID}}" type="number" value="{{preco.PP_imposto}}" placeholder="{{preco.PP_imposto}}" disabled="true"></span>
+                <input name="comissao_Cnova_KES{{preco.PP_ID}}" title="Comissão Cnova_KES, alteravel apenas como regra!" class="col-sm" style="width:55px" id="comissao_Cnova_KES{{preco.PP_ID}}" type="number" value="{{comissoes.CS_Cnova_KES_Comissao}}" placeholder="{{comissoes.CS_Cnova_KES_Comissao}}" disabled="true"></span>
+                <input name="Valor_atual_Cnova_KES{{preco.PPID}}" title="Valor Atual Cnova_KES" class="col-sm" style="width:55px" id="Valor_atual_Cnova_KES{{preco.PP_ID}}" value="{{calculado.Cnova_KES}}" disabled="true"></span>
+                <input name="valor_final_Cnova_KES{{preco.PP_ID}}" onfocus="this.value='';
+                document.getElementById('confirmar_Cnova_KES{{preco.PP_ID}}').setAttribute('value','Calcular');
+                document.getElementById('confirmar_Cnova_KES{{preco.PP_ID}}').removeAttribute('onclick');
+                " title="Valor final Amzon" class="col-sm" style="width:55px" id="valor_final_Cnova_KES{{preco.PP_ID}}" value=""></input>        
+                <input id="confirmar_Cnova_KES{{preco.PP_ID}}" class="btn btn-success col-sm" type="submit" value="Calcular">
+            </div>
+        </form>
+
+        <script type="text/javascript">
+            $("#valor_final_Cnova_KES{{preco.PP_sku}}").keyup(function() {
+                var valor = $(this).val().length;
+                if (valor === 0){
+                    document.getElementById("confirmar_Cnova_KES{{preco.PP_ID}}").removeAttribute("onclick");
+                    document.getElementById("confirmar_Cnova_KES{{preco.PP_ID}}").setAttribute('value','Calcular');
+                    document.getElementsById("confirmar_Cnova_KES{{preco.PP_ID}}").removeAttribute('aria-disabled');
+                    
+                }
+            });
+        </script>
+    
+        <script type="text/javascript">
+            $(document).on('submit','#Cnova_KES',function(e){
+                e.preventDefault();
+    
+                var id_form = "input[name=id{{preco.PP_ID}}]";
+                var Cnova_KES_antigo = "input[name=Cnova_KES_antigo{{preco.PP_ID}}]";
+                var Cnova_KES_novo = "input[name=Cnova_KES{{preco.PP_ID}}]";
+                var custo_adm = "input[name=custo_adm{{preco.PP_ID}}]";
+                var imposto = "input[name=imposto{{preco.PP_ID}}]";
+                var comissao_Cnova_KES = "input[name=comissao_Cnova_KES{{preco.PP_ID}}]";
+                var valor_final = "input[name=valor_final_Cnova_KES{{preco.PP_ID}}]";
+                var portal = "input[name=portal_Cnova_KES]";
+    
+                $.ajax({
+                    type:'POST',
+                    url:"{% url 'precos:portais' %}",
+                    data:{
+                        id:$(id_form).val(),
+                        portal:$(portal).val(),
+                        portal_novo:$(Cnova_KES_novo).val(),
+                        portal_antigo:$(Cnova_KES_antigo).val(),
+                        adm:$(custo_adm).val(),
+                        imposto_geral:$(imposto).val(),
+                        comissao_portal:$(comissao_Cnova_KES).val(),
+                        final:$(valor_final).val(),
+                        csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                    },
+                    success: function(data){
+                        console.log(data)
+                        var id = "valor_final_Cnova_KES"+data[1];
+                        var valor = data[0]
+                        console.log(id,' ',valor);
+                        if (data[2] === "salvo"){
+                            document.getElementById("confirmar_Cnova_KES{{preco.PP_ID}}").removeAttribute("onclick");
+                            document.getElementById("confirmar_Cnova_KES{{preco.PP_ID}}").setAttribute('value','OK');
+                            document.getElementsById("confirmar_Cnova_KES{{preco.PP_ID}}").setAttribute('aria-disabled','true');
+                        }else{
+                            document.getElementById(id).value = valor;
+                            document.getElementById(id).setAttribute("value", data[0]);
+                            document.getElementById("confirmar_Cnova_KES{{preco.PP_ID}}").setAttribute('value','Salvar');
+                            document.getElementById("confirmar_Cnova_KES{{preco.PP_ID}}").setAttribute('onclick',"return confirm('Deseja Realmente salvar o preço do produto?')");
+                        }},
+                    error: function(){
+                        url = "{% url 'precos:portais' %}";
+                        console.log(url);
+                    }
+                });
+    
+            })
+    
+        </script>
+    </div>
+    <!-- Fim Cnova_KES -->
+    <!-- Começo MadeiraMadeira_KES -->
+    <div style="border: 1px solid #d5d5d5;padding:20px 20px 20px 20px; border-radius: 1px;
+    width:95%;">
+        <center style="padding-bottom: 20px;"><b>MadeiraMadeira_KES</b></b></center>
+    
+        <div class="row" >
+            <span class="col-sm"><b>MadeiraMadeira_KES</b></span>
+            <!-- <span class="col-sm"><b>Portal</b></span> -->
+            <span class="col-sm"><b>Custo Adm</b></span>
+            <span class="col-sm"><b>Imposto</b></span>
+            <span class="col-sm"><b>Comissão</b></span>
+            <span class="col-sm"><b>Valor Atual</b></span>
+            <span class="col-sm"><b>Valor Final</b></span>
+            <span class="col-sm">          </span>
+        </div>
+        <form  name="MadeiraMadeira_KES" id="MadeiraMadeira_KES">
+            {% csrf_token %}
+            <div class="row" >
+                <input name="id{{preco.PP_ID}}" class="col-sm" style="width:55px"  id="id{{preco.PP_ID}}" type="hidden" value="{{preco.PP_ID}}">
+                <input name="portal_MadeiraMadeira_KES" class="col-sm" style="width:55px"  id="portal_MadeiraMadeira_KES" type="hidden" value="MadeiraMadeira_KES">
+                <input name="MadeiraMadeira_KES_antigo{{preco.PP_ID}}" class="col-sm" style="width:55px"  id="MadeiraMadeira_KES_antigo{{preco.PP_ID}}" type="hidden" value="{{preco.PP_MadeiraMadeira_KES}}">
+                <input name="MadeiraMadeira_KES{{preco.PP_ID}}" title="Valor para nova precificação MadeiraMadeira_KES" step="0.01" class="col-sm" style="width:55px"  id="MadeiraMadeira_KES{{preco.PP_ID}}" type="number" placeholder="{{preco.PP_MadeiraMadeira_KES}}">
+                <input name="custo_adm{{preco.PP_ID}}" title="Custo Administrativo, alteravel apenas como regra!" class="col-sm" style="width:55px" id="custo_adm{{preco.PP_ID}}" type="number" value="{{preco.PP_custo_adm_portal}}" placeholder="{{preco.PP_custo_adm_portal}}" disabled="true"></span>
+                <input name="imposto{{preco.PP_ID}}" title="Imposto, alteravel apenas como regra!" class="col-sm" style="width:55px" id="imposto{{preco.PP_ID}}" type="number" value="{{preco.PP_imposto}}" placeholder="{{preco.PP_imposto}}" disabled="true"></span>
+                <input name="comissao_MadeiraMadeira_KES{{preco.PP_ID}}" title="Comissão MadeiraMadeira_KES, alteravel apenas como regra!" class="col-sm" style="width:55px" id="comissao_MadeiraMadeira_KES{{preco.PP_ID}}" type="number" value="{{comissoes.CS_MM_KES_Comissao}}" placeholder="{{comissoes.CS_MM_KES_Comissao}}" disabled="true"></span>
+                <input name="Valor_atual_MadeiraMadeira_KES{{preco.PPID}}" title="Valor Atual MadeiraMadeira_KES" class="col-sm" style="width:55px" id="Valor_atual_MadeiraMadeira_KES{{preco.PP_ID}}" value="{{calculado.MadeiraMadeira_KES}}" disabled="true"></span>
+                <input name="valor_final_MadeiraMadeira_KES{{preco.PP_ID}}" onfocus="this.value='';
+                document.getElementById('confirmar_MadeiraMadeira_KES{{preco.PP_ID}}').setAttribute('value','Calcular');
+                document.getElementById('confirmar_MadeiraMadeira_KES{{preco.PP_ID}}').removeAttribute('onclick');
+                " title="Valor final Amzon" class="col-sm" style="width:55px" id="valor_final_MadeiraMadeira_KES{{preco.PP_ID}}" value=""></input>        
+                <input id="confirmar_MadeiraMadeira_KES{{preco.PP_ID}}" class="btn btn-success col-sm" type="submit" value="Calcular">
+            </div>
+        </form>
+
+        <script type="text/javascript">
+            $("#valor_final_MadeiraMadeira_KES{{preco.PP_sku}}").keyup(function() {
+                var valor = $(this).val().length;
+                if (valor === 0){
+                    document.getElementById("confirmar_MadeiraMadeira_KES{{preco.PP_ID}}").removeAttribute("onclick");
+                    document.getElementById("confirmar_MadeiraMadeira_KES{{preco.PP_ID}}").setAttribute('value','Calcular');
+                    document.getElementsById("confirmar_MadeiraMadeira_KES{{preco.PP_ID}}").removeAttribute('aria-disabled');
+                    
+                }
+            });
+        </script>
+    
+        <script type="text/javascript">
+            $(document).on('submit','#MadeiraMadeira_KES',function(e){
+                e.preventDefault();
+    
+                var id_form = "input[name=id{{preco.PP_ID}}]";
+                var MadeiraMadeira_KES_antigo = "input[name=MadeiraMadeira_KES_antigo{{preco.PP_ID}}]";
+                var MadeiraMadeira_KES_novo = "input[name=MadeiraMadeira_KES{{preco.PP_ID}}]";
+                var custo_adm = "input[name=custo_adm{{preco.PP_ID}}]";
+                var imposto = "input[name=imposto{{preco.PP_ID}}]";
+                var comissao_MadeiraMadeira_KES = "input[name=comissao_MadeiraMadeira_KES{{preco.PP_ID}}]";
+                var valor_final = "input[name=valor_final_MadeiraMadeira_KES{{preco.PP_ID}}]";
+                var portal = "input[name=portal_MadeiraMadeira_KES]";
+    
+                $.ajax({
+                    type:'POST',
+                    url:"{% url 'precos:portais' %}",
+                    data:{
+                        id:$(id_form).val(),
+                        portal:$(portal).val(),
+                        portal_novo:$(MadeiraMadeira_KES_novo).val(),
+                        portal_antigo:$(MadeiraMadeira_KES_antigo).val(),
+                        adm:$(custo_adm).val(),
+                        imposto_geral:$(imposto).val(),
+                        comissao_portal:$(comissao_MadeiraMadeira_KES).val(),
+                        final:$(valor_final).val(),
+                        csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                    },
+                    success: function(data){
+                        console.log(data)
+                        var id = "valor_final_MadeiraMadeira_KES"+data[1];
+                        var valor = data[0]
+                        console.log(id,' ',valor);
+                        if (data[2] === "salvo"){
+                            document.getElementById("confirmar_MadeiraMadeira_KES{{preco.PP_ID}}").removeAttribute("onclick");
+                            document.getElementById("confirmar_MadeiraMadeira_KES{{preco.PP_ID}}").setAttribute('value','OK');
+                            document.getElementsById("confirmar_MadeiraMadeira_KES{{preco.PP_ID}}").setAttribute('aria-disabled','true');
+                        }else{
+                            document.getElementById(id).value = valor;
+                            document.getElementById(id).setAttribute("value", data[0]);
+                            document.getElementById("confirmar_MadeiraMadeira_KES{{preco.PP_ID}}").setAttribute('value','Salvar');
+                            document.getElementById("confirmar_MadeiraMadeira_KES{{preco.PP_ID}}").setAttribute('onclick',"return confirm('Deseja Realmente salvar o preço do produto?')");
+                        }},
+                    error: function(){
+                        url = "{% url 'precos:portais' %}";
+                        console.log(url);
+                    }
+                });
+    
+            })
+    
+        </script>
+    </div>
+    <!-- Fim MadeiraMadeira_KES -->
+    <!-- Começo Magalu_GEA -->
+    <div style="border: 1px solid #d5d5d5;padding:20px 20px 20px 20px; border-radius: 1px;
+    width:95%;">
+        <center style="padding-bottom: 20px;"><b>Magalu_GEA</b></b></center>
+    
+        <div class="row" >
+            <span class="col-sm"><b>Magalu_GEA</b></span>
+            <!-- <span class="col-sm"><b>Portal</b></span> -->
+            <span class="col-sm"><b>Custo Adm</b></span>
+            <span class="col-sm"><b>Imposto</b></span>
+            <span class="col-sm"><b>Comissão</b></span>
+            <span class="col-sm"><b>Valor Atual</b></span>
+            <span class="col-sm"><b>Valor Final</b></span>
+            <span class="col-sm">          </span>
+        </div>
+        <form  name="Magalu_GEA" id="Magalu_GEA">
+            {% csrf_token %}
+            <div class="row" >
+                <input name="id{{preco.PP_ID}}" class="col-sm" style="width:55px"  id="id{{preco.PP_ID}}" type="hidden" value="{{preco.PP_ID}}">
+                <input name="portal_Magalu_GEA" class="col-sm" style="width:55px"  id="portal_Magalu_GEA" type="hidden" value="Magalu_GEA">
+                <input name="Magalu_GEA_antigo{{preco.PP_ID}}" class="col-sm" style="width:55px"  id="Magalu_GEA_antigo{{preco.PP_ID}}" type="hidden" value="{{preco.PP_Magalu_GEA}}">
+                <input name="Magalu_GEA{{preco.PP_ID}}" title="Valor para nova precificação Magalu_GEA" step="0.01" class="col-sm" style="width:55px"  id="Magalu_GEA{{preco.PP_ID}}" type="number" placeholder="{{preco.PP_Magalu_GEA}}">
+                <input name="custo_adm{{preco.PP_ID}}" title="Custo Administrativo, alteravel apenas como regra!" class="col-sm" style="width:55px" id="custo_adm{{preco.PP_ID}}" type="number" value="{{preco.PP_custo_adm_portal}}" placeholder="{{preco.PP_custo_adm_portal}}" disabled="true"></span>
+                <input name="imposto{{preco.PP_ID}}" title="Imposto, alteravel apenas como regra!" class="col-sm" style="width:55px" id="imposto{{preco.PP_ID}}" type="number" value="{{preco.PP_imposto}}" placeholder="{{preco.PP_imposto}}" disabled="true"></span>
+                <input name="comissao_Magalu_GEA{{preco.PP_ID}}" title="Comissão Magalu_GEA, alteravel apenas como regra!" class="col-sm" style="width:55px" id="comissao_Magalu_GEA{{preco.PP_ID}}" type="number" value="{{comissoes.CS_Magalu_GEA_Comissao}}" placeholder="{{comissoes.CS_Magalu_GEA_Comissao}}" disabled="true"></span>
+                <input name="Valor_atual_Magalu_GEA{{preco.PPID}}" title="Valor Atual Magalu_GEA" class="col-sm" style="width:55px" id="Valor_atual_Magalu_GEA{{preco.PP_ID}}" value="{{calculado.Magalu_GEA}}" disabled="true"></span>
+                <input name="valor_final_Magalu_GEA{{preco.PP_ID}}" onfocus="this.value='';
+                document.getElementById('confirmar_Magalu_GEA{{preco.PP_ID}}').setAttribute('value','Calcular');
+                document.getElementById('confirmar_Magalu_GEA{{preco.PP_ID}}').removeAttribute('onclick');
+                " title="Valor final Amzon" class="col-sm" style="width:55px" id="valor_final_Magalu_GEA{{preco.PP_ID}}" value=""></input>        
+                <input id="confirmar_Magalu_GEA{{preco.PP_ID}}" class="btn btn-success col-sm" type="submit" value="Calcular">
+            </div>
+        </form>
+
+        <script type="text/javascript">
+            $("#valor_final_Magalu_GEA{{preco.PP_sku}}").keyup(function() {
+                var valor = $(this).val().length;
+                if (valor === 0){
+                    document.getElementById("confirmar_Magalu_GEA{{preco.PP_ID}}").removeAttribute("onclick");
+                    document.getElementById("confirmar_Magalu_GEA{{preco.PP_ID}}").setAttribute('value','Calcular');
+                    document.getElementsById("confirmar_Magalu_GEA{{preco.PP_ID}}").removeAttribute('aria-disabled');
+                    
+                }
+            });
+        </script>
+    
+        <script type="text/javascript">
+            $(document).on('submit','#Magalu_GEA',function(e){
+                e.preventDefault();
+    
+                var id_form = "input[name=id{{preco.PP_ID}}]";
+                var Magalu_GEA_antigo = "input[name=Magalu_GEA_antigo{{preco.PP_ID}}]";
+                var Magalu_GEA_novo = "input[name=Magalu_GEA{{preco.PP_ID}}]";
+                var custo_adm = "input[name=custo_adm{{preco.PP_ID}}]";
+                var imposto = "input[name=imposto{{preco.PP_ID}}]";
+                var comissao_Magalu_GEA = "input[name=comissao_Magalu_GEA{{preco.PP_ID}}]";
+                var valor_final = "input[name=valor_final_Magalu_GEA{{preco.PP_ID}}]";
+                var portal = "input[name=portal_Magalu_GEA]";
+    
+                $.ajax({
+                    type:'POST',
+                    url:"{% url 'precos:portais' %}",
+                    data:{
+                        id:$(id_form).val(),
+                        portal:$(portal).val(),
+                        portal_novo:$(Magalu_GEA_novo).val(),
+                        portal_antigo:$(Magalu_GEA_antigo).val(),
+                        adm:$(custo_adm).val(),
+                        imposto_geral:$(imposto).val(),
+                        comissao_portal:$(comissao_Magalu_GEA).val(),
+                        final:$(valor_final).val(),
+                        csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                    },
+                    success: function(data){
+                        console.log(data)
+                        var id = "valor_final_Magalu_GEA"+data[1];
+                        var valor = data[0]
+                        console.log(id,' ',valor);
+                        if (data[2] === "salvo"){
+                            document.getElementById("confirmar_Magalu_GEA{{preco.PP_ID}}").removeAttribute("onclick");
+                            document.getElementById("confirmar_Magalu_GEA{{preco.PP_ID}}").setAttribute('value','OK');
+                            document.getElementsById("confirmar_Magalu_GEA{{preco.PP_ID}}").setAttribute('aria-disabled','true');
+                        }else{
+                            document.getElementById(id).value = valor;
+                            document.getElementById(id).setAttribute("value", data[0]);
+                            document.getElementById("confirmar_Magalu_GEA{{preco.PP_ID}}").setAttribute('value','Salvar');
+                            document.getElementById("confirmar_Magalu_GEA{{preco.PP_ID}}").setAttribute('onclick',"return confirm('Deseja Realmente salvar o preço do produto?')");
+                        }},
+                    error: function(){
+                        url = "{% url 'precos:portais' %}";
+                        console.log(url);
+                    }
+                });
+    
+            })
+    
+        </script>
+    </div>
+    <!-- Fim Magalu_GEA -->
+    <!-- Começo Magalu_KC -->
+    <div style="border: 1px solid #d5d5d5;padding:20px 20px 20px 20px; border-radius: 1px;
+    width:95%;">
+        <center style="padding-bottom: 20px;"><b>Magalu_KC</b></b></center>
+    
+        <div class="row" >
+            <span class="col-sm"><b>Magalu_KC</b></span>
+            <!-- <span class="col-sm"><b>Portal</b></span> -->
+            <span class="col-sm"><b>Custo Adm</b></span>
+            <span class="col-sm"><b>Imposto</b></span>
+            <span class="col-sm"><b>Comissão</b></span>
+            <span class="col-sm"><b>Valor Atual</b></span>
+            <span class="col-sm"><b>Valor Final</b></span>
+            <span class="col-sm">          </span>
+        </div>
+        <form  name="Magalu_KC" id="Magalu_KC">
+            {% csrf_token %}
+            <div class="row" >
+                <input name="id{{preco.PP_ID}}" class="col-sm" style="width:55px"  id="id{{preco.PP_ID}}" type="hidden" value="{{preco.PP_ID}}">
+                <input name="portal_Magalu_KC" class="col-sm" style="width:55px"  id="portal_Magalu_KC" type="hidden" value="Magalu_KC">
+                <input name="Magalu_KC_antigo{{preco.PP_ID}}" class="col-sm" style="width:55px"  id="Magalu_KC_antigo{{preco.PP_ID}}" type="hidden" value="{{preco.PP_Magalu_KC}}">
+                <input name="Magalu_KC{{preco.PP_ID}}" title="Valor para nova precificação Magalu_KC" step="0.01" class="col-sm" style="width:55px"  id="Magalu_KC{{preco.PP_ID}}" type="number" placeholder="{{preco.PP_Magalu_KC}}">
+                <input name="custo_adm{{preco.PP_ID}}" title="Custo Administrativo, alteravel apenas como regra!" class="col-sm" style="width:55px" id="custo_adm{{preco.PP_ID}}" type="number" value="{{preco.PP_custo_adm_portal}}" placeholder="{{preco.PP_custo_adm_portal}}" disabled="true"></span>
+                <input name="imposto{{preco.PP_ID}}" title="Imposto, alteravel apenas como regra!" class="col-sm" style="width:55px" id="imposto{{preco.PP_ID}}" type="number" value="{{preco.PP_imposto}}" placeholder="{{preco.PP_imposto}}" disabled="true"></span>
+                <input name="comissao_Magalu_KC{{preco.PP_ID}}" title="Comissão Magalu_KC, alteravel apenas como regra!" class="col-sm" style="width:55px" id="comissao_Magalu_KC{{preco.PP_ID}}" type="number" value="{{comissoes.CS_Magalu_KC_Comissao}}" placeholder="{{comissoes.CS_Magalu_KC_Comissao}}" disabled="true"></span>
+                <input name="Valor_atual_Magalu_KC{{preco.PPID}}" title="Valor Atual Magalu_KC" class="col-sm" style="width:55px" id="Valor_atual_Magalu_KC{{preco.PP_ID}}" value="{{calculado.Magalu_KC}}" disabled="true"></span>
+                <input name="valor_final_Magalu_KC{{preco.PP_ID}}" onfocus="this.value='';
+                document.getElementById('confirmar_Magalu_KC{{preco.PP_ID}}').setAttribute('value','Calcular');
+                document.getElementById('confirmar_Magalu_KC{{preco.PP_ID}}').removeAttribute('onclick');
+                " title="Valor final Amzon" class="col-sm" style="width:55px" id="valor_final_Magalu_KC{{preco.PP_ID}}" value=""></input>        
+                <input id="confirmar_Magalu_KC{{preco.PP_ID}}" class="btn btn-success col-sm" type="submit" value="Calcular">
+            </div>
+        </form>
+
+        <script type="text/javascript">
+            $("#valor_final_Magalu_KC{{preco.PP_sku}}").keyup(function() {
+                var valor = $(this).val().length;
+                if (valor === 0){
+                    document.getElementById("confirmar_Magalu_KC{{preco.PP_ID}}").removeAttribute("onclick");
+                    document.getElementById("confirmar_Magalu_KC{{preco.PP_ID}}").setAttribute('value','Calcular');
+                    document.getElementsById("confirmar_Magalu_KC{{preco.PP_ID}}").removeAttribute('aria-disabled');
+                    
+                }
+            });
+        </script>
+    
+        <script type="text/javascript">
+            $(document).on('submit','#Magalu_KC',function(e){
+                e.preventDefault();
+    
+                var id_form = "input[name=id{{preco.PP_ID}}]";
+                var Magalu_KC_antigo = "input[name=Magalu_KC_antigo{{preco.PP_ID}}]";
+                var Magalu_KC_novo = "input[name=Magalu_KC{{preco.PP_ID}}]";
+                var custo_adm = "input[name=custo_adm{{preco.PP_ID}}]";
+                var imposto = "input[name=imposto{{preco.PP_ID}}]";
+                var comissao_Magalu_KC = "input[name=comissao_Magalu_KC{{preco.PP_ID}}]";
+                var valor_final = "input[name=valor_final_Magalu_KC{{preco.PP_ID}}]";
+                var portal = "input[name=portal_Magalu_KC]";
+    
+                $.ajax({
+                    type:'POST',
+                    url:"{% url 'precos:portais' %}",
+                    data:{
+                        id:$(id_form).val(),
+                        portal:$(portal).val(),
+                        portal_novo:$(Magalu_KC_novo).val(),
+                        portal_antigo:$(Magalu_KC_antigo).val(),
+                        adm:$(custo_adm).val(),
+                        imposto_geral:$(imposto).val(),
+                        comissao_portal:$(comissao_Magalu_KC).val(),
+                        final:$(valor_final).val(),
+                        csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                    },
+                    success: function(data){
+                        console.log(data)
+                        var id = "valor_final_Magalu_KC"+data[1];
+                        var valor = data[0]
+                        console.log(id,' ',valor);
+                        if (data[2] === "salvo"){
+                            document.getElementById("confirmar_Magalu_KC{{preco.PP_ID}}").removeAttribute("onclick");
+                            document.getElementById("confirmar_Magalu_KC{{preco.PP_ID}}").setAttribute('value','OK');
+                            document.getElementsById("confirmar_Magalu_KC{{preco.PP_ID}}").setAttribute('aria-disabled','true');
+                        }else{
+                            document.getElementById(id).value = valor;
+                            document.getElementById(id).setAttribute("value", data[0]);
+                            document.getElementById("confirmar_Magalu_KC{{preco.PP_ID}}").setAttribute('value','Salvar');
+                            document.getElementById("confirmar_Magalu_KC{{preco.PP_ID}}").setAttribute('onclick',"return confirm('Deseja Realmente salvar o preço do produto?')");
+                        }},
+                    error: function(){
+                        url = "{% url 'precos:portais' %}";
+                        console.log(url);
+                    }
+                });
+    
+            })
+    
+        </script>
+    </div>
+    <!-- Fim Magalu_KC -->
+    <!-- Começo Netshoes_KES -->
+    <div style="border: 1px solid #d5d5d5;padding:20px 20px 20px 20px; border-radius: 1px;
+    width:95%;">
+        <center style="padding-bottom: 20px;"><b>Netshoes_KES</b></b></center>
+    
+        <div class="row" >
+            <span class="col-sm"><b>Netshoes_KES</b></span>
+            <!-- <span class="col-sm"><b>Portal</b></span> -->
+            <span class="col-sm"><b>Custo Adm</b></span>
+            <span class="col-sm"><b>Imposto</b></span>
+            <span class="col-sm"><b>Comissão</b></span>
+            <span class="col-sm"><b>Valor Atual</b></span>
+            <span class="col-sm"><b>Valor Final</b></span>
+            <span class="col-sm">          </span>
+        </div>
+        <form  name="Netshoes_KES" id="Netshoes_KES">
+            {% csrf_token %}
+            <div class="row" >
+                <input name="id{{preco.PP_ID}}" class="col-sm" style="width:55px"  id="id{{preco.PP_ID}}" type="hidden" value="{{preco.PP_ID}}">
+                <input name="portal_Netshoes_KES" class="col-sm" style="width:55px"  id="portal_Netshoes_KES" type="hidden" value="Netshoes_KES">
+                <input name="Netshoes_KES_antigo{{preco.PP_ID}}" class="col-sm" style="width:55px"  id="Netshoes_KES_antigo{{preco.PP_ID}}" type="hidden" value="{{preco.PP_Netshoes_KES}}">
+                <input name="Netshoes_KES{{preco.PP_ID}}" title="Valor para nova precificação Netshoes_KES" step="0.01" class="col-sm" style="width:55px"  id="Netshoes_KES{{preco.PP_ID}}" type="number" placeholder="{{preco.PP_Netshoes_KES}}">
+                <input name="custo_adm{{preco.PP_ID}}" title="Custo Administrativo, alteravel apenas como regra!" class="col-sm" style="width:55px" id="custo_adm{{preco.PP_ID}}" type="number" value="{{preco.PP_custo_adm_portal}}" placeholder="{{preco.PP_custo_adm_portal}}" disabled="true"></span>
+                <input name="imposto{{preco.PP_ID}}" title="Imposto, alteravel apenas como regra!" class="col-sm" style="width:55px" id="imposto{{preco.PP_ID}}" type="number" value="{{preco.PP_imposto}}" placeholder="{{preco.PP_imposto}}" disabled="true"></span>
+                <input name="comissao_Netshoes_KES{{preco.PP_ID}}" title="Comissão Netshoes_KES, alteravel apenas como regra!" class="col-sm" style="width:55px" id="comissao_Netshoes_KES{{preco.PP_ID}}" type="number" value="{{comissoes.CS_Netshoes_KES_Comissao}}" placeholder="{{comissoes.CS_Netshoes_KES_Comissao}}" disabled="true"></span>
+                <input name="Valor_atual_Netshoes_KES{{preco.PPID}}" title="Valor Atual Netshoes_KES" class="col-sm" style="width:55px" id="Valor_atual_Netshoes_KES{{preco.PP_ID}}" value="{{calculado.Netshoes_KES}}" disabled="true"></span>
+                <input name="valor_final_Netshoes_KES{{preco.PP_ID}}" onfocus="this.value='';
+                document.getElementById('confirmar_Netshoes_KES{{preco.PP_ID}}').setAttribute('value','Calcular');
+                document.getElementById('confirmar_Netshoes_KES{{preco.PP_ID}}').removeAttribute('onclick');
+                " title="Valor final Amzon" class="col-sm" style="width:55px" id="valor_final_Netshoes_KES{{preco.PP_ID}}" value=""></input>        
+                <input id="confirmar_Netshoes_KES{{preco.PP_ID}}" class="btn btn-success col-sm" type="submit" value="Calcular">
+            </div>
+        </form>
+
+        <script type="text/javascript">
+            $("#valor_final_Netshoes_KES{{preco.PP_sku}}").keyup(function() {
+                var valor = $(this).val().length;
+                if (valor === 0){
+                    document.getElementById("confirmar_Netshoes_KES{{preco.PP_ID}}").removeAttribute("onclick");
+                    document.getElementById("confirmar_Netshoes_KES{{preco.PP_ID}}").setAttribute('value','Calcular');
+                    document.getElementsById("confirmar_Netshoes_KES{{preco.PP_ID}}").removeAttribute('aria-disabled');
+                    
+                }
+            });
+        </script>
+    
+        <script type="text/javascript">
+            $(document).on('submit','#Netshoes_KES',function(e){
+                e.preventDefault();
+    
+                var id_form = "input[name=id{{preco.PP_ID}}]";
+                var Netshoes_KES_antigo = "input[name=Netshoes_KES_antigo{{preco.PP_ID}}]";
+                var Netshoes_KES_novo = "input[name=Netshoes_KES{{preco.PP_ID}}]";
+                var custo_adm = "input[name=custo_adm{{preco.PP_ID}}]";
+                var imposto = "input[name=imposto{{preco.PP_ID}}]";
+                var comissao_Netshoes_KES = "input[name=comissao_Netshoes_KES{{preco.PP_ID}}]";
+                var valor_final = "input[name=valor_final_Netshoes_KES{{preco.PP_ID}}]";
+                var portal = "input[name=portal_Netshoes_KES]";
+    
+                $.ajax({
+                    type:'POST',
+                    url:"{% url 'precos:portais' %}",
+                    data:{
+                        id:$(id_form).val(),
+                        portal:$(portal).val(),
+                        portal_novo:$(Netshoes_KES_novo).val(),
+                        portal_antigo:$(Netshoes_KES_antigo).val(),
+                        adm:$(custo_adm).val(),
+                        imposto_geral:$(imposto).val(),
+                        comissao_portal:$(comissao_Netshoes_KES).val(),
+                        final:$(valor_final).val(),
+                        csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                    },
+                    success: function(data){
+                        console.log(data)
+                        var id = "valor_final_Netshoes_KES"+data[1];
+                        var valor = data[0]
+                        console.log(id,' ',valor);
+                        if (data[2] === "salvo"){
+                            document.getElementById("confirmar_Netshoes_KES{{preco.PP_ID}}").removeAttribute("onclick");
+                            document.getElementById("confirmar_Netshoes_KES{{preco.PP_ID}}").setAttribute('value','OK');
+                            document.getElementsById("confirmar_Netshoes_KES{{preco.PP_ID}}").setAttribute('aria-disabled','true');
+                        }else{
+                            document.getElementById(id).value = valor;
+                            document.getElementById(id).setAttribute("value", data[0]);
+                            document.getElementById("confirmar_Netshoes_KES{{preco.PP_ID}}").setAttribute('value','Salvar');
+                            document.getElementById("confirmar_Netshoes_KES{{preco.PP_ID}}").setAttribute('onclick',"return confirm('Deseja Realmente salvar o preço do produto?')");
+                        }},
+                    error: function(){
+                        url = "{% url 'precos:portais' %}";
+                        console.log(url);
+                    }
+                });
+    
+            })
+    
+        </script>
+    </div>
+    <!-- Fim Netshoes_KES -->
+    <!-- Começo Netshoes_ALK -->
+    <div style="border: 1px solid #d5d5d5;padding:20px 20px 20px 20px; border-radius: 1px;
+    width:95%;">
+        <center style="padding-bottom: 20px;"><b>Netshoes_ALK</b></b></center>
+    
+        <div class="row" >
+            <span class="col-sm"><b>Netshoes_ALK</b></span>
+            <!-- <span class="col-sm"><b>Portal</b></span> -->
+            <span class="col-sm"><b>Custo Adm</b></span>
+            <span class="col-sm"><b>Imposto</b></span>
+            <span class="col-sm"><b>Comissão</b></span>
+            <span class="col-sm"><b>Valor Atual</b></span>
+            <span class="col-sm"><b>Valor Final</b></span>
+            <span class="col-sm">          </span>
+        </div>
+        <form  name="Netshoes_ALK" id="Netshoes_ALK">
+            {% csrf_token %}
+            <div class="row" >
+                <input name="id{{preco.PP_ID}}" class="col-sm" style="width:55px"  id="id{{preco.PP_ID}}" type="hidden" value="{{preco.PP_ID}}">
+                <input name="portal_Netshoes_ALK" class="col-sm" style="width:55px"  id="portal_Netshoes_ALK" type="hidden" value="Netshoes_ALK">
+                <input name="Netshoes_ALK_antigo{{preco.PP_ID}}" class="col-sm" style="width:55px"  id="Netshoes_ALK_antigo{{preco.PP_ID}}" type="hidden" value="{{preco.PP_Netshoes_ALK}}">
+                <input name="Netshoes_ALK{{preco.PP_ID}}" title="Valor para nova precificação Netshoes_ALK" step="0.01" class="col-sm" style="width:55px"  id="Netshoes_ALK{{preco.PP_ID}}" type="number" placeholder="{{preco.PP_Netshoes_ALK}}">
+                <input name="custo_adm{{preco.PP_ID}}" title="Custo Administrativo, alteravel apenas como regra!" class="col-sm" style="width:55px" id="custo_adm{{preco.PP_ID}}" type="number" value="{{preco.PP_custo_adm_portal}}" placeholder="{{preco.PP_custo_adm_portal}}" disabled="true"></span>
+                <input name="imposto{{preco.PP_ID}}" title="Imposto, alteravel apenas como regra!" class="col-sm" style="width:55px" id="imposto{{preco.PP_ID}}" type="number" value="{{preco.PP_imposto}}" placeholder="{{preco.PP_imposto}}" disabled="true"></span>
+                <input name="comissao_Netshoes_ALK{{preco.PP_ID}}" title="Comissão Netshoes_ALK, alteravel apenas como regra!" class="col-sm" style="width:55px" id="comissao_Netshoes_ALK{{preco.PP_ID}}" type="number" value="{{comissoes.CS_Netshoes_ALK_Comissao}}" placeholder="{{comissoes.CS_Netshoes_ALK_Comissao}}" disabled="true"></span>
+                <input name="Valor_atual_Netshoes_ALK{{preco.PPID}}" title="Valor Atual Netshoes_ALK" class="col-sm" style="width:55px" id="Valor_atual_Netshoes_ALK{{preco.PP_ID}}" value="{{calculado.Netshoes_ALK}}" disabled="true"></span>
+                <input name="valor_final_Netshoes_ALK{{preco.PP_ID}}" onfocus="this.value='';
+                document.getElementById('confirmar_Netshoes_ALK{{preco.PP_ID}}').setAttribute('value','Calcular');
+                document.getElementById('confirmar_Netshoes_ALK{{preco.PP_ID}}').removeAttribute('onclick');
+                " title="Valor final Amzon" class="col-sm" style="width:55px" id="valor_final_Netshoes_ALK{{preco.PP_ID}}" value=""></input>        
+                <input id="confirmar_Netshoes_ALK{{preco.PP_ID}}" class="btn btn-success col-sm" type="submit" value="Calcular">
+            </div>
+        </form>
+
+        <script type="text/javascript">
+            $("#valor_final_Netshoes_ALK{{preco.PP_sku}}").keyup(function() {
+                var valor = $(this).val().length;
+                if (valor === 0){
+                    document.getElementById("confirmar_Netshoes_ALK{{preco.PP_ID}}").removeAttribute("onclick");
+                    document.getElementById("confirmar_Netshoes_ALK{{preco.PP_ID}}").setAttribute('value','Calcular');
+                    document.getElementsById("confirmar_Netshoes_ALK{{preco.PP_ID}}").removeAttribute('aria-disabled');
+                    
+                }
+            });
+        </script>
+    
+        <script type="text/javascript">
+            $(document).on('submit','#Netshoes_ALK',function(e){
+                e.preventDefault();
+    
+                var id_form = "input[name=id{{preco.PP_ID}}]";
+                var Netshoes_ALK_antigo = "input[name=Netshoes_ALK_antigo{{preco.PP_ID}}]";
+                var Netshoes_ALK_novo = "input[name=Netshoes_ALK{{preco.PP_ID}}]";
+                var custo_adm = "input[name=custo_adm{{preco.PP_ID}}]";
+                var imposto = "input[name=imposto{{preco.PP_ID}}]";
+                var comissao_Netshoes_ALK = "input[name=comissao_Netshoes_ALK{{preco.PP_ID}}]";
+                var valor_final = "input[name=valor_final_Netshoes_ALK{{preco.PP_ID}}]";
+                var portal = "input[name=portal_Netshoes_ALK]";
+    
+                $.ajax({
+                    type:'POST',
+                    url:"{% url 'precos:portais' %}",
+                    data:{
+                        id:$(id_form).val(),
+                        portal:$(portal).val(),
+                        portal_novo:$(Netshoes_ALK_novo).val(),
+                        portal_antigo:$(Netshoes_ALK_antigo).val(),
+                        adm:$(custo_adm).val(),
+                        imposto_geral:$(imposto).val(),
+                        comissao_portal:$(comissao_Netshoes_ALK).val(),
+                        final:$(valor_final).val(),
+                        csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                    },
+                    success: function(data){
+                        console.log(data)
+                        var id = "valor_final_Netshoes_ALK"+data[1];
+                        var valor = data[0]
+                        console.log(id,' ',valor);
+                        if (data[2] === "salvo"){
+                            document.getElementById("confirmar_Netshoes_ALK{{preco.PP_ID}}").removeAttribute("onclick");
+                            document.getElementById("confirmar_Netshoes_ALK{{preco.PP_ID}}").setAttribute('value','OK');
+                            document.getElementsById("confirmar_Netshoes_ALK{{preco.PP_ID}}").setAttribute('aria-disabled','true');
+                        }else{
+                            document.getElementById(id).value = valor;
+                            document.getElementById(id).setAttribute("value", data[0]);
+                            document.getElementById("confirmar_Netshoes_ALK{{preco.PP_ID}}").setAttribute('value','Salvar');
+                            document.getElementById("confirmar_Netshoes_ALK{{preco.PP_ID}}").setAttribute('onclick',"return confirm('Deseja Realmente salvar o preço do produto?')");
+                        }},
+                    error: function(){
+                        url = "{% url 'precos:portais' %}";
+                        console.log(url);
+                    }
+                });
+    
+            })
+    
+        </script>
+    </div>
+    <!-- Fim Netshoes_ALK -->
+</div>
+    
+    
+{% endblock %}

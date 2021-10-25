@@ -1,0 +1,3260 @@
+{% extends 'base2p.html' %}
+
+{% block title %}Produção{% endblock %}
+
+{% block content %}
+{{lista_sku}}
+	<script>
+		alert("Não foi selecionado nenhum pedido!");
+	</script>
+	{% if alarme == 'som' %}
+		<audio autoplay id="myautoload">
+			<source src="http://alaoq.com.br/imagem/NaoApagar/som.mp3" type="audio/mpeg">
+			Your browser does not support the audio element.
+		</audio>
+
+		<script type="text/javascript">
+		    var myadido = document.getElementById("myautoload");
+
+		    setTimeout(function() {
+		    myadido.play();
+
+		    },500);
+		</script>
+	{% endif %}
+	<form action="/pedidos/Produção/" method="post">
+		{% csrf_token %}
+		
+		<input class="btn btn-secondary form-control" type="submit" id="mudarcor" value="AVANÇAR" onclick="return confirm('Confirmar Avanço?\nOBS: É possivel visualizar os pedidos já processados\nna tela de Histórico de Pedidos')">
+		<div style="border-radius: 10px" class="container table-danger separadordiv">
+			<center><p class="col-sm" style="padding-top: 10px;"><b>Novos</b></p></center>
+			<hr class="separadordebaixo">
+			{% for sku in lista_skus %}
+			{% if sku.PD_status == 'Novo' %}
+				<div class="separador">
+
+					<div class="row" style="display: flex;">
+						<div style="padding-left: 12px;">
+							<input style="padding-right: 40px;" type="checkbox" name="avancar" value="{{sku.PD_ID}}">
+						</div>				
+						<p class="col-sm" style="padding-right: 40px; padding-left: 10px; ">N° Pedido: <b>{{sku.PD_identificacao}}</b></p>
+						<p class="col-sm" style="padding-right: 40px;">Hora Coleta: <b>{{sku.PD_coleta}}</b></p>
+						<p class="col-sm" style="padding-right: 40px;">Data Coleta: <b>{{sku.PD_dia_finalizar}}</b></p>
+						<p class="col-sm" style="padding-right: 40px;">Portal: <b>{{sku.PD_portal}}</b></p>
+					</div>
+					{% if sku.PD_quant_sku == 1 %}
+
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku1}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant1}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto1}}</p>
+							<div class="col-sm">								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto1}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto1}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs1}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs1}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto1}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto1}}';">
+							</p>
+						</div>
+					{% elif sku.PD_quant_sku == 2 %}
+
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku1}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant1}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto1}}</p>
+							<div class="col-sm">								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto1}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto1}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs1}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs1}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto1}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto1}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku2}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant2}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto2}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto2}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto2}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs2}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs2}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto2}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto2}}';">
+							</p>
+						</div>
+					{% elif sku.PD_quant_sku == 3 %}
+
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku1}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant1}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto1}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto1}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto1}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs1}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs1}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto1}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto1}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku2}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant2}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto2}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto2}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto2}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs2}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs2}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto2}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto2}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku3}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant3}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto3}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto3}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto3}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs3}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs3}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto3}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto3}}';">
+							</p>
+						</div>
+					{% elif sku.PD_quant_sku == 4 %}
+
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku1}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant1}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto1}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto1}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto1}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs1}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs1}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto1}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto1}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku2}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant2}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto2}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto2}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto2}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs2}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs2}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto2}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto2}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku3}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant3}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto3}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto3}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto3}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs3}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs3}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto3}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto3}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku4}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant4}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto4}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto4}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto4}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs4}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs4}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto4}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto4}}';">
+							</p>
+						</div>
+					{% elif sku.PD_quant_sku == 5 %}
+
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku1}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant1}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto1}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto1}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto1}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs1}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs1}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto1}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto1}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku2}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant2}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto2}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto2}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto2}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs2}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs2}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto2}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto2}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku3}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant3}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto3}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto3}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto3}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs3}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs3}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto3}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto3}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku4}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant4}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto4}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto4}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto4}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs4}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs4}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto4}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto4}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku5}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant5}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto5}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto5}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto5}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs5}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs5}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto5}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto5}}';">
+							</p>
+						</div>
+					{% elif sku.PD_quant_sku == 6 %}
+
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku1}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant1}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto1}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto1}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto1}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs1}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs1}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto1}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto1}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku2}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant2}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto2}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto2}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto2}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs2}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs2}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto2}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto2}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku3}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant3}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto3}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto3}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto3}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs3}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs3}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto3}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto3}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku4}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant4}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto4}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto4}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto4}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs4}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs4}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto4}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto4}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku5}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant5}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto5}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto5}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto5}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs5}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs5}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto5}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto5}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku6}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant6}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto6}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto6}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto6}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs6}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs6}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto6}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto6}}';">
+							</p>
+						</div>
+					{% elif sku.PD_quant_sku == 7 %}
+
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku1}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant1}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto1}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto1}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto1}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs1}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs1}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto1}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto1}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku2}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant2}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto2}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto2}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto2}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs2}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs2}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto2}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto2}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku3}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant3}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto3}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto3}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto3}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs3}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs3}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto3}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto3}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku4}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant4}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto4}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto4}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto4}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs4}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs4}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto4}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto4}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku5}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant5}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto5}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto5}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto5}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs5}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs5}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto5}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto5}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku6}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant6}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto6}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto6}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto6}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs6}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs6}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto6}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto6}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku7}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant7}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto7}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto7}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto7}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs7}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs7}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto7}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto7}}';">
+							</p>
+						</div>
+					{% elif sku.PD_quant_sku == 8 %}
+
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku1}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant1}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto1}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto1}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto1}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs1}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs1}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto1}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto1}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku2}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant2}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto2}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto2}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto2}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs2}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs2}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto2}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto2}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku3}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant3}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto3}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto3}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto3}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs3}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs3}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto3}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto3}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku4}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant4}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto4}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto4}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto4}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs4}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs4}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto4}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto4}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku5}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant5}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto5}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto5}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto5}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs5}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs5}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto5}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto5}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku6}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant6}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto6}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto6}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto6}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs6}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs6}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto6}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto6}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku7}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant7}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto7}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto7}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto7}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs7}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs7}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto7}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto7}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku8}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant8}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto8}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto8}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto8}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs8}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs8}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto8}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto8}}';">
+							</p>
+						</div>
+					{% elif sku.PD_quant_sku == 9 %}
+
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku1}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant1}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto1}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto1}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto1}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs1}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs1}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto1}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto1}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku2}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant2}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto2}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto2}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto2}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs2}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs2}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto2}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto2}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku3}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant3}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto3}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto3}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto3}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs3}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs3}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto3}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto3}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku4}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant4}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto4}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto4}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto4}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs4}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs4}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto4}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto4}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku5}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant5}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto5}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto5}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto5}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs5}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs5}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto5}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto5}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku6}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant6}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto6}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto6}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto6}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs6}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs6}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto6}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto6}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku7}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant7}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto7}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto7}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto7}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs7}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs7}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto7}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto7}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku8}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant8}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto8}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto8}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto8}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs8}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs8}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto8}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto8}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku9}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant9}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto9}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto9}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto9}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs9}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs9}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto9}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto9}}';">
+							</p>
+						</div>
+					{% elif sku.PD_quant_sku == 10 %}
+
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku1}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant1}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto1}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto1}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto1}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs1}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs1}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto1}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto1}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku2}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant2}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto2}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto2}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto2}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs2}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs2}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto2}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto2}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku3}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant3}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto3}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto3}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto3}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs3}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs3}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto3}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto3}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku4}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant4}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto4}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto4}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto4}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs4}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs4}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto4}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto4}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku5}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant5}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto5}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto5}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto5}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs5}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs5}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto5}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto5}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku6}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant6}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto6}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto6}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto6}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs6}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs6}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto6}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto6}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku7}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant7}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto7}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto7}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto7}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs7}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs7}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto7}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto7}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku8}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant8}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto8}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto8}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto8}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs8}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs8}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto8}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto8}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku9}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant9}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto9}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto9}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto9}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs9}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs9}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto9}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto9}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku10}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant10}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto10}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto10}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto10}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs10}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs10}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto10}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto10}}';">
+							</p>
+						</div>
+
+					{% endif %}
+				</div>
+			{% endif %}
+			{% endfor %}
+		</div>
+		<div style="border-radius: 10px" class="container table-warning separadordiv">
+			<center><p class="col-sm" style="padding-top: 10px;"><b>Em Produção</b></p></center>
+			<hr class="separadordebaixo">
+			{% for sku in lista_skus %}
+			{% if sku.PD_status == 'Em produção' %}
+				<div  class="separador">
+
+					<div style="display: flex;">
+						<div>
+							<input style="padding-right: 40px;" type="checkbox" name="avancar" value="{{sku.PD_ID}}">
+						</div>				
+						<p class="col-sm" style="padding-right: 40px; padding-left: 10px;">N° Pedido: <b>{{sku.PD_identificacao}}</b></p>
+						<p class="col-sm" style="padding-right: 40px;">Hora Coleta: <b>{{sku.PD_coleta}}</b></p>
+						<p class="col-sm" style="padding-right: 40px;">Data Coleta: <b>{{sku.PD_dia_finalizar}}</b></p>
+						<p class="col-sm" style="padding-right: 40px;">Portal: <b>{{sku.PD_portal}}</b></p>
+					</div>
+					{% if sku.PD_quant_sku == 1 %}
+
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku1}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant1}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto1}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto1}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto1}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs1}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs1}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto1}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto1}}';">
+							</p>
+						</div>
+					{% elif sku.PD_quant_sku == 2 %}
+
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku1}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant1}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto1}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto1}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto1}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs1}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs1}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto1}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto1}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku2}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant2}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto2}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto2}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto2}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs2}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs2}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto2}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto2}}';">
+							</p>
+						</div>
+					{% elif sku.PD_quant_sku == 3 %}
+
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku1}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant1}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto1}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto1}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto1}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs1}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs1}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto1}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto1}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku2}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant2}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto2}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto2}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto2}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs2}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs2}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto2}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto2}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku3}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant3}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto3}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto3}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto3}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs3}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs3}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto3}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto3}}';">
+							</p>
+						</div>
+					{% elif sku.PD_quant_sku == 4 %}
+
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku1}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant1}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto1}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto1}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto1}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs1}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs1}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto1}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto1}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku2}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant2}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto2}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto2}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto2}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs2}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs2}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto2}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto2}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku3}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant3}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto3}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto3}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto3}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs3}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs3}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto3}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto3}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku4}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant4}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto4}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto4}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto4}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs4}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs4}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto4}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto4}}';">
+							</p>
+						</div>
+					{% elif sku.PD_quant_sku == 5 %}
+
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku1}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant1}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto1}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto1}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto1}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs1}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs1}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto1}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto1}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku2}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant2}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto2}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto2}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto2}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs2}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs2}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto2}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto2}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku3}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant3}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto3}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto3}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto3}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs3}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs3}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto3}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto3}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku4}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant4}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto4}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto4}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto4}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs4}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs4}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto4}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto4}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku5}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant5}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto5}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto5}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto5}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs5}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs5}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto5}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto5}}';">
+							</p>
+						</div>
+					{% elif sku.PD_quant_sku == 6 %}
+
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku1}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant1}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto1}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto1}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto1}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs1}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs1}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto1}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto1}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku2}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant2}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto2}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto2}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto2}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs2}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs2}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto2}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto2}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku3}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant3}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto3}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto3}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto3}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs3}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs3}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto3}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto3}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku4}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant4}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto4}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto4}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto4}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs4}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs4}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto4}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto4}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku5}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant5}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto5}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto5}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto5}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs5}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs5}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto5}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto5}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku6}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant6}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto6}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto6}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto6}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs6}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs6}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto6}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto6}}';">
+							</p>
+						</div>
+					{% elif sku.PD_quant_sku == 7 %}
+
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku1}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant1}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto1}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto1}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto1}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs1}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs1}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto1}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto1}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku2}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant2}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto2}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto2}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto2}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs2}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs2}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto2}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto2}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku3}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant3}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto3}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto3}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto3}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs3}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs3}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto3}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto3}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku4}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant4}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto4}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto4}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto4}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs4}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs4}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto4}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto4}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku5}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant5}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto5}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto5}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto5}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs5}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs5}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto5}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto5}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku6}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant6}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto6}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto6}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto6}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs6}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs6}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto6}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto6}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku7}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant7}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto7}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto7}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto7}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs7}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs7}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto7}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto7}}';">
+							</p>
+						</div>
+					{% elif sku.PD_quant_sku == 8 %}
+
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku1}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant1}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto1}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto1}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto1}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs1}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs1}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto1}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto1}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku2}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant2}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto2}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto2}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto2}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs2}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs2}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto2}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto2}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku3}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant3}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto3}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto3}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto3}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs3}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs3}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto3}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto3}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku4}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant4}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto4}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto4}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto4}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs4}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs4}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto4}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto4}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku5}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant5}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto5}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto5}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto5}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs5}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs5}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto5}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto5}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku6}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant6}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto6}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto6}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto6}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs6}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs6}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto6}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto6}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku7}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant7}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto7}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto7}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto7}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs7}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs7}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto7}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto7}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku8}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant8}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto8}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto8}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto8}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs8}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs8}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto8}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto8}}';">
+							</p>
+						</div>
+					{% elif sku.PD_quant_sku == 9 %}
+
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku1}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant1}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto1}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto1}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto1}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs1}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs1}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto1}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto1}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku2}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant2}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto2}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto2}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto2}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs2}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs2}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto2}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto2}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku3}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant3}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto3}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto3}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto3}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs3}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs3}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto3}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto3}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku4}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant4}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto4}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto4}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto4}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs4}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs4}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto4}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto4}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku5}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant5}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto5}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto5}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto5}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs5}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs5}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto5}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto5}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku6}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant6}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto6}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto6}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto6}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs6}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs6}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto6}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto6}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku7}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant7}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto7}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto7}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto7}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs7}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs7}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto7}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto7}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku8}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant8}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto8}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto8}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto8}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs8}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs8}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto8}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto8}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku9}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant9}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto9}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto9}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto9}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs9}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs9}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto9}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto9}}';">
+							</p>
+						</div>
+					{% elif sku.PD_quant_sku == 10 %}
+
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku1}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant1}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto1}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto1}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto1}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs1}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs1}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto1}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto1}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku2}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant2}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto2}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto2}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto2}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs2}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs2}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto2}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto2}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku3}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant3}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto3}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto3}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto3}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs3}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs3}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto3}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto3}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku4}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant4}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto4}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto4}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto4}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs4}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs4}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto4}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto4}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku5}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant5}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto5}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto5}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto5}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs5}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs5}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto5}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto5}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku6}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant6}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto6}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto6}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto6}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs6}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs6}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto6}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto6}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku7}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant7}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto7}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto7}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto7}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs7}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs7}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto7}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto7}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku8}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant8}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto8}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto8}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto8}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs8}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs8}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto8}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto8}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku9}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant9}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto9}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto9}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto9}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs9}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs9}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto9}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto9}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku10}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant10}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto10}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto10}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto10}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs10}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs10}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto10}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto10}}';">
+							</p>
+						</div>
+
+					{% endif %}
+				</div>
+			{% endif %}
+			{% endfor %}
+		</div>
+		<div style="border-radius: 10px" class="container table-success separadordiv">
+			<center><p class="col-sm" style="padding-top: 10px;"><b>Pronto para Coleta</b></p></center>
+			<hr class="separadordebaixo">
+			{% for sku in lista_skus %}
+			{% if sku.PD_status == 'Pronto' %}
+				<div  class="separador">
+
+					<div style="display: flex;">
+						<div>
+							<input style="padding-right: 40px;" type="checkbox" name="avancar" value="{{sku.PD_ID}}">
+						</div>				
+						<p class="col-sm" style="padding-right: 40px; padding-left: 10px;">N° Pedido: <b>{{sku.PD_identificacao}}</b></p>
+						<p class="col-sm" style="padding-right: 40px;">Hora Coleta: <b>{{sku.PD_coleta}}</b></p>
+						<p class="col-sm" style="padding-right: 40px;">Data Coleta: <b>{{sku.PD_dia_finalizar}}</b></p>
+						<p class="col-sm" style="padding-right: 40px;">Portal: <b>{{sku.PD_portal}}</b></p>
+					</div>
+					{% if sku.PD_quant_sku == 1 %}
+
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku1}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant1}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto1}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto1}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto1}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs1}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs1}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto1}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto1}}';">
+							</p>
+						</div>
+					{% elif sku.PD_quant_sku == 2 %}
+
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku1}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant1}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto1}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto1}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto1}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs1}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs1}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto1}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto1}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku2}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant2}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto2}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto2}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto2}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs2}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs2}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto2}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto2}}';">
+							</p>
+						</div>
+					{% elif sku.PD_quant_sku == 3 %}
+
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku1}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant1}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto1}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto1}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto1}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs1}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs1}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto1}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto1}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku2}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant2}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto2}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto2}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto2}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs2}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs2}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto2}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto2}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku3}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant3}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto3}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto3}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto3}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs3}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs3}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto3}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto3}}';">
+							</p>
+						</div>
+					{% elif sku.PD_quant_sku == 4 %}
+
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku1}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant1}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto1}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto1}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto1}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs1}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs1}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto1}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto1}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku2}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant2}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto2}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto2}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto2}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs2}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs2}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto2}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto2}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku3}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant3}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto3}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto3}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto3}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs3}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs3}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto3}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto3}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku4}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant4}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto4}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto4}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto4}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs4}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs4}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto4}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto4}}';">
+							</p>
+						</div>
+					{% elif sku.PD_quant_sku == 5 %}
+
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku1}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant1}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto1}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto1}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto1}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs1}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs1}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto1}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto1}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku2}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant2}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto2}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto2}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto2}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs2}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs2}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto2}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto2}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku3}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant3}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto3}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto3}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto3}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs3}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs3}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto3}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto3}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku4}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant4}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto4}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto4}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto4}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs4}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs4}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto4}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto4}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku5}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant5}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto5}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto5}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto5}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs5}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs5}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto5}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto5}}';">
+							</p>
+						</div>
+					{% elif sku.PD_quant_sku == 6 %}
+
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku1}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant1}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto1}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto1}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto1}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs1}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs1}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto1}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto1}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku2}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant2}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto2}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto2}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto2}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs2}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs2}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto2}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto2}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku3}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant3}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto3}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto3}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto3}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs3}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs3}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto3}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto3}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku4}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant4}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto4}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto4}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto4}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs4}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs4}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto4}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto4}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku5}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant5}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto5}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto5}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto5}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs5}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs5}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto5}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto5}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku6}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant6}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto6}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto6}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto6}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs6}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs6}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto6}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto6}}';">
+							</p>
+						</div>
+					{% elif sku.PD_quant_sku == 7 %}
+
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku1}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant1}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto1}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto1}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto1}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs1}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs1}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto1}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto1}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku2}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant2}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto2}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto2}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto2}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs2}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs2}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto2}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto2}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku3}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant3}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto3}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto3}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto3}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs3}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs3}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto3}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto3}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku4}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant4}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto4}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto4}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto4}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs4}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs4}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto4}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto4}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku5}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant5}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto5}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto5}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto5}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs5}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs5}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto5}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto5}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku6}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant6}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto6}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto6}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto6}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs6}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs6}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto6}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto6}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku7}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant7}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto7}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto7}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto7}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs7}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs7}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto7}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto7}}';">
+							</p>
+						</div>
+					{% elif sku.PD_quant_sku == 8 %}
+
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku1}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant1}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto1}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto1}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto1}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs1}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs1}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto1}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto1}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku2}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant2}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto2}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto2}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto2}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs2}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs2}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto2}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto2}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku3}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant3}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto3}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto3}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto3}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs3}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs3}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto3}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto3}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku4}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant4}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto4}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto4}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto4}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs4}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs4}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto4}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto4}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku5}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant5}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto5}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto5}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto5}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs5}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs5}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto5}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto5}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku6}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant6}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto6}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto6}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto6}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs6}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs6}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto6}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto6}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku7}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant7}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto7}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto7}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto7}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs7}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs7}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto7}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto7}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku8}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant8}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto8}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto8}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto8}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs8}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs8}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto8}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto8}}';">
+							</p>
+						</div>
+					{% elif sku.PD_quant_sku == 9 %}
+
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku1}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant1}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto1}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto1}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto1}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs1}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs1}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto1}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto1}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku2}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant2}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto2}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto2}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto2}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs2}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs2}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto2}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto2}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku3}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant3}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto3}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto3}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto3}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs3}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs3}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto3}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto3}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku4}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant4}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto4}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto4}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto4}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs4}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs4}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto4}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto4}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku5}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant5}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto5}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto5}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto5}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs5}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs5}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto5}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto5}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku6}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant6}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto6}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto6}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto6}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs6}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs6}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto6}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto6}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku7}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant7}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto7}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto7}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto7}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs7}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs7}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto7}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto7}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku8}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant8}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto8}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto8}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto8}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs8}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs8}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto8}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto8}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku9}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant9}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto9}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto9}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto9}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs9}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs9}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto9}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto9}}';">
+							</p>
+						</div>
+					{% elif sku.PD_quant_sku == 10 %}
+
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku1}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant1}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto1}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto1}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto1}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs1}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs1}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto1}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto1}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku2}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant2}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto2}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto2}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto2}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs2}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs2}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto2}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto2}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku3}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant3}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto3}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto3}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto3}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs3}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs3}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto3}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto3}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku4}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant4}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto4}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto4}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto4}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs4}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs4}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto4}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto4}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku5}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant5}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto5}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto5}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto5}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs5}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs5}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto5}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto5}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku6}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant6}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto6}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto6}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto6}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs6}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs6}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto6}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto6}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku7}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant7}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto7}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto7}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto7}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs7}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs7}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto7}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto7}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku8}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant8}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto8}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto8}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto8}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs8}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs8}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto8}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto8}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku9}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant9}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto9}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto9}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto9}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs9}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs9}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto9}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto9}}';">
+							</p>
+						</div>
+						<hr class="separadordebaixo">
+						<div class="row" style="display: flex;">
+							<p class="col-sm" style="padding-right: 40px; padding-left: 20px; font-size: 50px"><b>{{sku.PD_sku10}}</b></p>
+							<p style="padding-right: 40px;font-size: 40px"><b>Quant</b>: {{sku.PD_quant10}}</p>
+							<p class="col-sm" style="padding-right: 40px;">{{sku.PD_titulo_produto10}}</p>
+							<div class="col-sm">
+								
+								<p style="padding-right: 40px;"><b>Cor</b>: {{sku.PD_cor_produto10}}</p>
+								<p style="padding-right: 40px;"><b>Material</b>: {{sku.PD_material_produto10}}</p>
+							</div>
+							{% if sku.PD_obs1 == '' %}
+								<p class="col-sm" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs10}}</p>
+							{% else %}
+								<p class="col-sm table-active" style="padding-right: 30px; border-radius: 10px">Obs: {{sku.PD_obs10}}</p>
+							{% endif %}
+							<p style="padding-right: 20px">
+								<img width="75" height="75" src='{{sku.PD_imagem_produto10}}' onError="this.onerror=null;this.src='{{sku.PD_imagem_produto10}}';">
+							</p>
+						</div>
+
+					{% endif %}
+				</div>
+
+			{% endif %}
+			{% endfor %}
+		</div>
+	</form>
+{% endblock %}

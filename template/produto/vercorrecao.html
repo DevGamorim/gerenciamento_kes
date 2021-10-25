@@ -1,0 +1,547 @@
+{% extends 'base_precos.html' %}
+
+{% block title %}Correções{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <span class="col-sm">SKU</a></span>
+            <span class="col-sm">Prioridade</span>
+            <span class="col-sm">Data Criação</span>
+            <span class="col-sm">Ulitma Atualização</span>
+        </div>
+        <div class="row">
+            <span class="col-sm">{{correcoes.CR_sku}}</span>
+            <span class="col-sm">{{correcoes.CR_prioridade}}</span>
+            <span class="col-sm">{{correcoes.created_at}}</span>
+            <span class="col-sm">{{correcoes.updated_at}}</span>
+        </div> 
+        <form action="{% url 'catalogo:post' %}" method='post'>
+            {% csrf_token %}
+            <input name="sku" type="hidden" value="{{correcoes.CR_sku}}">
+            <div class="row" style="padding-bottom: 20px; border: 1px solid black;padding:20px 20px 20px 20px; border-radius: 1px;
+            width:95%;">
+                <div class="col-sm">
+                    <span>ML ALAOK</span>
+                    {% if correcoes.CR_portal_ML_alaok == False %}
+                        <select class="form-control btn-danger" name='CR_portal_ML_alaok'>
+                            <option value="False">Em correção</option>
+                            <option value="True">Feito</option>                    
+                        </select>
+                    {% else %}
+                        <select class="form-control btn-success" name='CR_portal_ML_alaok'>
+                            <option value="True">Feito</option>
+                            <option value="False">Em correção</option>
+                        </select>
+                    {% endif %}
+                </div>
+                <div class="col-sm">
+                    <span>ML GEA</span>
+                    {% if correcoes.CR_portal_ML_gea == False %}
+                        <select class="form-control btn-danger" name='CR_portal_ML_gea'>
+                            <option value="False">Em correção</option>
+                            <option value="True">Feito</option>                    
+                        </select>
+                    {% else %}
+                        <select class="form-control btn-success" name='CR_portal_ML_gea'>
+                            <option value="True">Feito</option>
+                            <option value="False">Em correção</option>
+                        </select>
+                    {% endif %}
+                </div>
+                <div class="col-sm">
+                    <span>ML Kes</span>
+                    {% if correcoes.CR_portal_ML_kes == False %}
+                        <select class="form-control btn-danger" name='CR_portal_ML_kes'>
+                            <option value="False">Em correção</option>
+                            <option value="True">Feito</option>                    
+                        </select>
+                    {% else %}
+                        <select class="form-control btn-success" name='CR_portal_ML_kes'>
+                            <option value="True">Feito</option>
+                            <option value="False">Em correção</option>
+                        </select>
+                    {% endif %}
+                </div>
+                <div class="col-sm">
+                    <span>ML Arrigo</span>
+                    {% if correcoes.CR_portal_ML_arrigo == False %}
+                        <select class="form-control btn-danger" name='CR_portal_ML_arrigo'>
+                            <option value="False">Em correção</option>
+                            <option value="True">Feito</option>                    
+                        </select>
+                    {% else %}
+                        <select class="form-control btn-success" name='CR_portal_ML_arrigo'>
+                            <option value="True">Feito</option>
+                            <option value="False">Em correção</option>
+                        </select>
+                    {% endif %}
+                </div>
+                <div>
+                    <span></span><br>
+                    <input type="submit" class="btn btn-success" value="Salvar">
+                </div >
+                
+            </div>
+            <div class="row" style="padding-bottom: 20px; border: 1px solid black;padding:20px 20px 20px 20px; border-radius: 1px;
+            width:95%;">
+                <div class="col-sm">
+                    <span>Magalu GEA</span>
+                    {% if correcoes.CR_portal_Magalu_gea == False %}
+                        <select class="form-control btn-danger" name='CR_portal_Magalu_gea'>
+                            <option value="False">Em correção</option>
+                            <option value="True">Feito</option>                    
+                        </select>
+                    {% else %}
+                        <select class="form-control btn-success" name='CR_portal_Magalu_gea'>
+                            <option value="True">Feito</option>
+                            <option value="False">Em correção</option>
+                        </select>
+                    {% endif %}
+                </div>
+                <div class="col-sm">
+                    <span>Magalu KES</span>
+                    {% if correcoes.CR_portal_Magalu_kes == False %}
+                        <select class="form-control btn-danger" name='CR_portal_Magalu_kes'>
+                            <option value="False">Em correção</option>
+                            <option value="True">Feito</option>                    
+                        </select>
+                    {% else %}
+                        <select class="form-control btn-success" name='CR_portal_Magalu_kes'>
+                            <option value="True">Feito</option>
+                            <option value="False">Em correção</option>
+                        </select>
+                    {% endif %}
+                </div>
+                <div class="col-sm">
+                    <span>Magalu KC</span>
+                    {% if correcoes.CR_portal_Magalu_kc == False %}
+                        <select class="form-control btn-danger" name='CR_portal_Magalu_kc'>
+                            <option value="False">Em correção</option>
+                            <option value="True">Feito</option>                    
+                        </select>
+                    {% else %}
+                        <select class="form-control btn-success" name='CR_portal_Magalu_kc'>
+                            <option value="True">Feito</option>
+                            <option value="False">Em correção</option>
+                        </select>
+                    {% endif %}
+                </div>
+                <div class="col-sm">
+                    <span>Magalu Arrigo</span>
+                    {% if correcoes.CR_portal_Magalu_arrigo == False %}
+                        <select class="form-control btn-danger" name='CR_portal_Magalu_arrigo'>
+                            <option value="False">Em correção</option>
+                            <option value="True">Feito</option>                    
+                        </select>
+                    {% else %}
+                        <select class="form-control btn-success" name='CR_portal_Magalu_arrigo'>
+                            <option value="True">Feito</option>
+                            <option value="False">Em correção</option>
+                        </select>
+                    {% endif %}
+                </div>
+                <div>
+                    <span></span><br>
+                    <input type="submit" class="btn btn-success" value="Salvar">
+                </div >
+            </div>
+            <div class="row" style="padding-bottom: 20px; border: 1px solid black;padding:20px 20px 20px 20px; border-radius: 1px;
+            width:95%;">
+                <div class="col-sm">
+                    <span>B2W ALAOK</span>
+                    {% if correcoes.CR_portal_b2w_alaok == False %}
+                        <select disabled="True" class="form-control btn-info" name='CR_portal_b2w_alaok'>
+                            <option value="True">Feito *Automatico*</option>
+                        </select>
+                        <select type="hidden" class="form-control btn-info" name='CR_portal_b2w_alaok'>
+                            <option value="True">Feito *Automatico*</option>
+                        </select>
+                    {% else %}
+                        <select disabled="True" class="form-control btn-info" name='CR_portal_b2w_alaok'>
+                            <option value="True">Feito *Automatico*</option>
+                        </select>
+                        <select type="hidden" class="form-control btn-info" name='CR_portal_b2w_alaok'>
+                            <option value="True">Feito *Automatico*</option>
+                        </select>
+                    {% endif %}
+                </div>
+                <div class="col-sm">
+                    <span>B2W KC</span>
+                    {% if correcoes.CR_portal_b2w_kc == False %}
+                        <select disabled="True" class="form-control btn-info" name='CR_portal_b2w_kc'>
+                            <option value="True">Feito *Automatico*</option>               
+                        </select>
+                        <select type="hidden" class="form-control btn-info" name='CR_portal_b2w_kc'>
+                            <option value="True">Feito *Automatico*</option>
+                        </select>
+                    {% else %}
+                        <select disabled="True" class="form-control btn-info" name='CR_portal_b2w_kc'>
+                            <option value="True">Feito *Automatico*</option>
+                        </select>
+                        <select type="hidden" class="form-control btn-info" name='CR_portal_b2w_kc'>
+                            <option value="True">Feito *Automatico*</option>
+                        </select>
+                    {% endif %}
+                </div>
+                <div class="col-sm">
+                    <span>B2W JCMA</span>
+                    {% if correcoes.CR_portal_b2w_jcma == False %}
+                        <select disabled="True" class="form-control btn-info" name='CR_portal_b2w_jcma'>
+                            <option value="True">Feito *Automatico*</option>                  
+                        </select>
+                        <select type="hidden" class="form-control btn-info" name='CR_portal_b2w_jcma'>
+                            <option value="True">Feito *Automatico*</option>
+                        </select>
+                    {% else %}
+                        <select disabled="True" class="form-control btn-info" name='CR_portal_b2w_jcma'>
+                            <option value="True">Feito *Automatico*</option>
+                        </select>
+                        <select type="hidden" class="form-control btn-info" name='CR_portal_b2w_jcma'>
+                            <option value="True">Feito *Automatico*</option>
+                        </select>
+                    {% endif %}
+                </div>
+                <div class="col-sm">
+                    <span>Centauro ALAOK</span>
+                    {% if correcoes.CR_portal_centauro_alaok == False %}
+                        <select disabled="True" class="form-control btn-info" name='CR_portal_centauro_alaok'>
+                            <option value="True">Feito *Automatico*</option>                   
+                        </select>
+                        <select type="hidden" class="form-control btn-info" name='CR_portal_centauro_alaok'>
+                            <option value="True">Feito *Automatico*</option>
+                        </select> 
+                    {% else %}
+                        <select disabled="True" class="form-control btn-info" name='CR_portal_centauro_alaok'>
+                            <option value="True">Feito *Automatico*</option>
+                        </select>
+                        <select type="hidden" class="form-control btn-info" name='CR_portal_centauro_alaok'>
+                            <option value="True">Feito *Automatico*</option>
+                        </select> 
+                    {% endif %}
+                </div>
+                <div>
+                    <span></span><br>
+                    <input type="submit" class="btn btn-success" value="Salvar">
+                </div >
+            </div>
+            <div class="row" style="padding-bottom: 20px; border: 1px solid black;padding:20px 20px 20px 20px; border-radius: 1px;
+            width:95%;"> 
+                <div class="col-sm">
+                    <span>Carrefour ALAOK</span>
+                    {% if correcoes.CR_portal_carrefour_alaok == False %}
+                        <select class="form-control btn-danger" name='CR_portal_carrefour_alaok'>
+                            <option value="False">Em correção</option>
+                            <option value="True">Feito</option>                    
+                        </select>
+                    {% else %}
+                        <select class="form-control btn-success" name='CR_portal_carrefour_alaok'>
+                            <option value="True">Feito</option>
+                            <option value="False">Em correção</option>
+                        </select>
+                    {% endif %}
+                </div>
+                <div class="col-sm">
+                    <span>Carrefour GEA</span>
+                    {% if correcoes.CR_portal_carrefour_gea == False %}
+                        <select class="form-control btn-danger" name='CR_portal_carrefour_gea'>
+                            <option value="False">Em correção</option>
+                            <option value="True">Feito</option>                    
+                        </select>
+                    {% else %}
+                        <select class="form-control btn-success" name='CR_portal_carrefour_gea'>
+                            <option value="True">Feito</option>
+                            <option value="False">Em correção</option>
+                        </select>
+                    {% endif %}
+                </div>
+                <div class="col-sm">
+                    <span>Carrefour Arrigo</span>
+                    {% if correcoes.CR_portal_carrefour_arrigo == False %}
+                        <select class="form-control btn-danger" name='CR_portal_carrefour_arrigo'>
+                            <option value="False">Em correção</option>
+                            <option value="True">Feito</option>                    
+                        </select>
+                    {% else %}
+                        <select class="form-control btn-success" name='CR_portal_carrefour_arrigo'>
+                            <option value="True">Feito</option>
+                            <option value="False">Em correção</option>
+                        </select>
+                    {% endif %}
+                </div>
+                <div>
+                    <span></span><br>
+                    <input type="submit" class="btn btn-success" value="Salvar">
+                </div >
+            </div>
+            <div class="row" style="padding-bottom: 20px; border: 1px solid black;padding:20px 20px 20px 20px; border-radius: 1px;
+            width:95%;">
+                <div class="col-sm">
+                    <span>Netshoes ALAOK</span>
+                    {% if correcoes.CR_portal_netshoes_alk == False %}
+                        <select class="form-control btn-danger" name='CR_portal_netshoes_alk'>
+                            <option value="False">Em correção</option>
+                            <option value="True">Feito</option>                    
+                        </select>
+                    {% else %}
+                        <select class="form-control btn-success" name='CR_portal_netshoes_alk'>
+                            <option value="True">Feito</option>
+                            <option value="False">Em correção</option>
+                        </select>
+                    {% endif %}
+                </div>
+                <div class="col-sm">
+                    <span>Netshoes Kes</span>
+                    {% if correcoes.CR_portal_netshoes_kes == False %}
+                        <select class="form-control btn-danger" name='CR_portal_netshoes_kes'>
+                            <option value="False">Em correção</option>
+                            <option value="True">Feito</option>                    
+                        </select>
+                    {% else %}
+                        <select class="form-control btn-success" name='CR_portal_netshoes_kes'>
+                            <option value="True">Feito</option>
+                            <option value="False">Em correção</option>
+                        </select>
+                    {% endif %}
+                </div>
+                <div>
+                    <span></span><br>
+                    <input type="submit" class="btn btn-success" value="Salvar">
+                </div >
+            </div>
+            <div class="row" style="padding-bottom: 20px; border: 1px solid black;padding:20px 20px 20px 20px; border-radius: 1px;
+            width:95%;">
+                <div class="col-sm">
+                    <span>Olist GEA</span>
+                    {% if correcoes.CR_portal_olist_gea == False %}
+                        <select class="form-control btn-danger" name='CR_portal_olist_gea'>
+                            <option value="False">Em correção</option>
+                            <option value="True">Feito</option>                    
+                        </select>
+                    {% else %}
+                        <select class="form-control btn-success" name='CR_portal_olist_gea'>
+                            <option value="True">Feito</option>
+                            <option value="False">Em correção</option>
+                        </select>
+                    {% endif %}
+                </div>
+                <div class="col-sm">
+                    <span>Olist Arrigo</span>
+                    {% if correcoes.CR_portal_olist_arrigo == False %}
+                        <select class="form-control btn-danger" name='CR_portal_olist_arrigo'>
+                            <option value="False">Em correção</option>
+                            <option value="True">Feito</option>                    
+                        </select>
+                    {% else %}
+                        <select class="form-control btn-success" name='CR_portal_olist_arrigo'>
+                            <option value="True">Feito</option>
+                            <option value="False">Em correção</option>
+                        </select>
+                    {% endif %}
+                </div>
+                <div>
+                    <span></span><br>
+                    <input type="submit" class="btn btn-success" value="Salvar">
+                </div >
+            </div>
+            <div class="row" style="padding-bottom: 20px; border: 1px solid black;padding:20px 20px 20px 20px; border-radius: 1px;
+            width:95%;">
+                <div class="col-sm">
+                    <span>Madeira Madeira Kes</span>
+                    {% if correcoes.CR_portal_madeiramadeira_kes == False %}
+                        <select class="form-control btn-danger" name='CR_portal_madeiramadeira_kes'>
+                            <option value="False">Em correção</option>
+                            <option value="True">Feito</option>                    
+                        </select>
+                    {% else %}
+                        <select class="form-control btn-success" name='CR_portal_madeiramadeira_kes'>
+                            <option value="True">Feito</option>
+                            <option value="False">Em correção</option>
+                        </select>
+                    {% endif %}
+                </div>
+                
+                <div class="col-sm">
+                    <span>Madeira Madeira Arrigo</span>
+                    {% if correcoes.CR_portal_madeiramadeira_arrigo == False %}
+                        <select class="form-control btn-danger" name='CR_portal_madeiramadeira_arrigo'>
+                            <option value="False">Em correção</option>
+                            <option value="True">Feito</option>                    
+                        </select>
+                    {% else %}
+                        <select class="form-control btn-success" name='CR_portal_madeiramadeira_arrigo'>
+                            <option value="True">Feito</option>
+                            <option value="False">Em correção</option>
+                        </select>
+                    {% endif %}
+                </div>
+                <div>
+                    <span></span><br>
+                    <input type="submit" class="btn btn-success" value="Salvar">
+                </div >
+            </div>
+            <div class="row" style="padding-bottom: 20px; border: 1px solid black;padding:20px 20px 20px 20px; border-radius: 1px;
+            width:95%;">
+                <div class="col-sm">
+                    <span>Amazon Kes</span>
+                    {% if correcoes.CR_portal_amazon_kes == False %}
+                        <select class="form-control btn-danger" name='CR_portal_amazon_kes'>
+                            <option value="False">Em correção</option>
+                            <option value="True">Feito</option>                    
+                        </select>
+                    {% else %}
+                        <select class="form-control btn-success" name='CR_portal_amazon_kes'>
+                            <option value="True">Feito</option>
+                            <option value="False">Em correção</option>
+                        </select>
+                    {% endif %}
+                </div>
+                <div class="col-sm">
+                    <span>Amazon KC</span>
+                    {% if correcoes.CR_portal_amazon_kc == False %}
+                        <select class="form-control btn-danger" name='CR_portal_amazon_kc'>
+                            <option value="False">Em correção</option>
+                            <option value="True">Feito</option>                    
+                        </select>
+                    {% else %}
+                        <select class="form-control btn-success" name='CR_portal_amazon_kc'>
+                            <option value="True">Feito</option>
+                            <option value="False">Em correção</option>
+                        </select>
+                    {% endif %}
+                </div>
+                <div class="col-sm">
+                    <span>Amazon Arrigo</span>
+                    {% if correcoes.CR_portal_amazon_arrigo == False %}
+                        <select class="form-control btn-danger" name='CR_portal_amazon_arrigo'>
+                            <option value="False">Em correção</option>
+                            <option value="True">Feito</option>                    
+                        </select>
+                    {% else %}
+                        <select class="form-control btn-success" name='CR_portal_amazon_arrigo'>
+                            <option value="True">Feito</option>
+                            <option value="False">Em correção</option>
+                        </select>
+                    {% endif %}
+                </div>
+                <div>
+                    <span></span><br>
+                    <input type="submit" class="btn btn-success" value="Salvar">
+                </div >
+            </div>
+            <div class="row" style="padding-bottom: 20px; border: 1px solid black;padding:20px 20px 20px 20px; border-radius: 1px;
+            width:95%;">
+                <div class="col-sm">
+                    <span>Cnova Kes</span>
+                    {% if correcoes.CR_portal_cnova_kes == False %}
+                        <select class="form-control btn-danger" name='CR_portal_cnova_kes'>
+                            <option value="False">Em correção</option>
+                            <option value="True">Feito</option>                    
+                        </select>
+                    {% else %}
+                        <select class="form-control btn-success" name='CR_portal_cnova_kes'>
+                            <option value="True">Feito</option>
+                            <option value="False">Em correção</option>
+                        </select>
+                    {% endif %}
+                </div>
+                <div class="col-sm">
+                    <span>Cnova Arrigo</span>
+                    {% if correcoes.CR_portal_cnova_arrigo == False %}
+                        <select class="form-control btn-danger" name='CR_portal_cnova_arrigo'>
+                            <option value="False">Em correção</option>
+                            <option value="True">Feito</option>                    
+                        </select>
+                    {% else %}
+                        <select class="form-control btn-success" name='CR_portal_cnova_arrigo'>
+                            <option value="True">Feito</option>
+                            <option value="False">Em correção</option>
+                        </select>
+                    {% endif %}
+                </div>
+                <div>
+                    <span></span><br>
+                    <input type="submit" class="btn btn-success" value="Salvar">
+                </div >
+            </div>
+            <div class="row" style="padding-bottom: 20px; border: 1px solid black;padding:20px 20px 20px 20px; border-radius: 1px;
+            width:95%;">
+                <div class="col-sm">
+                    <span>Leroy Kes</span>
+                    {% if correcoes.CR_portal_leroy_kes == False %}
+                        <select class="form-control btn-danger" name='CR_portal_leroy_kes'>
+                            <option value="False">Em correção</option>
+                            <option value="True">Feito</option>                    
+                        </select>
+                    {% else %}
+                        <select class="form-control btn-success" name='CR_portal_leroy_kes'>
+                            <option value="True">Feito</option>
+                            <option value="False">Em correção</option>
+                        </select>
+                    {% endif %}
+                </div>
+                <div class="col-sm">
+                    <span>Mobly KC</span>
+                    {% if correcoes.CR_portal_mobly_kc == False %}
+                        <select class="form-control btn-danger" name='CR_portal_mobly_kc'>
+                            <option value="False">Em correção</option>
+                            <option value="True">Feito</option>                    
+                        </select>
+                    {% else %}
+                        <select class="form-control btn-success" name='CR_portal_mobly_kc'>
+                            <option value="True">Feito</option>
+                            <option value="False">Em correção</option>
+                        </select>
+                    {% endif %}
+                </div>
+                <div class="col-sm">
+                    <span>Shopee Kes</span>
+                    {% if correcoes.CR_portal_shopee_kes == False %}
+                        <select class="form-control btn-danger" name='CR_portal_shopee_kes'>
+                            <option value="False">Em correção</option>
+                            <option value="True">Feito</option>                    
+                        </select>
+                    {% else %}
+                        <select class="form-control btn-success" name='CR_portal_shopee_kes'>
+                            <option value="True">Feito</option>
+                            <option value="False">Em correção</option>
+                        </select>
+                    {% endif %}
+                </div>
+                <div class="col-sm">
+                    <span>Aliexpress Arrigo</span>
+                    {% if correcoes.CR_portal_aliexpress_arrigo == False %}
+                        <select class="form-control btn-danger" name='CR_portal_aliexpress_arrigo'>
+                            <option value="False">Em correção</option>
+                            <option value="True">Feito</option>                    
+                        </select>
+                    {% else %}
+                        <select class="form-control btn-success" name='CR_portal_aliexpress_arrigo'>
+                            <option value="True">Feito</option>
+                            <option value="False">Em correção</option>
+                        </select>
+                    {% endif %}
+                </div>
+                <div class="col-sm">
+                    <span>Elo7 Arrigo</span>
+                    {% if correcoes.CR_portal_elo7_arrigo == False %}
+                        <select class="form-control btn-danger" name='CR_portal_elo7_arrigo'>
+                            <option value="False">Em correção</option>
+                            <option value="True">Feito</option>                    
+                        </select>
+                    {% else %}
+                        <select class="form-control btn-success" name='CR_portal_elo7_arrigo'>
+                            <option value="True">Feito</option>
+                            <option value="False">Em correção</option>
+                        </select>
+                    {% endif %}
+                </div>
+                <div>
+                    <span></span><br>
+                    <input type="submit" class="btn btn-success" value="Salvar">
+                </div >
+            </div>
+        </form>
+    </div>
+    
+{% endblock %}

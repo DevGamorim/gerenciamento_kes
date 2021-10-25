@@ -1,0 +1,28 @@
+{% extends 'base_precos.html' %}
+
+{% block title %}Preços{% endblock %}
+
+{% block content %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <div class="container">
+        <form method="post" action="/precos/importar/">
+            {% csrf_token %}
+            <div>
+                <span><b>Importar Produtos Especificos (Apenas Id Master)</b> **Separadores: virgula, espaço e quebra de linha.**</span>
+                <input type="text" class="form-control" name='ids' autocomplete="off">
+            </div>
+
+            <div style="padding-bottom: 20px;">
+                <center><input class="btn btn-success" type="submit" value="Procurar"></center>
+            </div>
+        </form>
+    </div>
+    <div class="container">
+        <span><b>Id Master Importados</b></span>
+        {% for id in ids %}
+        <p>{{id}}</p>
+        {% endfor %}
+    </div>
+    
+    
+{% endblock %}

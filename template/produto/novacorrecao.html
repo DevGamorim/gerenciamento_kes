@@ -1,0 +1,33 @@
+{% extends 'base_precos.html' %}
+
+{% block title %}Nova Correção{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <form action="{% url 'catalogo:novacorrecao' %}" method='post'>
+            {% csrf_token %}
+            <div class="row">
+                <span class="col-sm">Sku</a></span>
+                <span class="col-sm">Prioridade</span>
+                <span class="col-sm">O que Corrigir</span>
+                <span class="col-sm">Links uteis</span>
+            </div> 
+            <div class="row">
+                <input class="col-sm form-control" name="CR_sku" autocomplete="off">
+                <select class="col-sm form-control" name='CR_prioridade'>
+                    <option value="zBaixa">Baixa</option>
+                    <option value="Media">Medio</option>
+                    <option value="Alta">Alta</option>
+                </select>
+                <input class="col-sm form-control" name="CR_motivo_correcao" autocomplete="off">
+                <input class="col-sm form-control" name="CR_links" autocomplete="false">
+
+            </div> 
+            <div>
+                <span></span><br>
+                <input type="submit" class="col-sm btn btn-success" value="Salvar">
+            </div >
+        </form>
+    </div>
+    
+{% endblock %}

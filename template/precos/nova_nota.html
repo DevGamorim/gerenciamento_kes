@@ -1,0 +1,46 @@
+{% extends 'base_precos.html' %}
+
+{% block title %}Nova Nota{% endblock %}
+
+{% block content %}
+    <center><p>Nova Nota</p></center>
+    <div class="container">
+        
+        <form method="POST" action="/precos/novanota/">
+            {% csrf_token %}
+            <div class="row">
+                <span class="col-sm">N° NF</span>
+                <span class="col-sm"></span>
+                <span class="col-sm">Fornecedor</span>
+                <span class="col-sm"></span>
+                <span class="col-sm">Custo + 8%</span>
+                <span class="col-sm"></span>
+            </div>
+            <div class="row">
+                <input class="col-sm form-control" type="text" name="nf">
+                <span class="col-sm"></span>
+                <select class="col-sm form-control" name='fornecedor' class="form-control">
+                    <option value="----">-----</option>
+                    {% for forn in fornecedores %}
+                        <option value="{{forn.FN_ID}}">{{forn.FN_Nome}}</option>
+                    {% endfor %}               
+                </select>
+                <span class="col-sm"></span>
+                <select class="col-sm form-control" name='difal' class="form-control">
+                    <option value="nao">Não calcular</option>
+                    <option value="sim">Calcular</option>            
+                </select>  
+                <span class="col-sm"></span>
+            </div>
+                              
+            <div style="padding-bottom: 20px;">
+                <center><span>Produtos</span></center>
+                <input class="col-sm form-control" type="text" name="skus">
+            </div>
+            <center><input class="btn btn-success " type="submit" value="Salvar"></center>
+        </form>
+
+    </div>
+    
+
+{% endblock %}

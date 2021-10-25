@@ -1,0 +1,270 @@
+{% extends 'basep.html' %}
+
+{% block title %}Inicio{% endblock %}
+
+{% block content %}
+    <div style="display: center;">Novo pedido:</div>
+    <div>
+        <form action="/pedidos/NovoPedido/" method="post">
+            {% csrf_token %}
+            <div class="container" style="padding-bottom: 15px; padding-top: 15px;">
+                <div class="row" style="padding-bottom: 5px;" id="1">
+                    <div style="display: flex;">
+                        <p class="col-sm">sku</p>
+                        <input class="form-control" type="text" name="sku1" autocomplete="off"/>
+                        <p class="col-sm" >Quantidade</p>
+                        <input class="form-control" type="number" name="quant1" autocomplete="off"/><br>
+                        <p class="col-sm" >OBS</p>
+                        <input class="form-control" type="text" name="obs1" autocomplete="off"/><br>
+                        <p class="col-sm" >Preço</p>
+                        <input class="form-control" type="text" name="valor1" autocomplete="off"/><br>
+                    </div>
+                    <div id = "1-2" style="display: block;">
+                        <input class="form-control" type="button" value="+" style="cursor: pointer;" onclick="Mudarestado2();">
+                        <input class="form-control" type="hidden" value="-" style="cursor: pointer;">
+                    </div>                   
+                </div>
+
+                
+
+                <div class="row" id="2" style="display: none; padding-bottom: 5px;">
+                    <div style="display: flex;">
+                        <p class="col-sm" >sku</p>
+                        <input class="form-control" type="text" name="sku2" autocomplete="off"/>
+                        <p class="col-sm" >Quantidade</p>
+                        <input class="form-control" type="number" name="quant2" autocomplete="off"/>
+                        <p class="col-sm" >OBS</p>
+                        <input class="form-control" type="text" name="obs2" autocomplete="off"/>
+                        <p class="col-sm" >Preço</p>
+                        <input class="form-control" type="text" name="valor2" autocomplete="off"/>
+                    </div>
+                                      
+                </div>
+                <div id = "2-2" style="display: none;">
+                    <input class="form-control" type="button" value="+" style="cursor: pointer;" onclick="Mudarestado3();">
+                    <input class="form-control" type="button" value="-" style="cursor: pointer;" onclick="removerCampos2(this);">
+                </div>  
+                
+
+                <div class="row" id="3" style="display: none; padding-bottom: 5px;">
+                    <div style="display: flex;">
+                        <p class="col-sm" >sku</p>
+                        <input class="form-control" type="text" name="sku3" autocomplete="off"/>
+                        <p class="col-sm" >Quantidade</p>
+                        <input class="form-control" type="number" name="quant3" autocomplete="off"/><br>
+                        <p class="col-sm" >OBS</p>
+                        <input class="form-control" type="text" name="obs3" autocomplete="off"/><br>
+                        <p class="col-sm" >Preço</p>
+                        <input class="form-control" type="text" name="valor3" autocomplete="off"/><br>
+                    </div>
+                    
+                </div>
+                <div id = "3-2" style="display: none; padding-bottom: 5px; padding-top: 5px;">
+                    <input class="form-control" type="button" value="+" style="cursor: pointer;" onclick="Mudarestado4();">
+                    <input class="form-control" type="button" value="-" style="cursor: pointer;" onclick="removerCampos3(this);">
+                </div>
+                
+                
+                <div class="row" id="4" style="display: none; padding-bottom: 5px;">
+                    <div style="display: flex;">
+                        <p class="col-sm" >sku</p>
+                        <input class="form-control" type="text" name="sku4" autocomplete="off"/>
+                        <p class="col-sm" >Quantidade</p>
+                        <input class="form-control" type="number" name="quant4" autocomplete="off"/><br>
+                        <p class="col-sm" >OBS</p>
+                        <input class="form-control" type="text" name="obs4" autocomplete="off"/><br>
+                        <p class="col-sm" >Preço</p>
+                        <input class="form-control" type="text" name="valor4" autocomplete="off"/><br>                       
+                    </div>
+                    <div id = "4-2" style="display: none; padding-bottom: 5px; padding-top: 5px;">
+                        <input class="form-control" type="button" value="+" style="cursor: pointer;" onclick="Mudarestado5();">
+                        <input class="form-control" type="button" value="-" style="cursor: pointer;" onclick="removerCampos4(this);">
+                    </div>
+                </div>
+                <div id = "4-2" style="display: none; padding-bottom: 5px; padding-top: 5px;">
+                    <input class="form-control" type="button" value="+" style="cursor: pointer;" onclick="Mudarestado5();">
+                    <input class="form-control" type="button" value="-" style="cursor: pointer;" onclick="removerCampos4(this);">
+                </div>
+
+                <div class="row" id="5" style="display: none; padding-bottom: 5px;">
+                    <div style="display: flex;">
+                        <p class="col-sm" >sku</p>
+                        <input class="form-control" type="text" name="sku5" autocomplete="off"/>
+                        <p class="col-sm" >Quantidade</p>
+                        <input class="form-control" type="number" name="quant5" autocomplete="off"/><br>
+                        <p class="col-sm" >OBS</p>
+                        <input class="form-control" type="text" name="obs5" autocomplete="off"/><br>
+                        <p class="col-sm" >Preço</p>
+                        <input class="form-control" type="text" name="valor5" autocomplete="off"/><br>                       
+                    </div>                    
+                </div>
+                <div id = "5-2" style="display: none; padding-bottom: 5px; padding-top: 5px;">
+                    <input class="form-control" type="button" value="+" style="cursor: pointer;" onclick="Mudarestado6();">
+                    <input class="form-control" type="button" value="-" style="cursor: pointer;" onclick="removerCampos5(this);">
+                </div>
+                
+                
+                <div class="row" id="6" style="display: none; padding-bottom: 5px;">
+                    <div style="display: flex;">
+                        <p class="col-sm" >sku</p>
+                        <input class="form-control" type="text" name="sku6" autocomplete="off"/>
+                        <p class="col-sm" >Quantidade</p>
+                        <input class="form-control" type="number" name="quant6" autocomplete="off"/><br>
+                        <p class="col-sm" >OBS</p>
+                        <input class="form-control" type="text" name="obs6" autocomplete="off"/><br>
+                        <p class="col-sm" >Preço</p>
+                        <input class="form-control" type="text" name="valor6" autocomplete="off"/><br>                       
+                    </div>
+                </div>
+                <div id = "6-2" style="display: none; padding-bottom: 5px; padding-top: 5px;">
+                    <input class="form-control" type="button" value="+" style="cursor: pointer;" onclick="Mudarestado7();">
+                    <input class="form-control" type="button" value="-" style="cursor: pointer;" onclick="removerCampos6(this);">
+                </div>
+                <div class="row" id="7" style="display: none; padding-bottom: 5px;">
+                    <div style="display: flex;">
+                        <p class="col-sm" >sku</p>
+                        <input class="form-control" type="text" name="sku7" autocomplete="off"/>
+                        <p class="col-sm" >Quantidade</p>
+                        <input class="form-control" type="number" name="quant7" autocomplete="off"/><br>
+                        <p class="col-sm" >OBS</p>
+                        <input class="form-control" type="text" name="obs7" autocomplete="off"/><br>
+                        <p class="col-sm" >Preço</p>
+                        <input class="form-control" type="text" name="valor7" autocomplete="off"/><br>                       
+                    </div>
+                </div>
+                <div id = "7-2" style="display: none; padding-bottom: 5px; padding-top: 5px;">
+                    <input class="form-control" type="button" value="+" style="cursor: pointer;" onclick="Mudarestado8();">
+                    <input class="form-control" type="button" value="-" style="cursor: pointer;" onclick="removerCampos7(this);">
+                </div>
+
+                <div class="row" id="8" style="display: none; padding-bottom: 5px;">
+                    <div style="display: flex;">
+                        <p class="col-sm" >sku</p>
+                        <input class="form-control" type="text" name="sku8" autocomplete="off"/>
+                        <p class="col-sm" >Quantidade</p>
+                        <input class="form-control" type="number" name="quant8" autocomplete="off"/><br>
+                        <p class="col-sm" >OBS</p>
+                        <input class="form-control" type="text" name="obs8" autocomplete="off"/><br>
+                        <p class="col-sm" >Preço</p>
+                        <input class="form-control" type="text" name="valor8" autocomplete="off"/><br>                       
+                    </div>
+                </div>
+                <div id = "8-2" style="display: none; padding-bottom: 5px; padding-top: 5px;">
+                    <input class="form-control" type="button" value="+" style="cursor: pointer;" onclick="Mudarestado9();">
+                    <input class="form-control" type="button" value="-" style="cursor: pointer;" onclick="removerCampos8(this);">
+                </div>
+
+                <div class="row" id="9" style="display: none; padding-bottom: 5px;">
+                    <div style="display: flex;">
+                        <p class="col-sm" >sku</p>
+                        <input class="form-control" type="text" name="sku9" autocomplete="off"/>
+                        <p class="col-sm" >Quantidade</p>
+                        <input class="form-control" type="number" name="quant9" autocomplete="off"/><br>
+                        <p class="col-sm" >OBS</p>
+                        <input class="form-control" type="text" name="obs9" autocomplete="off"/><br>
+                        <p class="col-sm" >Preço</p>
+                        <input class="form-control" type="text" name="valor9" autocomplete="off"/><br>                       
+                    </div>
+                </div>
+                <div id = "9-2" style="display: none; padding-bottom: 5px; padding-top: 5px;">
+                    <input class="form-control" type="button" value="+" style="cursor: pointer;" onclick="Mudarestado10();">
+                    <input class="form-control" type="button" value="-" style="cursor: pointer;" onclick="removerCampos9(this);">
+                </div>                
+
+                <div class="row" id="10" style="display: none; padding-bottom: 5px;">
+                    <div style="display: flex;">
+                        <p class="col-sm" >sku</p>
+                        <input class="form-control" type="text" name="sku10" autocomplete="off"/>
+                        <p class="col-sm" >Quantidade</p>
+                        <input class="form-control" type="number" name="quant10" autocomplete="off"/><br>
+                        <p class="col-sm" >OBS</p>
+                        <input class="form-control" type="text" name="obs10" autocomplete="off"/><br>
+                        <p class="col-sm" >Preço</p>
+                        <input class="form-control" type="text" name="valor10" autocomplete="off"/><br>                       
+                    </div>                    
+                </div>
+                <div id = "10-2" style="display: none; padding-bottom: 5px; padding-top: 5px;">
+                    <input class="form-control" type="button" value="-" style="cursor: pointer;" onclick="removerCampos10(this);">
+                </div>  
+            </div>
+            <div class="container" style="padding-bottom: 15px; padding-top: 15px;">
+                <div style="display: flex;" class="row">
+                    <div style="display:flex;" class="col-sm">
+                        <p style="padding-right: 20px">Portal</p>
+                        <select  name='portal' class="form-control">
+                            <option value="0">---</option>
+                            <option value="Amazon-KES">Amazon KES</option>
+                            <option value="Amazon-KC">Amazon KC</option>
+                            <option value="B2W-ALK">B2W ALK</option>
+                            <option value="B2W-GEA">B2W GEA</option>
+                            <option value="B2W-JCMA">B2W JCMA</option>
+                            <option value="B2W-KC">B2W KC</option>
+                            <option value="B2W-KES">B2W KES</option>
+                            <option value="Carrefour-ALK">Carrefour ALK</option>
+                            <option value="Carrefour-Arrigo">Carrefour Arrigo</option>
+                            <option value="Carrefour-GEA">Carrefour GEA</option>
+                            <option value="Centauro-ALK">Centauro ALK</option>
+                            <option value="Cnova-KES">Cnova KES</option>
+                            <option value="Elo7-KES">Elo7 KES</option>
+                            <option value="Leroy-KES">Leroy KES</option>
+                            <option value="Madeira-Madeira-KES">Madeira Madeira KES</option>
+                            <option value="Magalu-ALK">Magalu ALK</option>
+                            <option value="Magalu-Arrigo">Magalu Arrigo</option>
+                            <option value="Magalu-GEA">Magalu GEA</option>
+                            <option value="Magalu-KC">Magalu KC</option>
+                            <option value="ML-ALK">Mercado Livre ALAOK</option>
+                            <option value="ML-GEA">Mercado Livre G&A</option>
+                            <option value="ML-KES">Mercado Livre Koala</option>
+                            <option value="Mobly-KES">Mobly KES</option>
+                            <option value="Netshoes-ALK">Netshoes ALK</option>
+                            <option value="Netshoes-Kes">Netshoes Kes</option>
+                            <option value="Olist-GEA">Olist GEA</option>
+                            <option value="Shopee-Kes">Shopee Kes</option>
+                            <option value="Site">Site</option>
+                            <option value="Troca/Reenvio">Troca/Reenvio</option>
+                            <option value="Outro">Outro</option>
+                        </select>
+                    </div>
+                    <div style="display:flex;" class="col-sm">
+                        <p style="padding-right: 20px;">Pedido</p>
+                        <input class="form-control" type="box" name="pedido" autocomplete="off">
+                    </div>
+                    <div style="display:flex;" class="col-sm">
+                        <p style="padding-right: 20px;">Coleta</p>
+                        <select name='prioridade' class="form-control">
+                            <option value="0">---</option>
+                            <option value="10:30:0">10:30</option>
+                            <option value="11:00:0">11:00</option>
+                            <option value="11:00:0">12:00</option>
+                            <option value="14:30:0">14:30</option>
+                            <option value="15:30:0">15:30</option>
+                            <option value="16:30:0">16:30</option>
+                            <option value="17:30:0">17:30</option>
+                            <option value="FULL">FULL</option>
+                        </select>
+                    </div>
+                    <div style="display:flex;" class="col-sm">
+                        <p style="padding-right: 20px; ">Finalizar</p>
+                        <input class="form-control" name="data" type="date">
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align :center; padding-top:50px">
+                <input style="padding-right: 50px; padding-left: 50px;" class="btn btn-success" type="submit" value="Enviar">
+            </div><br><br><br>
+        </form>
+        <hr class="separadordebaixo">
+        <form enctype="multipart/form-data" action="/pedidos/NovoPedido/" method="post">
+            {% csrf_token %}
+            <div class="container" style="padding-bottom: 15px; padding-top: 15px; text-align :center;">
+                <div>
+                    <p>Faça upload do arquivo com todos os pedidos, <a href="http://alaoq.com.br/imagem/NaoApagar/template.xlsx">ou download da planilha template.</a></p>
+                    <input id="arquivoxlsx" name="arquivoxlsx" type="file"><br>
+                    <center><input class="btn btn-success" type="submit" value="Enviar"></center>
+                </div>
+            </div>
+        </form>
+    </div>
+    
+{% endblock %}

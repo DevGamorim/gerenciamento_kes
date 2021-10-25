@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}Sincronizador{% endblock %}
+
+{% block content %}
+    <meta http-equiv="refresh" content="5" >
+    <div>
+    <a href="http://127.0.0.1:8000/admin/sincronizador/sinc_view/1/change/">Alterar Filtro</a>
+        {% for log in logs %}
+            <div class="container">
+                <center><b><p class="col-sm">{{log.SL_Nome}}</p></b></center>
+
+                <div class="row">
+                    <p class="col-sm">SKU: {{log.SL_ProdutoID}}</p>
+                    <p class="col-sm">Destino: {{log.SL_PostSaida}}</p>
+                    <p class="col-sm">Preço De: {{log.SL_PrecoDe}}</p>
+                    <p class="col-sm">Preço Por: {{log.SL_PrecoPor}}</p>
+                    <p class="col-sm">Estoque: {{log.SL_Estoque}}</p>
+                </div>
+            </div>
+            <hr style="height:2px; border:none; color:#000; background-color:#000; margin-top: 0px; margin-bottom: 0px;"/>
+        {% endfor %}
+            </div>
+{% endblock %}

@@ -1,0 +1,89 @@
+{% extends 'base_precos.html' %}
+
+{% block title %}Nova Correção{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <form action="{% url 'produtos:editarmovel' %}" method='post' enctype="multipart/form-data">
+            {% csrf_token %}
+            <input Value="salvar" type="hidden" name="tipo">
+            <input Value="{{moveis.PA_ID}}" type="hidden" name="id">
+            <div class="container">
+                <div class="row">
+                    <span class="col-sm">SKU</span>
+                    <span class="col-sm-8">Titulo</span>
+                </div>
+                <div class="row" style="padding-bottom: 20px;">
+                    <input type="text" autocomplete="off" class="col-sm form-control" name="PA_sku" placeholder="{{moveis.PA_sku}}">
+                    <input type="text" autocomplete="off" class="col-sm-8 form-control" name="PA_titulo" placeholder="{{moveis.PA_titulo}}">
+                </div>
+                <div class="row">
+                    <span class="col-sm">Custo</span>
+                    <span class="col-sm">Preço Sugerido</span>
+                </div>
+                <div class="row" style="padding-bottom: 20px;">
+                    <input type="text" autocomplete="off" class="col-sm form-control" name="PA_custo" placeholder="{{moveis.PA_custo}}">
+                    <input type="text" autocomplete="off" class="col-sm form-control" name="PA_preco_venda" placeholder="{{moveis.PA_preco_venda}}">
+
+                </div>
+
+                <div class="row">
+                    <span class="col-sm">Peso</span>
+                    <span class="col-sm">Largura</span>
+                    <span class="col-sm">Altura</span>
+                    <span class="col-sm">Comprimento</span>
+                    <span class="col-sm">Cor</span>
+                </div>
+                <div class="row" style="padding-bottom: 20px;">
+                    <input type="text" autocomplete="off" class="col-sm form-control" name="PM_peso" placeholder="{{moveis.PA_peso}}">
+                    <input type="text" autocomplete="off" class="col-sm form-control" name="PA_medida_externa_largura" placeholder="{{moveis.PA_medida_externa_largura}}">
+                    <input type="text" autocomplete="off" class="col-sm form-control" name="PA_medida_externa_altura" placeholder="{{moveis.PA_medida_externa_altura}}">
+                    <input type="text" autocomplete="off" class="col-sm form-control" name="PA_medida_externa_profundidade" placeholder="{{moveis.PA_medida_externa_profundidade}}">
+                    <input type="text" autocomplete="off" class="col-sm form-control" name="PM_cor" placeholder="{{moveis.PA_cor}}">
+
+                </div>
+                
+                <div class="row">
+                    <span class="col-sm">Medidas Internas</span>
+                </div>
+                <div class="row" style="padding-bottom: 20px;">
+                    <textarea autocomplete="off" class="col-sm form-control" name="PM_descricao" value="{{moveis.PM_observacao}}" placeholder="{{moveis.PA_medidas_internas}}"></textarea>
+                    
+                </div>
+                <div class="row">
+                    <table class="col-sm">
+                        <tr>
+                            <th>Imagem 1</th>
+                            <th>Imagem 2</th>
+                            <th>Imagem 3</th>
+                            <th>Imagem 4</th>
+                            <th>Imagem 5</th>
+                            <th>Imagem 6</th>
+                            <th>Imagem 7</th>
+                            <th>Imagem 8</th>
+                            <th>Imagem 9</th>
+                            <th>Imagem 10</th>
+                        </tr>
+                        <tr>
+                            <td><img src="/{{moveis.PA_imagem1}}" width="75" height="75"></td>
+                            <td><img src="/{{moveis.PA_imagem2}}" width="75" height="75"></td>
+                            <td><img src="/{{moveis.PA_imagem3}}" width="75" height="75"></td>
+                            <td><img src="/{{moveis.PA_imagem4}}" width="75" height="75"></td>
+                            <td><img src="/{{moveis.PA_imagem5}}" width="75" height="75"></td>
+                            <td><img src="/{{moveis.PA_imagem6}}" width="75" height="75"></td>
+                            <td><img src="/{{moveis.PA_imagem7}}" width="75" height="75"></td>
+                            <td><img src="/{{moveis.PA_imagem8}}" width="75" height="75"></td>
+                            <td><img src="/{{moveis.PA_imagem9}}" width="75" height="75"></td>
+                            <td><img src="/{{moveis.PA_imagem10}}" width="75" height="75"></td>
+                        </tr>
+                    </table>
+                </div>
+                
+               
+            </div>
+            <input type="submit" class="form-control btn btn-success" value="Salvar">
+            
+        </form>
+    </div>
+    
+{% endblock %}

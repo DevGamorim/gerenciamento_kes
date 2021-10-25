@@ -1,0 +1,228 @@
+{% extends 'base_precos.html' %}
+
+{% block title %}Moveis{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <form action="{% url 'produtos:editarmovel' %}" method='post'>
+            {% csrf_token %}
+            <input Value="{{moveis.PA_ID}}" type="hidden" name="id">
+            <input Value="editar" type="hidden" name="tipo">
+            <input type="submit" value="Editar" class="btn btn-warning">
+        </form>
+        <div class="row">
+            <span class="col-sm"><b>SKU</b></span>
+            <span class="col-sm-6"><b>Titulo</b></span>
+            <span class="col-sm"><b>Cor</b></span>
+            <span class="col-sm"><b>Custo</b></span>
+            <span class="col-sm"><b>Preço</b></span>
+            <span class="col-sm"><b>Preço Sugerido</b></span>
+        </div>
+        <div class="row" style="padding-bottom: 20px;">
+            <span class="col-sm">{{moveis.PA_sku}}</span>
+            <span class="col-sm-6">{{moveis.PA_titulo}}</span>
+            <span class="col-sm">{{moveis.PA_cor}}</span>
+            <span class="col-sm">{{moveis.PA_custo}}</span>
+            <span class="col-sm">{{moveis.PA_preco_venda}}</span>
+        </div>
+        <div class="row">
+            <span class="col-sm"><b>Peso</b></span>
+            <span class="col-sm"><b>Largura</b></span>
+            <span class="col-sm"><b>Altura</b></span>
+            <span class="col-sm"><b>Comprimento</b></span>
+        </div>
+        
+        <div class="row" style="padding-bottom: 20px;">
+            <span class="col-sm">{{moveis.PA_peso}}</span>
+            <span class="col-sm">{{moveis.PA_medida_externa_largura}}</span>
+            <span class="col-sm">{{moveis.PA_medida_externa_altura}}</span>
+            <span class="col-sm">{{moveis.PA_medida_externa_profundidade}}</span>
+        </div>
+
+        <div class="row">
+            <span class="col-sm"><b>Capacidade de Garrafas</b></span>
+            <span class="col-sm"><b>Capacidade de Copos</b></span>
+            <span class="col-sm"><b>Capacidade de Taças</b></span>
+            <span class="col-sm"><b>Capacidade de Prateleiras</b></span>
+            <span class="col-sm"><b>Capacidade de Suportes</b></span>
+            <span class="col-sm"><b>Capacidade de Gavetas</b></span>        
+        </div>
+        
+        <div class="row" style="padding-bottom: 20px;">
+            <span class="col-sm">{{moveis.PA_capacidade_garrafas}}</span>
+            <span class="col-sm">{{moveis.PA_capacidade_copos}}</span>
+            <span class="col-sm">{{moveis.PA_capacidade_tacas}}</span>
+            <span class="col-sm">{{moveis.PA_quantidade_prateleiras}}</span>
+            <span class="col-sm">{{moveis.PA_quantidade_suportes}}</span>
+            <span class="col-sm">{{moveis.PA_quantidade_gavetas}}</span>
+        </div>
+
+        <div class="row">
+            <span class="col-sm"><b>Peso Suportado</b></span>
+            <span class="col-sm"><b>Quantidade Parafusus de fixação</b></span>
+    
+        </div>
+        
+        <div class="row" style="padding-bottom: 20px;">
+            <span class="col-sm">{{moveis.PA_peso_suportado}}</span>
+            <span class="col-sm">{{moveis.PA_quantidade_parafusos_fixacao}}</span>
+
+        </div>
+
+        <div class="row">
+            <span class="col-sm"><b>Medidas Internas</b></span>
+        </div>
+
+        <div class="row" style="padding-bottom: 20px;">
+            <span class="col-sm">{{moveis.PA_medidas_internas}}</span>
+        </div>
+
+        {% if moveis.PA_verniz != 'nao se aplica' %}
+            <div class="row">
+                <span class="col-sm"><b>Verniz</b></span>
+            </div>
+
+            <div class="row" style="padding-bottom: 20px;">
+                <span class="col-sm">{{moveis.PA_verniz}}</span>
+            </div>
+        {% endif %}
+
+        {% if moveis.PA_tipo_tinta != 'nao se aplica' %}
+            <div class="row">
+                <span class="col-sm"><b>Tipo Tinta</b></span>
+            </div>
+
+            <div class="row" style="padding-bottom: 20px;">
+                <span class="col-sm">{{moveis.PA_tipo_tinta}}</span>
+            </div>
+        {% endif %}
+
+        {% if moveis.PA_escala_cor != 'nao se aplica' %}
+            <div class="row">
+                <span class="col-sm"><b>Escala de Cor</b></span>
+            </div>
+
+            <div class="row" style="padding-bottom: 20px;">
+                <span class="col-sm">{{moveis.PA_escala_cor}}</span>
+            </div>
+        {% endif %}
+        {% if moveis.PA_material != 'nao se aplica' %}
+            <div class="row">
+                <span class="col-sm"><b>Material</b></span>
+            </div>
+
+            <div class="row" style="padding-bottom: 20px;">
+                <span class="col-sm">{{moveis.PA_material}}</span>
+            </div>
+        {% endif %}
+        {% if moveis.PA_material_especura != 'nao se aplica' %}
+            <div class="row">
+                <span class="col-sm"><b>Espessura do material</b></span>
+            </div>
+
+            <div class="row" style="padding-bottom: 20px;">
+                <span class="col-sm">{{moveis.PA_material_especura}}</span>
+            </div>
+        {% endif %}
+        {% if moveis.PA_material_suporte != 'nao se aplica' %}
+            <div class="row">
+                <span class="col-sm"><b>Material do Suporte</b></span>
+            </div>
+
+            <div class="row" style="padding-bottom: 20px;">
+                <span class="col-sm">{{moveis.PA_material_suporte}}</span>
+            </div>
+        {% endif %}
+        {% if moveis.PA_material_pintura_suporte != 'nao se aplica' %}
+            <div class="row">
+                <span class="col-sm"><b>Pintura do Suporte</b></span>
+            </div>
+
+            <div class="row" style="padding-bottom: 20px;">
+                <span class="col-sm">{{moveis.PA_material_pintura_suporte}}</span>
+            </div>
+        {% endif %}
+        {% if moveis.PA_material_acabamento != 'nao se aplica' %}
+            <div class="row">
+                <span class="col-sm"><b>Material do acabamento</b></span>
+            </div>
+
+            <div class="row" style="padding-bottom: 20px;">
+                <span class="col-sm">{{moveis.PA_material_acabamento}}</span>
+            </div>
+        {% endif %}
+        {% if moveis.PA_localizacao != 'nao se aplica' %}
+            <div class="row">
+                <span class="col-sm"><b>Localização</b></span>
+            </div>
+
+            <div class="row" style="padding-bottom: 20px;">
+                <span class="col-sm">{{moveis.PA_localizacao}}</span>
+            </div>
+        {% endif %}
+        {% if moveis.PA_tipo_suporte != 'nao se aplica' %}
+            <div class="row">
+                <span class="col-sm"><b>Tipo Instalação</b></span>
+            </div>
+
+            <div class="row" style="padding-bottom: 20px;">
+                <span class="col-sm">{{moveis.PA_tipo_suporte}}</span>
+            </div>
+        {% endif %}
+        {% if moveis.PA_possui_pes != 'nao se aplica' %}
+            <div class="row">
+                <span class="col-sm"><b>Tipo de pés</b></span>
+            </div>
+
+            <div class="row" style="padding-bottom: 20px;">
+                <span class="col-sm">{{moveis.PA_possui_pes}}</span>
+            </div>
+        {% endif %}
+        {% if moveis.PA_tipo_fixacao != 'nao se aplica' %}
+            <div class="row">
+                <span class="col-sm"><b>Tipo de fixação</b></span>
+            </div>
+
+            <div class="row" style="padding-bottom: 20px;">
+                <span class="col-sm">{{moveis.PA_tipo_fixacao}}</span>
+            </div>
+        {% endif %}
+        {% if moveis.PA_envio != 'nao se aplica' %}
+            <div class="row">
+                <span class="col-sm"><b>Enviado</b></span>
+            </div>
+
+            <div class="row" style="padding-bottom: 20px;">
+                <span class="col-sm">{{moveis.PA_envio}}</span>
+            </div>
+        {% endif %}
+        <table>
+            <tr>
+                <th>Imagem 1</th>
+                <th>Imagem 2</th>
+                <th>Imagem 3</th>
+                <th>Imagem 4</th>
+                <th>Imagem 5</th>
+                <th>Imagem 6</th>
+                <th>Imagem 7</th>
+                <th>Imagem 8</th>
+                <th>Imagem 9</th>
+                <th>Imagem 10</th>
+            </tr>
+            <tr>
+                <td><img src="/{{moveis.PA_imagem1}}" width="75" height="75"></td>
+                <td><img src="/{{moveis.PA_imagem2}}" width="75" height="75"></td>
+                <td><img src="/{{moveis.PA_imagem3}}" width="75" height="75"></td>
+                <td><img src="/{{moveis.PA_imagem4}}" width="75" height="75"></td>
+                <td><img src="/{{moveis.PA_imagem5}}" width="75" height="75"></td>
+                <td><img src="/{{moveis.PA_imagem6}}" width="75" height="75"></td>
+                <td><img src="/{{moveis.PA_imagem7}}" width="75" height="75"></td>
+                <td><img src="/{{moveis.PA_imagem8}}" width="75" height="75"></td>
+                <td><img src="/{{moveis.PA_imagem9}}" width="75" height="75"></td>
+                <td><img src="/{{moveis.PA_imagem10}}" width="75" height="75"></td>
+            </tr>
+        </table>
+
+    </div>
+    
+{% endblock %}

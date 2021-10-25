@@ -1,0 +1,31 @@
+{% extends 'basep.html' %}
+
+{% block title %}{{tag}}{% endblock %}
+
+{% block content %}
+    <div style="display: center;">{{tag}}</div>
+    <form action="/pedidos/{{metodo}}/" method="post">
+        {% csrf_token%}
+        {% for sku in lista_skus %}            
+            <div class="container" style="padding-bottom: 30px; padding-top: 30px;"></div>
+                <div class="row" id="1" style=" padding-bottom: 5px;">
+                    <div style="display: flex;">                        
+                        <p class="col-sm">SKU</p>
+                        <input disabled="true" class="form-control" type="text" placeholder="{{sku.EA_sku}}" name="sku1" autocomplete="off"/>
+                        <input type="hidden" type="text" name="sku1" value="{{sku.EA_sku}}">
+                        <p class="col-sm" >Arrigo</p>
+                        <input class="form-control" type="number" placeholder="{{sku.EA_estoque_arrigo}}" name="arrigo_novo" autocomplete="off"/>
+                        <input type="hidden" type="number" name="arrigo_velho" value="{{sku.EA_estoque_arrigo}}">
+                        <p class="col-sm" >Koala</p>
+                        <input class="form-control" type="number" placeholder="{{sku.EA_estoque_koala}}" name="koala_novo" autocomplete="off"/>
+                        <input type="hidden" type="number" name="koala_velho" value="{{sku.EA_estoque_koala}}">
+                    </div>
+                </div>
+                <div style="text-align :center; padding-top:50px">
+                    <input style="padding-right: 50px; padding-left: 50px;" class="btn btn-success" type="submit" value="Enviar" onclick="return confirm('{{tag}} no SKU: {{sku.EA_sku}}?')">
+                </div>        
+                <hr class="separadordebaixo">
+            </div>
+        {% endfor %}
+</form>
+{% endblock %}

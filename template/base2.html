@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+{% load static%}
+<html lang="pt-br">
+  <head>
+    <!-- Meta tags Obrigatórias -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        table, td, tfoot {border:solid 1px #000; padding:5px; border-color: black;}
+        caption {font-size:x-large; }
+        colgroup {background:#F60;}
+        .coluna1 {background:#F66;}
+        .coluna2  {background:#F33;}
+        .coluna3  {background:#F99;}
+    
+    </style>
+    <title>{% block title %}{% endblock %}</title>
+  </head>
+  <body>
+    <header>
+        <nav class="navbar navbar-expand navbar-dark bg-dark mb-3">
+            <div class="container">
+                <a class="navbar-brand" href="{% url 'pages:home' %}">Gerenciador</a>
+                <ul class="navbar-nav">
+                    {% if user.is_authenticated %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'sinc:irsinc' %}">Sincronizador</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'pedidos:irpedidos' %}">Arrigo</a>
+                            </li>
+                        {% if user.Us_Setor == 'loja' %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'loja:irloja' %}">Verificação Loja</a>
+                            </li>
+                        {% endif %}
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'account_logout' %}">Sair</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'account_login' %}">Entrar</a>
+                        </li>
+                        <!-- <li class="nav-item">
+                            <a class="nav-link" href="{% url 'account_signup' %}">Cadastro</a>
+                        </li> -->
+                    {% endif %}
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <main class="container">
+        {% block content %}
+        {% endblock %}
+    </main>
+    <!-- JavaScript (Opcional) -->
+    <!-- jQuery primeiro, depois Popper.js, depois Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script>
+        $("img").on("error", function() {
+            $(this).hide();
+        });
+    </script>
+  </body>
+</html>

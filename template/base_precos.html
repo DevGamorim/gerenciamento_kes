@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/stylespedido.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <link rel="shortcut icon" type="image/png" href="{% static 'Logo_sem_fundo.ico' %}"/>
+    <meta charset="UTF-8">
+    <style>
+        table, td, tfoot {border:solid 1px #000; padding:5px; border-color: black;}
+        caption {font-size:x-large; }
+        colgroup {background:#F60;}
+        .texto_branco {
+            color: white;
+        }
+        .coluna1 {background:#F66;}
+        .coluna2  {background:#F33;}
+        .coluna3  {background:#F99;}
+    
+    </style>
+    <title>{% block title %}{% endblock %}</title>
+    
+</head>
+<body class='bodyinicio'>
+    <header>
+        <nav class="navbar navbar-expand navbar-dark bg-dark mb-3 ">
+            <div class="container">
+                <ul class="navbar-nav">
+                    {% if user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'precos:home' %}">Preços</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'precos:importar' %}">Importar</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'precos:novanota' %}">Nova Nota</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'loja:irloja' %}">Conferencia Preço</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'loja:notas' %}">Conferencia Notas</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'sinc:irsinc' %}">Sincronizador</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'catalogo:correcao' %}">Correções</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'catalogo:novacorrecao' %}">Nova Correção</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'produtos:moveis' %}">Produtos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'account_logout' %}">Sair</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="navbar-brand" href="{% url 'irhome' %}">Login Pedidos</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+    <script src="{% static 'js/scripts.js' %}"></script>
+    <script>
+        $("img").on("error", function() {
+            $(this).hide();
+        });</script>
+
+    <script type="text/javascript">
+        function Mudarestado2() {
+            var display = document.getElementById("1-2").style.display;
+            if(display == "none")
+                document.getElementById("1-2").style.display = 'block';
+            else
+                document.getElementById("1-2").style.display = 'none';
+            var display2 = document.getElementById("2").style.display;
+            if(display2 == "none")
+                document.getElementById("2").style.display = 'block';
+            else
+                document.getElementById("2").style.display = 'none';
+            var display3 = document.getElementById("2-2").style.display;
+            if(display3 == "none")
+                document.getElementById("2-2").style.display = 'block';
+            else
+                document.getElementById("2-2").style.display = 'none';}
+
+        function removerCampos2(){
+            var display = document.getElementById("1-2").style.display;
+            document.getElementById("1-2").style.display = 'block';
+            var display2 = document.getElementById("2").style.display;
+            document.getElementById("2").style.display = 'none';
+            var display3 = document.getElementById("2-2").style.display;
+            document.getElementById("2-2").style.display = 'none';}
+
+        function Mudarestado3() {
+            var display = document.getElementById("2-2").style.display;
+            if(display == "none")
+                document.getElementById("2-2").style.display = 'block';
+            else
+                document.getElementById("2-2").style.display = 'none';
+            var display2 = document.getElementById("3").style.display;
+            if(display2 == "none")
+                document.getElementById("3").style.display = 'block';
+            else
+                document.getElementById("3").style.display = 'none';
+            var display3 = document.getElementById("3-2").style.display;
+            if(display3 == "none")
+                document.getElementById("3-2").style.display = 'block';
+            else
+                document.getElementById("3-2").style.display = 'none';}
+
+        function removerCampos3(){
+            var display = document.getElementById("2-2").style.display;
+            document.getElementById("2-2").style.display = 'block';
+            var display2 = document.getElementById("3").style.display;
+            document.getElementById("3").style.display = 'none';
+            var display3 = document.getElementById("3-2").style.display;
+            document.getElementById("3-2").style.display = 'none';}
+
+        function Mudarestado4() {
+            var display = document.getElementById("3-2").style.display;
+            if(display == "none")
+                document.getElementById("3-2").style.display = 'block';
+            else
+                document.getElementById("3-2").style.display = 'none';
+            var display2 = document.getElementById("4").style.display;
+            if(display2 == "none")
+                document.getElementById("4").style.display = 'block';
+            else
+                document.getElementById("4").style.display = 'none';
+            var display3 = document.getElementById("4-2").style.display;
+            if(display3 == "none")
+                document.getElementById("4-2").style.display = 'block';
+            else
+                document.getElementById("4-2").style.display = 'none';}
+
+        function removerCampos4(){
+            var display = document.getElementById("3-2").style.display;
+            document.getElementById("3-2").style.display = 'block';
+            var display2 = document.getElementById("4").style.display;
+            document.getElementById("4").style.display = 'none';
+            var display3 = document.getElementById("4-2").style.display;
+            document.getElementById("4-2").style.display = 'none';}
+
+
+        function Mudarestado5() {
+            var display = document.getElementById("4-2").style.display;
+            if(display == "none")
+                document.getElementById("4-2").style.display = 'block';
+            else
+                document.getElementById("4-2").style.display = 'none';
+            var display2 = document.getElementById("5").style.display;
+            if(display2 == "none")
+                document.getElementById("5").style.display = 'block';
+            else
+                document.getElementById("5").style.display = 'none';
+            var display3 = document.getElementById("5-2").style.display;
+            if(display3 == "none")
+                document.getElementById("5-2").style.display = 'block';
+            else
+                document.getElementById("5-2").style.display = 'none';}
+
+        function removerCampos5(){
+            var display = document.getElementById("4-2").style.display;
+            document.getElementById("4-2").style.display = 'block';
+            var display2 = document.getElementById("5").style.display;
+            document.getElementById("5").style.display = 'none';
+            var display3 = document.getElementById("5-2").style.display;
+            document.getElementById("5-2").style.display = 'none';}
+
+        function Mudarestado6() {
+            var display = document.getElementById("5-2").style.display;
+            if(display == "none")
+                document.getElementById("5-2").style.display = 'block';
+            else
+                document.getElementById("5-2").style.display = 'none';
+            var display2 = document.getElementById("6").style.display;
+            if(display2 == "none")
+                document.getElementById("6").style.display = 'block';
+            else
+                document.getElementById("6").style.display = 'none';
+            var display3 = document.getElementById("6-2").style.display;
+            if(display3 == "none")
+                document.getElementById("6-2").style.display = 'block';
+            else
+                document.getElementById("6-2").style.display = 'none';}
+
+        function removerCampos6(){
+            var display = document.getElementById("5-2").style.display;
+            document.getElementById("5-2").style.display = 'block';
+            var display2 = document.getElementById("6").style.display;
+            document.getElementById("6").style.display = 'none';
+            var display3 = document.getElementById("6-2").style.display;
+            document.getElementById("6-2").style.display = 'none';}
+
+        function Mudarestado7() {
+            var display = document.getElementById("6-2").style.display;
+            if(display == "none")
+                document.getElementById("6-2").style.display = 'block';
+            else
+                document.getElementById("6-2").style.display = 'none';
+            var display2 = document.getElementById("7").style.display;
+            if(display2 == "none")
+                document.getElementById("7").style.display = 'block';
+            else
+                document.getElementById("7").style.display = 'none';
+            var display3 = document.getElementById("7-2").style.display;
+            if(display3 == "none")
+                document.getElementById("7-2").style.display = 'block';
+            else
+                document.getElementById("7-2").style.display = 'none';}
+
+        function removerCampos7(){
+            var display = document.getElementById("6-2").style.display;
+            document.getElementById("6-2").style.display = 'block';
+            var display2 = document.getElementById("7").style.display;
+            document.getElementById("7").style.display = 'none';
+            var display3 = document.getElementById("7-2").style.display;
+            document.getElementById("7-2").style.display = 'none';}
+
+
+        function Mudarestado8() {
+            var display = document.getElementById("7-2").style.display;
+            if(display == "none")
+                document.getElementById("7-2").style.display = 'block';
+            else
+                document.getElementById("7-2").style.display = 'none';
+            var display2 = document.getElementById("8").style.display;
+            if(display2 == "none")
+                document.getElementById("8").style.display = 'block';
+            else
+                document.getElementById("8").style.display = 'none';
+            var display3 = document.getElementById("8-2").style.display;
+            if(display3 == "none")
+                document.getElementById("8-2").style.display = 'block';
+            else
+                document.getElementById("8-2").style.display = 'none';}
+
+        function removerCampos8(){
+            var display = document.getElementById("7-2").style.display;
+            document.getElementById("7-2").style.display = 'block';
+            var display2 = document.getElementById("8").style.display;
+            document.getElementById("8").style.display = 'none';
+            var display3 = document.getElementById("8-2").style.display;
+            document.getElementById("8-2").style.display = 'none';}
+
+        function Mudarestado9() {
+            var display = document.getElementById("8-2").style.display;
+            if(display == "none")
+                document.getElementById("8-2").style.display = 'block';
+            else
+                document.getElementById("8-2").style.display = 'none';
+            var display2 = document.getElementById("9").style.display;
+            if(display2 == "none")
+                document.getElementById("9").style.display = 'block';
+            else
+                document.getElementById("9").style.display = 'none';
+            var display3 = document.getElementById("9-2").style.display;
+            if(display3 == "none")
+                document.getElementById("9-2").style.display = 'block';
+            else
+                document.getElementById("9-2").style.display = 'none';}
+
+        function removerCampos9(){
+            var display = document.getElementById("8-2").style.display;
+            document.getElementById("8-2").style.display = 'block';
+            var display2 = document.getElementById("8").style.display;
+            document.getElementById("9").style.display = 'none';
+            var display3 = document.getElementById("9-2").style.display;
+            document.getElementById("9-2").style.display = 'none';}
+
+        function Mudarestado10() {
+            var display = document.getElementById("9-2").style.display;
+            if(display == "none")
+                document.getElementById("9-2").style.display = 'block';
+            else
+                document.getElementById("9-2").style.display = 'none';
+            var display2 = document.getElementById("10").style.display;
+            if(display2 == "none")
+                document.getElementById("10").style.display = 'block';
+            else
+                document.getElementById("10").style.display = 'none';
+            var display3 = document.getElementById("10-2").style.display;
+            if(display3 == "none")
+                document.getElementById("10-2").style.display = 'block';
+            else
+                document.getElementById("10-2").style.display = 'none';}
+
+        function removerCampos10(){
+            var display = document.getElementById("9-2").style.display;
+            document.getElementById("9-2").style.display = 'block';
+            var display2 = document.getElementById("9").style.display;
+            document.getElementById("10").style.display = 'none';
+            var display3 = document.getElementById("10-2").style.display;
+            document.getElementById("10-2").style.display = 'none';}
+
+        function reloadpedido(){
+                window.location.href="{{'irproducao'}}"
+            }
+    </script>
+
+    <script>
+        var button = document.getElementById("mudarcor");
+        var chkbox = document.getElementsByName("avancar");
+
+        function onChangeListener() {
+            button.style.backgroundColor = "gray";
+            for (var i = 0; i < chkbox.length; i++) {
+                if (chkbox[i].checked) {
+                    button.style.backgroundColor = "green";
+                }
+            }
+        }
+
+        for (var i = 0; i < chkbox.length; i++) {
+            var checkbox = chkbox[i];
+            checkbox.addEventListener("change", onChangeListener);
+        }
+    </script>
+
+    <script>
+        if ( window.history.replaceState ) {
+            window.history.replaceState( null, null, window.location.href );
+        }
+    </script>
+
+    <script>
+        var data = new Date();
+        var dia = data.getDate();
+        var mes = data.getMonth();
+        var ano4 = data.getFullYear();
+        var str_data = dia + '/' + (mes+1) + '/' + ano4;
+
+        $('#picker').daterangepicker({
+            autoApply: true,
+            startDate: str_data,
+            locale:{
+                format: 'DD-MM-YYYY'
+            }
+
+
+        });
+
+    </script>
+
+</body>
+</html>
