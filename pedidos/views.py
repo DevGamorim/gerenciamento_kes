@@ -19,7 +19,16 @@ import pygame
 from time import sleep
 
 
-config = {}
+config = {
+    'apiKey': "AIzaSyBc_es9P1nML862S1D6p4mS4S0EjfZvFhI",
+    'authDomain': "arrigo-pedidos.firebaseapp.com",
+    'databaseURL': "https://arrigo-pedidos-default-rtdb.firebaseio.com",
+    'projectId': "arrigo-pedidos",
+    'storageBucket': "arrigo-pedidos.appspot.com",
+    'messagingSenderId': "252620383994",
+    'appId': "1:252620383994:web:b1f2b869cbdd995c4f8b43",
+    'measurementId': "G-V3TMNWZZWR"
+}
 
 
 firebase = pyrebase.initialize_app(config)
