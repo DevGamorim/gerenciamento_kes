@@ -16,6 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from django.conf import settings
+from django.conf.urls.static import static
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
@@ -27,4 +31,4 @@ urlpatterns = [
     path('precos/', include('precos.urls', namespace='precos')),
     path('loja/', include('loja.urls', namespace='loja')),
     path('catalogo/', include('catalogo.urls', namespace='catalogo')),
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
