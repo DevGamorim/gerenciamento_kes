@@ -2133,8 +2133,8 @@ def enviaromni(request):
             }
 
             login_data = {
-                'Email': 'marketplace@alaok.com.br',
-                'Password': 'mudar123',
+                'Email': '***',
+                'Password': '***',
                 'RememberMe': 'false',
             }
 

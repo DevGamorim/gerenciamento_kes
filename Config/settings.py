@@ -103,11 +103,11 @@ WSGI_APPLICATION = 'Config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'alaoq145_pedidos_arrigo',
-        'USER': 'alaoq145_dev',
-        'PASSWORD': 'aleatorio4d',
-        'HOST': '108.167.169.209',
-        'PORT': '3306',
+        'NAME': '***',
+        'USER': '***',
+        'PASSWORD': 'a***',
+        'HOST': '1***',
+        'PORT': '***',
     }
 }
 
