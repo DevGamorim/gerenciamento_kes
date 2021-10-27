@@ -252,13 +252,9 @@ def todosprecos(request):
                     precos = Produto_Precificacao.objects.filter(PP_estoque_fisico__lte= 0,PP_fornecedor= str(escolha_fornecedor))
                 else:
                     precos = Produto_Precificacao.objects.filter(PP_fornecedor=str(escolha_fornecedor))
-            try:
-                if precos.PP_custo_adm_site == None:
-                    comissoes = get_object_or_404(Comissoes, pk='1')
-                    precos.PP_custo_adm_site = comissoes.CS_Custo_Adm_site
-                    precos.save()
-            except:
-                continue
+
+            precos.PP_custo_adm_site = comissoes.CS_Custo_Adm_site
+            precos.save()
             #precos = sorted(precos, key=lambda x: x.PP_estoque_fisico, reverse=True)
             n = 0
             print(len(precos))
